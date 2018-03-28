@@ -23,7 +23,7 @@ public abstract class BaseEntity implements Persistable<String> {
 		return id;
 	}
 
-	protected void setId(final String id) {
+	public void setId(final String id) {
 		this.id = id;
 	}
 

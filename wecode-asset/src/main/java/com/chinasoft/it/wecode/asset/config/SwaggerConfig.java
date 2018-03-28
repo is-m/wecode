@@ -26,7 +26,7 @@ public class SwaggerConfig {
 		return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).useDefaultResponseMessages(false)
 				.globalOperationParameters(globalParameters())
 				// .globalResponseMessage(requestMethod, responseMessages)
-				.select().apis(RequestHandlerSelectors.basePackage("com.chinasoft.it.wecode.asset.api"))
+				.select().apis(RequestHandlerSelectors.basePackage("com.chinasoft.it.wecode"))
 				.paths(PathSelectors.any()).build();
 	}
 
