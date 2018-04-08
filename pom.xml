@@ -27,6 +27,10 @@
 		<module>wecode-resource</module>
 		<module>wecode-asset</module>
 		<module>wecode-admin</module>
+		<module>wecode-operation</module>
+		<module>wecode-security</module>
+		<module>wecode-excel</module>
+		<module>wecode-distributed</module>
 	</modules>
 
 	<dependencyManagement>
