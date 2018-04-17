@@ -31,6 +31,8 @@
 		<module>wecode-security</module>
 		<module>wecode-excel</module>
 		<module>wecode-distributed</module>
+		<module>wecode-data-multiTenancy</module>
+		<module>wecode-data-tenant</module>
 	</modules>
 
 	<dependencyManagement>
