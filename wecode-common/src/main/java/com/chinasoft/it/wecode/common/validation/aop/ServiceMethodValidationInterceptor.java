@@ -33,11 +33,13 @@ public class ServiceMethodValidationInterceptor {
 	// 更多AOP表达式写法，可以参考：https://www.cnblogs.com/rainy-shurun/p/5195439.html
 	@Before("within(com.chinasoft.it.wecode.**.*Service) && @args(javax.validation.Valid) &&  @annotation(anno)")
 	public void beforeInvork(JoinPoint joinPoint, Valid anno) {
+		System.err.println("Validator begin @Valid");
 		valid(joinPoint, Valid.class);
 	}
 
 	@Before("within(com.chinasoft.it.wecode.**.*Service) && @args(org.springframework.validation.annotation.Validated) &&  @annotation(anno)")
 	public void beforeInvork(JoinPoint joinPoint, Validated anno) {
+		System.err.println("Validator begin @Validated");
 		valid(joinPoint, Validated.class);
 	}
 

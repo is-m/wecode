@@ -22,6 +22,7 @@ com\chinasoft\it\wecode\sign\config\SwaggerConfig.class
 com\chinasoft\it\wecode\sign\dto\SignLogResultDto.class
 com\chinasoft\it\wecode\SignApp.class
 com\chinasoft\it\wecode\sign\api\SignApi.class
+com\chinasoft\it\wecode\sign\dto\CatelogMenuDto.class
 com\chinasoft\it\wecode\sign\mapper\SignMapperImpl.class
 com\chinasoft\it\wecode\sign\repository\CatelogRepository.class
 com\chinasoft\it\wecode\sign\dto\SignLogDto.class

@@ -7,11 +7,12 @@ import com.chinasoft.it.wecode.base.BaseEntity;
 
 /**
  * 用户
+ * 
  * @author Administrator
  *
  */
 @Entity
-@Table(name = "sys_user")
+@Table(name = "s_user")
 public class User extends BaseEntity {
 
 	private static final long serialVersionUID = -8916749944303282591L;
@@ -20,26 +21,31 @@ public class User extends BaseEntity {
 	 * 姓名
 	 */
 	private String name;
-	
+
 	/**
 	 * 密码
 	 */
 	private String password;
-	
+
 	/**
 	 * 备注
 	 */
 	private String remark;
-	
+
 	/**
 	 * 电子邮箱
 	 */
 	private String mail;
-	
+
 	/**
 	 * 移动号码 MP MobilePhone
 	 */
 	private String mobilePhone;
+
+	/**
+	 * 状态，0：失效，1：生效
+	 */
+	private Integer status;
 
 	public String getName() {
 		return name;
@@ -79,5 +85,13 @@ public class User extends BaseEntity {
 
 	public void setMobilePhone(String mobilePhone) {
 		this.mobilePhone = mobilePhone;
-	} 
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
 }

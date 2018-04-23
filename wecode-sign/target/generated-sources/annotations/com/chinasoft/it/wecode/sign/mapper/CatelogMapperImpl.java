@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2018-04-17T07:10:52+0800",
+    date = "2018-04-17T22:23:11+0800",
     comments = "version: 1.2.0.CR1, compiler: javac, environment: Java 1.8.0_92 (Oracle Corporation)"
 )
 @Component
@@ -39,6 +39,20 @@ public class CatelogMapperImpl implements CatelogMapper {
     }
 
     @Override
+    public List<CatelogResultDto> toDtoList(List<Catelog> arg0) {
+        if ( arg0 == null ) {
+            return null;
+        }
+
+        List<CatelogResultDto> list = new ArrayList<CatelogResultDto>( arg0.size() );
+        for ( Catelog catelog : arg0 ) {
+            list.add( from( catelog ) );
+        }
+
+        return list;
+    }
+
+    @Override
     public Catelog to(CatelogDto arg0) {
         if ( arg0 == null ) {
             return null;
@@ -57,6 +71,20 @@ public class CatelogMapperImpl implements CatelogMapper {
         catelog.setTarget( arg0.getTarget() );
 
         return catelog;
+    }
+
+    @Override
+    public List<Catelog> toEntityList(List<CatelogDto> arg0) {
+        if ( arg0 == null ) {
+            return null;
+        }
+
+        List<Catelog> list = new ArrayList<Catelog>( arg0.size() );
+        for ( CatelogDto catelogDto : arg0 ) {
+            list.add( to( catelogDto ) );
+        }
+
+        return list;
     }
 
     @Override
