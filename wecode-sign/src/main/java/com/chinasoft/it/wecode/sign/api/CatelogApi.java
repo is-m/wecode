@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiOperation;
 
 @Api("Sign Api")
 @RestController
-@RequestMapping("/admin/catelog")
+@RequestMapping("/services/base/catelog")
 public class CatelogApi {
 
 	@Autowired

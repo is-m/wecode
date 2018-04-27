@@ -4,17 +4,20 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.chinasoft.it.wecode.common.util.PageConstants;
 import com.chinasoft.it.wecode.common.util.WebUtils;
 import com.chinasoft.it.wecode.security.dto.UserDto;
+import com.chinasoft.it.wecode.security.dto.UserExportDto;
 import com.chinasoft.it.wecode.security.dto.UserQueryDto;
 import com.chinasoft.it.wecode.security.dto.UserResultDto;
 import com.chinasoft.it.wecode.security.service.impl.UserService;
@@ -50,12 +53,24 @@ public class UserApi {
 			@ApiImplicitParam(name = PageConstants.PARAM_PAGE, value = "当前页", paramType = "query", dataType = "Long"),
 			@ApiImplicitParam(name = PageConstants.PARAM_SIZE, value = "页大小", paramType = "query", dataType = "Long"), })
 	public Page<UserResultDto> findPagedList(HttpServletRequest request, UserQueryDto dto) {
-		return service.findPagedList(WebUtils.getPageable(request), dto);
+		return service.findPagedData(WebUtils.getPageable(request), dto);
 	}
 
 	@ApiOperation(value = "按ID查询单个用户", notes = "按ID查询单个用户")
 	@GetMapping("/{id}")
 	public UserResultDto findOne(@PathVariable("id") String id) {
 		return service.findOne(id);
+	}
+
+	@ApiOperation(value = "按ID删除用户", notes = "按ID删除用户，多个用 , 分割")
+	@DeleteMapping
+	public void delete(@RequestParam("ids") String ids) {
+		service.delete(ids.split(","));
+	}
+
+	@ApiOperation(value = "导出用户列表", notes = "导出用户列表")
+	@PostMapping("/export")
+	public void export(@RequestBody UserExportDto exportDto) throws Exception {
+		service.export(exportDto, null);
 	}
 }

@@ -13,8 +13,8 @@ public class UserQueryDto extends BaseDto {
 	@ApiModelProperty(value = "name", notes = "用户名（模糊匹配）", example = "")
 	private String name;
 
-	@ApiModelProperty(value = "", notes = "状态，0失效，1生效", example = "1")
-	private String status;
+	@ApiModelProperty(value = "status", notes = "状态，0失效，1生效", example = "1")
+	private Integer status;
 
 	public String getName() {
 		return name;
@@ -24,11 +24,11 @@ public class UserQueryDto extends BaseDto {
 		this.name = name;
 	}
 
-	public String getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 

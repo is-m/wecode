@@ -1,20 +1,28 @@
 package com.chinasoft.it.wecode.base;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.validation.groups.Default;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.data.domain.Example;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
 
 import com.chinasoft.it.wecode.common.dto.BaseDto;
@@ -28,21 +36,51 @@ import com.chinasoft.it.wecode.common.validation.groups.Update;
  * 服务类父类
  * 
  * TODO:目前校验方法已经失效，需要重新看看
+ * 
  * @author Administrator
  *
  * @param <E>
+ *            Entity
  * @param <D>
+ *            SimpleDto
  * @param <R>
+ *            ResultDto
  */
 public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R extends BaseDto> {
 
+	/**
+	 * logger
+	 */
+	protected final Logger logger;
+
+	/**
+	 * entiyu class 
+	 */
+	private final Class<E> entityClass;
+
+	/**
+	 * repository
+	 */
 	protected final JpaRepository<E, String> repo;
 
+	/**
+	 * dto entity mapper
+	 */
 	protected final BaseMapper<E, D, R> mapper;
 
-	public BaseService(JpaRepository<E, String> repository, BaseMapper<E, D, R> mapper) {
+	/**
+	 * entity manager
+	 * <p>
+	 * 可以用来执行更多的SQL相关的API
+	 */
+	@PersistenceContext
+	protected EntityManager em;
+
+	public BaseService(JpaRepository<E, String> repository, BaseMapper<E, D, R> mapper, Class<E> entityClass) {
 		this.repo = repository;
 		this.mapper = mapper;
+		logger = LoggerFactory.getLogger(this.getClass());
+		this.entityClass = entityClass;
 	}
 
 	/**
@@ -55,6 +93,20 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R ext
 		E beforeSave = mapper.to(dto);
 		E afterSave = repo.save(beforeSave);
 		return mapper.from(afterSave);
+	}
+	
+	/**
+	 * 批量创建对象
+	 * 
+	 * @param dto
+	 * @return
+	 */
+	public List<R> batchCreate(@Validated({ Default.class, Create.class }) List<D> dtos) {
+		if(CollectionUtils.isEmpty(dtos)) {
+			return null;
+		}
+		List<E> entities = dtos.stream().map(dto-> mapper.to(dto)).collect(Collectors.toList());
+		return repo.save(entities).stream().map(entity -> mapper.from(entity)).collect(Collectors.toList());
 	}
 
 	/**
@@ -103,13 +155,14 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R ext
 	 * @param queryDto
 	 * @return
 	 */
+	@Deprecated
 	@SuppressWarnings("unchecked")
 	public Page<R> findPagedList(Pageable pageable, @Validated({ Query.class }) BaseDto queryDto) {
 		// 检查Dto是否存在模糊查询的情况(标注了模糊查询的字段)，如果存在则需要是有 Specification 的接口
 		// TODO 待实现动态查询细节
-		Page<E> pageData = null;
-		
-		if(true) {
+		/*Page<E> pageData = null;
+
+		if (true) {
 			pageData = repo.findAll(pageable);
 		} else if (repo instanceof JpaSpecificationExecutor) {
 			pageData = ((JpaSpecificationExecutor<E>) repo).findAll(new Specification<E>() {
@@ -124,7 +177,8 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R ext
 			throw new NoImplementedException("存在模糊查询条件，但是没有 Repository 未实现 JpaSpecificationExecutor 接口");
 		}
 
-		return mapper.toResultDto(pageData);
+		return mapper.toResultDto(pageData);*/
+		return null;
 	}
 
 	/**
@@ -135,5 +189,68 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R ext
 	 */
 	public void delete(@NotBlank String id) {
 		repo.delete(id);
+	}
+
+	// JPA
+	// https://www.cnblogs.com/fengru/p/5922793.html?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+	/**
+	 * 根据ID删除 TODO:删除时，jpa有进行过一次查询后再进行的删除,而且是执行的多条删除语句，需要看看是否需要优化
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@Transactional
+	public void delete(String... ids) {
+		if (ArrayUtils.isEmpty(ids)) {
+			logger.warn("delete id collection is empty.");
+			return;
+		}
+
+		for (int i = 0; i < ids.length; i++) {
+			String id = ids[i];
+
+			if (StringUtils.isEmpty(id)) {
+				logger.warn("delete operate has empty id.");
+				continue;
+			}
+
+			E entity = repo.findOne(id);
+			if(entity == null) {
+				logger.warn("delete skip id is {} ,not found this record",id);
+				continue;
+			}
+			
+			repo.delete(entity);
+			
+			// 在进行大批量数据一次性操作的时候，会占用非常多的内存来缓存被更新的对象。这时就应该阶段性地调用clear()方法来清空一级缓存中的对象，控制一级缓存的大小，以避免产生内存溢出的情况。
+			/*	if (i % 30 == 0) {
+				em.flush();
+				em.clear();
+			}*/
+		}
+
+	}
+
+	/**
+	 * 构造实体对象
+	 * @param id
+	 * @return
+	 */
+	protected E newEntity(String id) {
+		try {
+			E result = entityClass.newInstance();
+			result.setId(id);
+			return result;
+		} catch (InstantiationException | IllegalAccessException e) {
+			throw new RuntimeException("instance entity class fiald " + entityClass.getName(), e);
+		}
+	}
+
+	/**
+	 * 构造实体对象
+	 * @return
+	 */
+	protected E newEntity() {
+		return newEntity(null);
 	}
 }
