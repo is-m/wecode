@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workbook>
+	<worksheet name="Sheet1">
+		<section startRow="0" endRow="0" />
+		<loop startRow="1" endRow="1" items="users" var="user"
+			varType="com.chinasoft.it.wecode.security.dto.UserResultDto">
+			<section startRow="1" endRow="1">
+				<mapping row="1" col="0">user.id</mapping>
+				<mapping row="1" col="1">user.name</mapping>
+				<mapping row="1" col="2">user.mail</mapping>
+				<mapping row="1" col="3">user.mobilePhone</mapping>
+				<mapping row="1" col="4">user.status</mapping>
+				<mapping row="1" col="5">user.remark</mapping>
+			</section>
+			<loopbreakcondition>
+				<rowcheck offset="0">
+					<cellcheck offset="0"></cellcheck>
+				</rowcheck>
+			</loopbreakcondition>
+		</loop>
+	</worksheet>
+</workbook>

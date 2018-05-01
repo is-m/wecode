@@ -52,6 +52,14 @@ public interface BaseMapper<E, D, R> {
 	E to(D dto);
 
 	/**
+	 * Result Dto List 转 Entity List
+	 * 
+	 * @param r
+	 * @return
+	 */
+	List<E> toEntities(List<R> dtos);
+
+	/**
 	 * List DTO 转 List Entity
 	 * 
 	 * @param dto

@@ -228,7 +228,11 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R ext
 				em.clear();
 			}*/
 		}
-
+	}
+	
+	public List<R> save(List<R> dtos) {
+		List<E> entities = mapper.toEntities(dtos);
+		return mapper.toDtoList(repo.save(entities));
 	}
 
 	/**

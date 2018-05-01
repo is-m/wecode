@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2018-04-17T22:23:11+0800",
+    date = "2018-05-01T13:04:57+0800",
     comments = "version: 1.2.0.CR1, compiler: javac, environment: Java 1.8.0_92 (Oracle Corporation)"
 )
 @Component
@@ -60,6 +60,20 @@ public class SignMapperImpl implements SignMapper {
     }
 
     @Override
+    public List<Sign> toEntities(List<SignResultDto> arg0) {
+        if ( arg0 == null ) {
+            return null;
+        }
+
+        List<Sign> list = new ArrayList<Sign>( arg0.size() );
+        for ( SignResultDto signResultDto : arg0 ) {
+            list.add( signResultDtoToSign( signResultDto ) );
+        }
+
+        return list;
+    }
+
+    @Override
     public List<Sign> toEntityList(List<SignDto> arg0) {
         if ( arg0 == null ) {
             return null;
@@ -71,5 +85,20 @@ public class SignMapperImpl implements SignMapper {
         }
 
         return list;
+    }
+
+    protected Sign signResultDtoToSign(SignResultDto signResultDto) {
+        if ( signResultDto == null ) {
+            return null;
+        }
+
+        Sign sign = new Sign();
+
+        sign.setUserId( signResultDto.getUserId() );
+        sign.setSignDate( signResultDto.getSignDate() );
+        sign.setBeginTime( signResultDto.getBeginTime() );
+        sign.setEndTime( signResultDto.getEndTime() );
+
+        return sign;
     }
 }

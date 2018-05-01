@@ -17,6 +17,8 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+// about swagger spec
+// https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#relative-schema-file-example
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
@@ -44,5 +46,5 @@ public class SwaggerConfig {
 		return new ApiInfoBuilder().title("Spring Boot中使用Swagger2构建RESTful APIs")
 				.description("更多Spring Boot相关文章请关注：http://blog.didispace.com/")
 				.termsOfServiceUrl("http://blog.didispace.com/").version("1.0").build();
-	} 
+	}
 }

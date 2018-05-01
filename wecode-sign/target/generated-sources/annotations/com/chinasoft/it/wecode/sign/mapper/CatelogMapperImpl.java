@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2018-04-17T22:23:11+0800",
+    date = "2018-05-01T13:04:57+0800",
     comments = "version: 1.2.0.CR1, compiler: javac, environment: Java 1.8.0_92 (Oracle Corporation)"
 )
 @Component
@@ -74,6 +74,20 @@ public class CatelogMapperImpl implements CatelogMapper {
     }
 
     @Override
+    public List<Catelog> toEntities(List<CatelogResultDto> arg0) {
+        if ( arg0 == null ) {
+            return null;
+        }
+
+        List<Catelog> list = new ArrayList<Catelog>( arg0.size() );
+        for ( CatelogResultDto catelogResultDto : arg0 ) {
+            list.add( catelogResultDtoToCatelog( catelogResultDto ) );
+        }
+
+        return list;
+    }
+
+    @Override
     public List<Catelog> toEntityList(List<CatelogDto> arg0) {
         if ( arg0 == null ) {
             return null;
@@ -99,5 +113,26 @@ public class CatelogMapperImpl implements CatelogMapper {
         }
 
         return list;
+    }
+
+    protected Catelog catelogResultDtoToCatelog(CatelogResultDto catelogResultDto) {
+        if ( catelogResultDto == null ) {
+            return null;
+        }
+
+        Catelog catelog = new Catelog();
+
+        catelog.setId( catelogResultDto.getId() );
+        catelog.setName( catelogResultDto.getName() );
+        catelog.setPath( catelogResultDto.getPath() );
+        catelog.setFullPath( catelogResultDto.getFullPath() );
+        catelog.setIcon( catelogResultDto.getIcon() );
+        catelog.setStatus( catelogResultDto.getStatus() );
+        catelog.setSeq( catelogResultDto.getSeq() );
+        catelog.setPid( catelogResultDto.getPid() );
+        catelog.setAllowType( catelogResultDto.getAllowType() );
+        catelog.setAllowValue( catelogResultDto.getAllowValue() );
+
+        return catelog;
     }
 }

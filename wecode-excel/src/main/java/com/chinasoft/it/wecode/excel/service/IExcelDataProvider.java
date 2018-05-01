@@ -1,5 +1,7 @@
 package com.chinasoft.it.wecode.excel.service;
 
+import java.util.Map;
+
 /**
  * 数据生产者接口
  * 
@@ -7,13 +9,13 @@ package com.chinasoft.it.wecode.excel.service;
  *
  */
 @FunctionalInterface
-public interface IExcelDataProvider {
+public interface IExcelDataProvider<T> {
 
 	/**
 	 * 生产数据
 	 * 
 	 * @return 建议返回List<ObjectDto>
 	 */
-	Object produce(ExcelDataConfig config) throws Exception;
+	Map<String, Object> produce(T condition) throws Exception;
 
 }

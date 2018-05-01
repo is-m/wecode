@@ -1,9 +1,21 @@
 package com.chinasoft.it.wecode.common.util;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 public class DateUtils {
+
+	private static SimpleDateFormat sdfyyyyMMddhhmmss = new SimpleDateFormat("yyyyMMddhhmmss");
+
+	/**
+	 * 获取当前时间（yyyyMMddhhmmss）
+	 * 
+	 * @return
+	 */
+	public static final String getCurrentYYYYMMddhhmmss() {
+		return sdfyyyyMMddhhmmss.format(new Date());
+	}
 
 	private static Calendar getCalendar(int h, int m, int s, int ms) {
 		return setCalendar(Calendar.getInstance(), h, m, s, ms);

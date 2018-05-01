@@ -2,7 +2,6 @@ com\chinasoft\it\wecode\common\util\DateUtils.class
 com\chinasoft\it\wecode\common\util\PageConstants.class
 com\chinasoft\it\wecode\common\util\DESUtil$Base64Utils.class
 com\chinasoft\it\wecode\common\validation\annotation\Enumerator$EnumerableValidator.class
-com\chinasoft\it\wecode\base\BaseService$1.class
 com\chinasoft\it\wecode\common\validation\groups\Update.class
 com\chinasoft\it\wecode\common\validation\ValidationProcessor.class
 com\chinasoft\it\wecode\common\util\CollectionUtils.class
@@ -11,6 +10,7 @@ com\chinasoft\it\wecode\common\dto\Paging.class
 com\chinasoft\it\wecode\common\exception\ApplicationException.class
 com\chinasoft\it\wecode\common\mapper\BaseMapper$1.class
 com\chinasoft\it\wecode\common\dto\BaseDto.class
+com\chinasoft\it\wecode\annotations\excel\ExcelFiled.class
 com\chinasoft\it\wecode\common\exception\ValidationException.class
 com\chinasoft\it\wecode\common\validation\annotation\Enumerator.class
 com\chinasoft\it\wecode\common\validation\groups\Query.class
@@ -22,11 +22,15 @@ com\chinasoft\it\wecode\common\util\DESUtil.class
 com\chinasoft\it\wecode\common\exception\NoImplementedException.class
 com\chinasoft\it\wecode\common\mapper\BaseMapper.class
 com\chinasoft\it\wecode\data\hibernate\tenant\TenantIdentifierResolver.class
+com\chinasoft\it\wecode\common\util\MapUtils.class
 com\chinasoft\it\wecode\data\hibernate\tenant\SchemaBasedMultiTenantConnectionProvider.class
+com\chinasoft\it\wecode\common\util\ApplicationUtils.class
 com\chinasoft\it\wecode\common\util\WebUtils.class
 com\chinasoft\it\wecode\base\BaseService.class
 com\chinasoft\it\wecode\common\util\MapperUtils$1.class
 com\chinasoft\it\wecode\common\util\MapperUtils.class
+com\chinasoft\it\wecode\annotations\excel\FiledConstant.class
 com\chinasoft\it\wecode\common\util\SortConstant.class
 com\chinasoft\it\wecode\common\validation\aop\ServiceMethodValidationInterceptor.class
 com\chinasoft\it\wecode\common\validation\annotation\NotEmpty.class
+com\chinasoft\it\wecode\annotations\excel\ExcelSheet.class

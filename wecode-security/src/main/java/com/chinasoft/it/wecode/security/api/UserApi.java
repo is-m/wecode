@@ -1,9 +1,11 @@
 package com.chinasoft.it.wecode.security.api;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.chinasoft.it.wecode.common.util.PageConstants;
 import com.chinasoft.it.wecode.common.util.WebUtils;
+import com.chinasoft.it.wecode.excel.utils.ExcelServletUtils;
 import com.chinasoft.it.wecode.security.dto.UserDto;
 import com.chinasoft.it.wecode.security.dto.UserExportDto;
 import com.chinasoft.it.wecode.security.dto.UserQueryDto;
@@ -68,9 +72,24 @@ public class UserApi {
 		service.delete(ids.split(","));
 	}
 
-	@ApiOperation(value = "导出用户列表", notes = "导出用户列表")
-	@PostMapping("/export")
-	public void export(@RequestBody UserExportDto exportDto) throws Exception {
-		service.export(exportDto, null);
+	@ApiOperation(value = "导出用户", notes = "导出用户")
+	@GetMapping("/export")
+	public ResponseEntity<String> export(HttpServletResponse resp, UserExportDto exportDto) throws Exception {
+		ExcelServletUtils.setExcelResponse(resp, "UserList");
+		service.export(exportDto, resp.getOutputStream());
+		return ResponseEntity.ok("success");
 	}
+
+	// https://www.cnblogs.com/zuolijun/p/5644411.html
+	@ApiOperation(value = "导入用户", notes = "导入用户")
+	@PostMapping(value = "/import", consumes = "multipart/form-data", headers = "content-type=multipart/form-data", produces = "application/octet-stream")
+	public ResponseEntity<String> imports(@RequestParam(value = "file") MultipartFile file) throws Exception {
+		if (!file.isEmpty()) {
+			service.imports(file.getInputStream());
+		}
+		return ResponseEntity.ok("success");
+	}
+
+	// https://stackoverflow.com/questions/30400477/how-to-open-local-files-in-swagger-ui
+	// https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#relative-schema-file-example
 }

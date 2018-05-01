@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class UserResultDto extends BaseDto {
 
 	private static final long serialVersionUID = 8070004604327615492L;
-	
+
 	/**
 	 * id
 	 */
@@ -86,4 +86,17 @@ public class UserResultDto extends BaseDto {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
+
+	public UserResultDto() {
+	}
+
+	public UserResultDto(String id, String name, String remark, String mail, String mobilePhone, Integer status) {
+		this.id = id;
+		this.name = name;
+		this.remark = remark;
+		this.mail = mail;
+		this.mobilePhone = mobilePhone;
+		this.status = status;
+	}
+
 }

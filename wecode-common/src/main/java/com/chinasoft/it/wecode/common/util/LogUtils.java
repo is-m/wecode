@@ -15,4 +15,8 @@ public class LogUtils {
 			throw new RuntimeException("获取日志对象异常", e);
 		}
 	}
+	
+	public static Logger getLogger(Class<?> clz) {
+		return LoggerFactory.getLogger(clz);
+	}
 }

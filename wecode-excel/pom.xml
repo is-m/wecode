@@ -19,30 +19,39 @@
 		</dependency>
 		<!-- jxls-poi jxls-jexcel 选一个即可 -->
 		<dependency>
-            <groupId>org.jxls</groupId>
-            <artifactId>jxls-poi</artifactId>
-            <version>1.0.14</version>
-        </dependency>
-      	<!-- 
-        <dependency>
-            <groupId>org.jxls</groupId>
-            <artifactId>jxls-jexcel</artifactId>
-            <version>1.0.6</version>
-        </dependency>
-         -->
-        <dependency>
-            <groupId>org.jxls</groupId>
-            <artifactId>jxls-reader</artifactId>
-            <version>2.0.3</version>
-        </dependency>
-        <dependency>
-		    <groupId>javax.inject</groupId>
-		    <artifactId>javax.inject</artifactId> 
+			<groupId>org.jxls</groupId>
+			<artifactId>jxls-poi</artifactId>
+			<version>1.0.14</version>
+		</dependency>
+		<!-- <dependency> <groupId>org.jxls</groupId> <artifactId>jxls-jexcel</artifactId> 
+			<version>1.0.6</version> </dependency> -->
+		<dependency>
+			<groupId>org.jxls</groupId>
+			<artifactId>jxls-reader</artifactId>
+			<version>2.0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.7</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.chinasoft.it.wecode</groupId>
+			<artifactId>wecode-common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+
+
 	</dependencies>
 </project>

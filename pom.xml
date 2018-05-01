@@ -33,6 +33,7 @@
 		<module>wecode-distributed</module>
 		<module>wecode-data-multiTenancy</module>
 		<module>wecode-data-tenant</module>
+		<module>wecode-excel-engine</module>
 	</modules>
 
 	<dependencyManagement>
