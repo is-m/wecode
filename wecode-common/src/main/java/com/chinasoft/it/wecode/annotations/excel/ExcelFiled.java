@@ -44,7 +44,7 @@ public @interface ExcelFiled {
 	int sort() default FiledConstant.SORT_DEFAULT;
 
 	/**
-	 * 如果是字典类型，请设置字典的type
+	 * 如果是字典类型，请设置字典的type 导出时，自动翻译字典，导入时自动解析字典
 	 */
 	String dictType() default "";
 

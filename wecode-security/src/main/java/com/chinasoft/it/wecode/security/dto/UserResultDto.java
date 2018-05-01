@@ -1,9 +1,12 @@
 package com.chinasoft.it.wecode.security.dto;
 
+import com.chinasoft.it.wecode.annotations.excel.ExcelFiled;
+import com.chinasoft.it.wecode.annotations.excel.ExcelSheet;
 import com.chinasoft.it.wecode.common.dto.BaseDto;
 
 import io.swagger.annotations.ApiModelProperty;
 
+@ExcelSheet
 public class UserResultDto extends BaseDto {
 
 	private static final long serialVersionUID = 8070004604327615492L;
@@ -11,31 +14,37 @@ public class UserResultDto extends BaseDto {
 	/**
 	 * id
 	 */
+	@ExcelFiled(title="ID")
 	private String id;
 
 	/**
 	 * 姓名
 	 */
+	@ExcelFiled(title="姓名")
 	private String name;
 
 	/**
 	 * 备注
 	 */
+	@ExcelFiled(title="备注")
 	private String remark;
 
 	/**
 	 * 电子邮箱
 	 */
+	@ExcelFiled(title="电子邮件")
 	private String mail;
 
 	/**
 	 * 移动号码 MP MobilePhone
 	 */
+	@ExcelFiled(title="手机号码")
 	private String mobilePhone;
 
 	/**
 	 * 状态，0：失效，1：生效
 	 */
+	@ExcelFiled(title="状态",dictType="COMMON_STATUS")
 	@ApiModelProperty(name = "status", notes = "状态，0：失效，1生效", example = "1")
 	private Integer status;
 

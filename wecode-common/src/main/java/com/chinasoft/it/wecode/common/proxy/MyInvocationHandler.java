@@ -8,6 +8,11 @@ import java.util.Observable;
 /**
  * JDK 动态代理 被代理的类需要有接口才行，cglib可以无接口
  * 
+ * 目前关于自定义的代理和Spring的代理的区别就是Spring代理的内容必须是Spring容器管理的内容，如果自己new的对象或者其他方式获取的对象
+ * 不在Spring容器中则无法利用到Spring的代理动作，并且自己的可能拥有更多的灵活性
+ * 
+ * 还有SPring的AOP 可以有两种实现方式JDK和CGLIB，其区别是JDK只能构造拥有接口的代理对象，
+ * 而CGLIB可以构造无接口的对象的代理（动态Code）
  * @author Administrator
  *         关于代理模式：https://blog.csdn.net/u013851082/article/details/71739434
  *         关于观察者模式：https://www.cnblogs.com/ncyhl/p/8017830.html
@@ -26,6 +31,7 @@ public class MyInvocationHandler extends Observable implements InvocationHandler
 	}
 
 	public Object getProxy() {
+		// super class is need get interfaces ?
 		Class<?>[] interfaces = target.getClass().getInterfaces();
 		if(interfaces == null || interfaces.length == 0) {
 			throw new IllegalArgumentException("no found interface for proxy " + target.getClass() + ", you can use cglib created proxy object?");

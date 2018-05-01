@@ -16,6 +16,13 @@ import com.chinasoft.it.wecode.excel.service.ExcelServiceContext;
 import com.chinasoft.it.wecode.excel.service.IExcelDataProvider;
 import com.chinasoft.it.wecode.excel.service.IExcelExportService;
 
+/**
+ * 
+ * 大数据量导出
+ * http://www.cnblogs.com/cheergo/articles/8883866.html
+ * @author Administrator
+ *
+ */
 @Named
 public class ExcelExportService implements IExcelExportService {
 
