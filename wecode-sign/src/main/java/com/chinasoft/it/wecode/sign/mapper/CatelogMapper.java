@@ -46,6 +46,7 @@ public interface CatelogMapper extends BaseMapper<Catelog, CatelogDto, CatelogRe
 				if (parentDto.getChildren() == null) {
 					parentDto.setChildren(new ArrayList<>());
 				}
+				currDto.setParentName(parentDto.getName());
 				parentDto.getChildren().add(currDto);
 			} else {
 				logger.warn("catelog missing parent of {}", currDto);

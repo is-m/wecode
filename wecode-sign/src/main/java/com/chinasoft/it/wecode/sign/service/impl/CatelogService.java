@@ -3,11 +3,14 @@ package com.chinasoft.it.wecode.sign.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
+import com.chinasoft.it.wecode.base.BaseService;
+import com.chinasoft.it.wecode.common.mapper.BaseMapper;
 import com.chinasoft.it.wecode.sign.domain.Catelog;
 import com.chinasoft.it.wecode.sign.dto.CatelogDto;
 import com.chinasoft.it.wecode.sign.dto.CatelogMenuDto;
@@ -25,7 +28,12 @@ import com.chinasoft.it.wecode.sign.util.CatelogHelper;
  *
  */
 @Service
-public class CatelogService {
+public class CatelogService extends BaseService<Catelog, CatelogDto, CatelogResultDto> {
+
+	public CatelogService(JpaRepository<Catelog, String> repository,
+			BaseMapper<Catelog, CatelogDto, CatelogResultDto> mapper) {
+		super(repository, mapper, Catelog.class);
+	}
 
 	@Autowired
 	private CatelogRepository repo;

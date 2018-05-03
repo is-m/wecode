@@ -17,6 +17,11 @@ public class CatelogResultDto extends BaseDto {
 	 * 父节点ID
 	 */
 	private String pid;
+	
+	/**
+	 * 父节点名称
+	 */
+	private String parentName;
 
 	/**
 	 * 栏目名称
@@ -75,6 +80,14 @@ public class CatelogResultDto extends BaseDto {
 
 	public void setPid(String pid) {
 		this.pid = pid;
+	}
+
+	public String getParentName() {
+		return parentName;
+	}
+
+	public void setParentName(String parentName) {
+		this.parentName = parentName;
 	}
 
 	public String getName() {
