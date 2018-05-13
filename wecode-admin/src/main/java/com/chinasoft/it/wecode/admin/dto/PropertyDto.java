@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
 import com.chinasoft.it.wecode.admin.util.PropertyConstant;
+import com.chinasoft.it.wecode.common.dto.BaseDto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -19,14 +20,15 @@ import io.swagger.annotations.ApiModelProperty;
  *
  */
 @ApiModel(value = "数据字典DTO")
-public class PropertyDto {
+public class PropertyDto extends BaseDto {
+
+	private static final long serialVersionUID = 5152075623436625922L;
 
 	/**
 	 * parent id
 	 */
 	@ApiModelProperty(name = "父节点ID", required = false, example = PropertyConstant.ROOT)
-	@NotNull
-	@Length(min = 1, max = 36)
+	@Length(max = 36)
 	private String pid;
 
 	/**
@@ -34,13 +36,18 @@ public class PropertyDto {
 	 */
 	@NotNull
 	@Length(min = 1, max = 255)
+	@ApiModelProperty(name = "字典Key", required = true)
 	private String name;
 
 	/**
 	 * value
 	 */
 	@Length(max = 1000)
+	@ApiModelProperty(name = "字典Value", required = true)
 	private String value;
+
+	@ApiModelProperty(name = "字典Value 类型", allowableValues = "simple, item", example = "simple")
+	private String valueType;
 
 	/**
 	 * remark
@@ -54,6 +61,10 @@ public class PropertyDto {
 	@ApiModelProperty(name = "排序", required = false, example = "1")
 	@Range
 	private Long seq;
+
+	@ApiModelProperty(name = "状态，0失效，1生效", required = false, example = "1")
+	@Range(min = 0, max = 1)
+	private Integer status;
 
 	public String getPid() {
 		return pid;
@@ -79,6 +90,14 @@ public class PropertyDto {
 		this.value = value;
 	}
 
+	public String getValueType() {
+		return valueType;
+	}
+
+	public void setValueType(String valueType) {
+		this.valueType = valueType;
+	}
+
 	public String getRemark() {
 		return remark;
 	}
@@ -95,4 +114,11 @@ public class PropertyDto {
 		this.seq = seq;
 	}
 
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
 }

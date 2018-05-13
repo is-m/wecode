@@ -1,0 +1,24 @@
+<?xml version="1.0"   ?>
+<!DOCTYPE class PUBLIC "//UNKNOWN/" "unknown.dtd">
+<class>
+	<!-- 头部注入，通常用于定义属性之类的操作 -->
+	<header>
+
+	</header>
+	<!-- 方法注入 -->
+	<method>
+		<!-- 执行实际业务前注入 -->
+		<before>
+		<![CDATA[
+			// CallStack.start();
+			System.out.println("call before");
+		]]>
+		</before>
+		<!-- 执行实际业务后注入 -->
+		<after>
+		<![CDATA[
+			System.out.println("return before");
+		]]>
+		</after>
+	</method>
+</class>

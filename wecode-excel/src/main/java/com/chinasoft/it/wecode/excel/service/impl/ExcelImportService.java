@@ -16,6 +16,13 @@ import com.chinasoft.it.wecode.excel.service.ExcelServiceContext.Type;
 import com.chinasoft.it.wecode.excel.service.IExcelDataConsumer;
 import com.chinasoft.it.wecode.excel.service.IExcelImportService;
 
+/**
+ * 
+ * poi导入100万大数据
+ * https://blog.csdn.net/sxj_world/article/details/74528588
+ * @author Administrator
+ *
+ */
 @Service
 public class ExcelImportService implements IExcelImportService {
 

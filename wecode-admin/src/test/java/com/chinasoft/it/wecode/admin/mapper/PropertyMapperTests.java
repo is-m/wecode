@@ -11,9 +11,6 @@ public class PropertyMapperTests {
 
 	@Test
 	public void test() {
-		PropertyDto dto = new PropertyDto();
-		dto.setName("key");
-		Property property = mapper.to(dto);
-		System.out.println(property.getName());
+		
 	}
 }

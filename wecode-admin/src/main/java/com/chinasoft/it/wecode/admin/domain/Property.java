@@ -8,6 +8,7 @@ import com.chinasoft.it.wecode.base.BaseEntity;
 
 /**
  * 系统属性（数据字典）
+ * 
  * @author Administrator
  *
  */
@@ -33,6 +34,11 @@ public class Property extends BaseEntity {
 	private String value;
 
 	/**
+	 * 值类型，simple:普通值,blend:混合值，item:字典项
+	 */
+	private String valueType;
+
+	/**
 	 * remark
 	 */
 	private String remark;
@@ -46,12 +52,25 @@ public class Property extends BaseEntity {
 	 * sorted field
 	 */
 	private Long seq;
-	
+
+	/**
+	 * status
+	 */
+	private Integer status;
+
 	/**
 	 * version
 	 */
 	@Version
 	private long version;
+
+	public String getPid() {
+		return pid;
+	}
+
+	public void setPid(String pid) {
+		this.pid = pid;
+	}
 
 	public String getName() {
 		return name;
@@ -69,28 +88,20 @@ public class Property extends BaseEntity {
 		this.value = value;
 	}
 
-	public String getPath() {
-		return path;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
-	}
-
-	public String getPid() {
-		return pid;
-	}
-
-	public void setPid(String pid) {
-		this.pid = pid;
-	}
-
 	public String getRemark() {
 		return remark;
 	}
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 	public Long getSeq() {
@@ -101,11 +112,27 @@ public class Property extends BaseEntity {
 		this.seq = seq;
 	}
 
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
 	public long getVersion() {
 		return version;
 	}
 
 	public void setVersion(long version) {
 		this.version = version;
+	}
+
+	public String getValueType() {
+		return valueType;
+	}
+
+	public void setValueType(String valueType) {
+		this.valueType = valueType;
 	}
 }

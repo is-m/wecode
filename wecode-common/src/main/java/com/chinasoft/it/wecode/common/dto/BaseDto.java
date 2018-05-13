@@ -6,7 +6,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class BaseDto implements Serializable {
- 
+
 	private static final long serialVersionUID = -164700840565676697L;
 
 	@Override

@@ -1,0 +1,36 @@
+<?xml version="1.0"   ?>
+<class>
+	<!-- 头部注入，通常用于定义属性之类的操作 -->
+	<content>
+		<![CDATA[
+			private static final int ___version = 101;
+		]]>
+	</content>
+	<!-- 方法注入 -->
+	<!-- 
+		$0 $1 $2 	$0代表是this, $1代表方法参数的第一个参数，$2代表方法参数的第二个参数，以此类推，$N代表方法参数的第N个
+		$args	The type of $args is OBject[]. $args(0)对应的是$1，不是$0
+		$$	一个方法调用的深度
+		$r	方法返回值的类型
+		$_	方法返回值。(修改方法体时不支持)
+		addCatch()	方法中加入try catch块  $e代表 异常对象
+		$class	this的类型(Class)。也就是$0的类型
+		$sig	方法参数的类型(Class)数组，数组的顺序。
+	 -->
+	<method>
+		<!-- 执行实际业务前注入 -->
+		<before>
+			<![CDATA[
+				// CallStack.start();
+				System.out.println("call before ");
+				System.out.println(org.apache.commons.lang3.builder.ToStringBuilder.reflectionToString($args));
+			]]>
+		</before>
+		<!-- 执行实际业务后注入 -->
+		<after>
+			<![CDATA[
+				System.out.println("return before");
+			]]>
+		</after>
+	</method>
+</class>

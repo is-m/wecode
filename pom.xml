@@ -34,10 +34,22 @@
 		<module>wecode-data-multiTenancy</module>
 		<module>wecode-data-tenant</module>
 		<module>wecode-excel-engine</module>
+		<module>wecode-agent-trace</module>
+		<module>wecode-trace-api</module>
+		<module>wecode-trace-agent-example</module>
 	</modules>
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- Lombok 是一种 Java™ 实用工具,可用来帮助开发人员消除 Java 的冗长,尤其是对于简单的 Java 对象(POJO)。它通过注解实现这一目的。 -->
+			<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>1.16.20</version>
+				<scope>provided</scope>
+			</dependency>
+
 			<dependency>
 				<groupId>io.springfox</groupId>
 				<artifactId>springfox-swagger2</artifactId>
@@ -85,8 +97,18 @@
 				<artifactId>javax.servlet-api</artifactId>
 				<version>3.1.0</version>
 			</dependency>
-		</dependencies> 
+		</dependencies>
 	</dependencyManagement>
+
+	<dependencies>
+		<!-- 
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId> 
+			<scope>provided</scope>
+		</dependency>
+		 -->
+	</dependencies>
 
 	<build>
 		<pluginManagement>

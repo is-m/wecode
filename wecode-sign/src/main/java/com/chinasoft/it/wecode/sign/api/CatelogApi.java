@@ -30,7 +30,7 @@ public class CatelogApi {
 	@Autowired
 	private CatelogService service;
 
-	@ApiOperation(value = "创建栏目", notes = "创建栏目")
+	@ApiOperation(value = "创建栏目", notes = "创建栏目，添加子栏目也用该接口，只不过父节点ID为指定ID即可")
 	@PostMapping
 	public CatelogResultDto create(@RequestBody CatelogDto catelogDto) {
 		return service.create(catelogDto);

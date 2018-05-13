@@ -39,6 +39,7 @@ public abstract class BaseEntity implements Persistable<String> {
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
 	}
 
+	// Common Lang API EqualsBuilder.reflection
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) {
@@ -55,5 +56,17 @@ public abstract class BaseEntity implements Persistable<String> {
 
 		BaseEntity rhs = (BaseEntity) obj;
 		return this.id == null ? false : this.id.equals(rhs.id);
+	}
+
+	/**
+	 * child of int hashCode = super.hashCode() * field.hashCode();
+	 * 
+	 * HashCodeBuilder.reflectionHashCode(this);
+	 * https://baijiahao.baidu.com/s?id=1576860126059183009&wfr=spider&for=pc
+	 * https://blog.csdn.net/abinge317/article/details/51437179
+	 */
+	@Override
+	public int hashCode() {
+		return 17 * (id == null ? (int) (Math.random() * 999999999) : id.hashCode());
 	}
 }

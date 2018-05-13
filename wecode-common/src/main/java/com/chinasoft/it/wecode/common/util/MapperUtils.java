@@ -1,5 +1,6 @@
 package com.chinasoft.it.wecode.common.util;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -12,7 +13,7 @@ public class MapperUtils {
 
 	private static final Logger logger = LogUtils.getLogger();
 
-	public static <E, D, R> List<R> from(List<E> entities, BaseMapper<E, D, R> mapper) {
+	public static <E, D, R> List<R> from(Collection<E> entities, BaseMapper<E, D, R> mapper) {
 		return CollectionUtils.forEach2(entities, item -> mapper.from(item));
 	}
 

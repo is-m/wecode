@@ -194,7 +194,9 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R ext
 	// JPA
 	// https://www.cnblogs.com/fengru/p/5922793.html?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
 	/**
-	 * 根据ID删除 TODO:删除时，jpa有进行过一次查询后再进行的删除,而且是执行的多条删除语句，需要看看是否需要优化
+	 * 根据ID删除 
+	 * TODO:删除时，jpa有进行过一次查询后再进行的删除,而且是执行的多条删除语句，需要看看是否需要优化
+	 * TODO:未关联删除，需要人为的去找到关联删除项
 	 * 
 	 * @param id
 	 * @return

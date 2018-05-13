@@ -28,7 +28,16 @@ public class TestApi {
 	
 	@GetMapping("/environment")
 	public String env(HttpServletRequest req,HttpServletResponse resp) throws JsonProcessingException {
-		for(Cookie cook : req.getCookies()) {
+		ObjectMapper om = new ObjectMapper();
+		Map<String,Object> workspace = new HashMap<>();
+		Map<String,Object> userMap = new HashMap<>();
+		userMap.put("name", "Bob");
+		userMap.put("role", "ADMIN");
+		workspace.put("user", userMap);
+		workspace.put("menus", catelogService.findMenuList());
+		String json = om.writeValueAsString(workspace);
+		return "workspace="+json;
+	/*	for(Cookie cook : req.getCookies()) {
 			if("authentication".equals(cook.getName())) {
 				Cookie cookie = new Cookie("authentication",null);
 				cookie.setMaxAge(0);
@@ -46,10 +55,10 @@ public class TestApi {
 			}
 		}
 		Cookie cookie = new Cookie("authentication","123");//创建新cookie
-	    cookie.setMaxAge(10);// 10秒
+	    cookie.setMaxAge(100);// 10秒
 	    cookie.setPath("/");//设置作用域
 	    resp.addCookie(cookie);//将cookie添加到response的cookie数组中返回给客户端
-		return null;
+		return null;*/
 	}
 	
 	public class Workspace {

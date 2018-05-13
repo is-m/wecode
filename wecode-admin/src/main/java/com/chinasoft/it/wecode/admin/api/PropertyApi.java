@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +29,7 @@ import io.swagger.annotations.ApiOperation;
 
 @Api(value = "数据字典API")
 @RestController
-@RequestMapping("/admin/property")
+@RequestMapping("/services/base/property")
 public class PropertyApi {
 
 	@Autowired
@@ -38,8 +39,8 @@ public class PropertyApi {
 	@PostMapping
 	public PropertyResultDto create(@RequestBody PropertyDto dto) {
 		return service.create(dto);
-	}
-
+	} 
+	
 	@ApiOperation(value = "修改", notes = "修改")
 	@PutMapping("/{id}")
 	public PropertyResultDto update(@PathVariable("id") String id, @RequestBody PropertyDto dto) {
@@ -73,5 +74,17 @@ public class PropertyApi {
 			@RequestParam(name = "parentPath", required = true) String parentPath,
 			@RequestParam(name = "deepSearch", required = false, defaultValue = "false") Boolean deepSearch) {
 		return service.findChildrenByPath(parentPath, deepSearch);
+	}
+	
+	@ApiOperation(value = "查找数据字典（树形数据）", notes = "查找数据字典（树形数据）")
+	@GetMapping("/tree")
+	public List<PropertyResultDto> findPropertyTree() {
+		return service.findPropertyTree();
+	}
+	
+	@ApiOperation(value = "按ID删除字典", notes = "按ID删除字典，多个用 , 分割")
+	@DeleteMapping
+	public void delete(@RequestParam("ids") String ids) {
+		service.delete(ids.split(","));
 	}
 }

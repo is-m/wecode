@@ -1,6 +1,10 @@
 package com.chinasoft.it.wecode.admin.service.impl;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -8,7 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
@@ -19,7 +26,9 @@ import com.chinasoft.it.wecode.admin.dto.PropertyResultDto;
 import com.chinasoft.it.wecode.admin.mapper.PropertyMapper;
 import com.chinasoft.it.wecode.admin.repository.PropertyRepository;
 import com.chinasoft.it.wecode.admin.util.PropertyConstant;
+import com.chinasoft.it.wecode.base.BaseService;
 import com.chinasoft.it.wecode.common.exception.ValidationException;
+import com.chinasoft.it.wecode.common.mapper.BaseMapper;
 import com.chinasoft.it.wecode.common.util.MapperUtils;
 import com.chinasoft.it.wecode.common.validation.ValidationProcessor;
 
@@ -30,7 +39,12 @@ import com.chinasoft.it.wecode.common.validation.ValidationProcessor;
  *
  */
 @Service
-public class PropertyService {
+public class PropertyService extends BaseService<Property, PropertyDto, PropertyResultDto> {
+
+	public PropertyService(JpaRepository<Property, String> repository,
+			BaseMapper<Property, PropertyDto, PropertyResultDto> mapper) {
+		super(repository, mapper, Property.class);
+	}
 
 	@Autowired
 	private PropertyRepository repo;
@@ -52,7 +66,17 @@ public class PropertyService {
 		// 如果非根节点，则检查根节点是否合法
 		String path = this.generatePath(property);
 		property.setPath(path);
-
+		if(StringUtils.isEmpty(property.getValueType())) {
+			property.setValueType(PropertyConstant.VALUE_TYPE_simple);
+		} 
+		
+		// 检查并修改父节点类型
+		Property parentProperty = repo.findOne(dto.getPid());
+		if (!PropertyConstant.VALUE_TYPE_blend.equals(parentProperty.getValueType())) {
+			parentProperty.setValueType(PropertyConstant.VALUE_TYPE_blend);
+			repo.save(parentProperty);
+		}
+		
 		return mapper.from(repo.save(property));
 	}
 
@@ -61,7 +85,7 @@ public class PropertyService {
 		if (PropertyConstant.ROOT.equals(pid))
 			return property.getName();
 
-		Property parentProperty = repo.findOneByPid(pid);
+		Property parentProperty = repo.findOne(pid);
 		Assert.notNull(parentProperty, "不存在的父节点，id=" + pid);
 		return parentProperty.getPath() + "." + property.getName();
 	}
@@ -90,8 +114,13 @@ public class PropertyService {
 			// 更新旧数据
 			repo.updateParentPath(property.getPath(), path);
 			property.setPath(path);
-
+		} else {
+			property.setPath(name);
 		}
+		property.setValue(dto.getValue());
+		property.setRemark(dto.getRemark());
+		property.setSeq(dto.getSeq());
+		property.setStatus(dto.getStatus());
 
 		return mapper.from(repo.save(property));
 	}
@@ -121,6 +150,7 @@ public class PropertyService {
 	 * 
 	 * @param parentPath
 	 * @param deepSearch
+	 *            是否深查找，如果为true则表示遍历往下查找
 	 * @return
 	 */
 	public List<PropertyResultDto> findChildrenByPath(String parentPath, boolean deepSearch) {
@@ -138,6 +168,46 @@ public class PropertyService {
 
 		return MapperUtils.from(deepSearch ? repo.findByPathLike(parentPath + ".") : repo.findByPid(parent.getId()),
 				mapper);
+	}
+
+	/**
+	 * 查找树型数据
+	 * 
+	 * @return
+	 */
+	public List<PropertyResultDto> findPropertyTree() {
+		List<Property> entities = repo.findAll(new Sort("seq"));
+		return mapper.toTreeList(entities);
+	} 
+
+	@Transactional
+	public void delete(String... ids) {
+		// TODO:根据ID查找所有子节点
+		Map<Property, Set<Property>> container = new HashMap<>();
+		for (String pid : ids) {
+			Property parent = new Property();
+			parent.setId(pid);
+			deepSearchChildren(parent, container);
+		}
+
+		Set<Property> delSet = new HashSet<>(container.keySet());
+		container.values().forEach(set -> delSet.addAll(set));
+		repo.delete(delSet);
+	}
+
+	/**
+	 * 深查找子项
+	 * @param parent 父节点
+	 * @param container 存放数据的容器
+	 */
+	private void deepSearchChildren(Property parent, Map<Property, Set<Property>> container) {
+		if (parent == null)
+			return;
+		Set<Property> children = repo.findByPid(parent.getId());
+		container.put(parent, children);
+		for (Property child : children) {
+			deepSearchChildren(child, container);
+		}
 	}
 
 }
