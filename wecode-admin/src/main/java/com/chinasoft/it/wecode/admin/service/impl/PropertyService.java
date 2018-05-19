@@ -66,17 +66,19 @@ public class PropertyService extends BaseService<Property, PropertyDto, Property
 		// 如果非根节点，则检查根节点是否合法
 		String path = this.generatePath(property);
 		property.setPath(path);
-		if(StringUtils.isEmpty(property.getValueType())) {
+		if (StringUtils.isEmpty(property.getValueType())) {
 			property.setValueType(PropertyConstant.VALUE_TYPE_simple);
-		} 
-		
-		// 检查并修改父节点类型
-		Property parentProperty = repo.findOne(dto.getPid());
-		if (!PropertyConstant.VALUE_TYPE_blend.equals(parentProperty.getValueType())) {
-			parentProperty.setValueType(PropertyConstant.VALUE_TYPE_blend);
-			repo.save(parentProperty);
 		}
-		
+
+		// 检查并修改父节点类型
+		if (PropertyConstant.VALUE_TYPE_item.equals(property.getValueType())) {
+			Property parentProperty = repo.findOne(dto.getPid());
+			if (!PropertyConstant.VALUE_TYPE_blend.equals(parentProperty.getValueType())) {
+				parentProperty.setValueType(PropertyConstant.VALUE_TYPE_blend);
+				repo.save(parentProperty);
+			}
+		}
+
 		return mapper.from(repo.save(property));
 	}
 
@@ -176,9 +178,11 @@ public class PropertyService extends BaseService<Property, PropertyDto, Property
 	 * @return
 	 */
 	public List<PropertyResultDto> findPropertyTree() {
-		List<Property> entities = repo.findAll(new Sort("seq"));
+		List<Property> entities = repo.findByValueTypeIn(
+				new String[] { PropertyConstant.VALUE_TYPE_simple, PropertyConstant.VALUE_TYPE_blend },
+				new Sort("seq"));
 		return mapper.toTreeList(entities);
-	} 
+	}
 
 	@Transactional
 	public void delete(String... ids) {
@@ -197,17 +201,35 @@ public class PropertyService extends BaseService<Property, PropertyDto, Property
 
 	/**
 	 * 深查找子项
-	 * @param parent 父节点
-	 * @param container 存放数据的容器
+	 * 
+	 * @param parent
+	 *            父节点
+	 * @param container
+	 *            存放数据的容器
 	 */
 	private void deepSearchChildren(Property parent, Map<Property, Set<Property>> container) {
 		if (parent == null)
 			return;
-		Set<Property> children = repo.findByPid(parent.getId());
+		Set<Property> children = new HashSet<>(repo.findByPid(parent.getId()));
 		container.put(parent, children);
 		for (Property child : children) {
 			deepSearchChildren(child, container);
 		}
+	}
+
+	/**
+	 * 获取数据字典项
+	 * 
+	 * @param pid
+	 * @return
+	 */
+	public List<PropertyResultDto> findPropertyItem(String pid) {
+		Assert.hasText(pid, "parent id cannot be null or empty");
+		Property condition = new Property();
+		condition.setPid(pid);
+		condition.setValueType(PropertyConstant.VALUE_TYPE_item);
+		List<Property> entityResult = repo.findAll(Example.of(condition));
+		return mapper.toDtoList(entityResult);
 	}
 
 }

@@ -7,6 +7,10 @@ import com.chinasoft.it.wecode.agent.trace.transformer.CallStackTransformer;
 /**
  * JDK 1.5 代码追踪 (用于在main方法执行前注入代码实现方法级别的AOP功能)
  * 
+ * 
+ * 
+ * 动态非侵入拦截
+ * https://blog.csdn.net/axman/article/details/4268189
  * @author Administrator
  *
  */

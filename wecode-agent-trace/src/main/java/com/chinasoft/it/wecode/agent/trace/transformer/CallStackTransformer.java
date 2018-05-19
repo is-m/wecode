@@ -6,6 +6,8 @@ import java.security.ProtectionDomain;
 import java.util.regex.Pattern;
 
 import com.chinasoft.it.wecode.agent.trace.config.CallStackConfig;
+import com.chinasoft.it.wecode.agent.trace.utils.Javassists;
+import com.chinasoft.it.wecode.trace.spi.annotation.Trace;
 
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -36,10 +38,19 @@ public class CallStackTransformer implements ClassFileTransformer {
 
 				// ? 这个才是方法集合 clz.getDeclaredBehaviors()
 				CtMethod[] declaredMethods = clz.getDeclaredMethods();
-				for (CtMethod method : declaredMethods) {
+				for (CtMethod method : declaredMethods) {  
+					// TODO 可以根据配置模式来确定开始的方法，例如所有controller api 都可能是开始方法，
+					// 又或是所有的服务类的public方法是开始方法，但是只要当前线程已经开始了，则表示哪怕定义的开始方法也不行
+					// 或者使用注解
+					boolean hasAnnotation = method.hasAnnotation(Trace.class);
+					if(hasAnnotation) {		
+						Trace annotation = (Trace)method.getAnnotation(Trace.class); 
+						method.insertBefore(config.getInjectMethodBefore());
+					}
+					Javassists.getMethodParamNames(method);
 					method.insertBefore(config.getInjectMethodBefore());
-					method.insertAfter(config.getInjectMethodAfter());
-					System.out.println();
+					
+					method.insertAfter(config.getInjectMethodAfter()); 
 				}
 
 				return clz.toBytecode();

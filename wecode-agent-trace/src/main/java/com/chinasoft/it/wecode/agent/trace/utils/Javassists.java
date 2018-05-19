@@ -20,7 +20,7 @@ public class Javassists {
 	 * @param cm
 	 * @return
 	 */
-	protected static String[] getMethodParamNames(CtMethod cm) {
+	public static String[] getMethodParamNames(CtMethod cm) {
 		CtClass cc = cm.getDeclaringClass();
 		MethodInfo methodInfo = cm.getMethodInfo();
 		CodeAttribute codeAttribute = methodInfo.getCodeAttribute();

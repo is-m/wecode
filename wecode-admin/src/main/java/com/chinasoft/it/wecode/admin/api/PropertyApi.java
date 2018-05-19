@@ -39,8 +39,8 @@ public class PropertyApi {
 	@PostMapping
 	public PropertyResultDto create(@RequestBody PropertyDto dto) {
 		return service.create(dto);
-	} 
-	
+	}
+
 	@ApiOperation(value = "修改", notes = "修改")
 	@PutMapping("/{id}")
 	public PropertyResultDto update(@PathVariable("id") String id, @RequestBody PropertyDto dto) {
@@ -75,13 +75,19 @@ public class PropertyApi {
 			@RequestParam(name = "deepSearch", required = false, defaultValue = "false") Boolean deepSearch) {
 		return service.findChildrenByPath(parentPath, deepSearch);
 	}
-	
+
 	@ApiOperation(value = "查找数据字典（树形数据）", notes = "查找数据字典（树形数据）")
 	@GetMapping("/tree")
 	public List<PropertyResultDto> findPropertyTree() {
 		return service.findPropertyTree();
 	}
-	
+
+	@ApiOperation(value = "查找数据字典项", notes = "查找数据字典项")
+	@GetMapping("/{id}/item")
+	public List<PropertyResultDto> findPropertyItem(@PathVariable("id") String id) {
+		return service.findPropertyItem(id);
+	}
+
 	@ApiOperation(value = "按ID删除字典", notes = "按ID删除字典，多个用 , 分割")
 	@DeleteMapping
 	public void delete(@RequestParam("ids") String ids) {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.chinasoft.it.wecode.AssetServiceTests" time="0.619" tests="1" errors="0" skipped="0" failures="0">
+<testsuite name="com.chinasoft.it.wecode.AssetServiceTests" time="0.774" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\dev\java\jdk\jre\bin"/>
@@ -26,9 +26,9 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="user.variant" value=""/>
     <property name="os.name" value="Windows 7"/>
-    <property name="classworlds.conf" value="C:\Users\Administrator\Desktop\工作总结\4.软件开发\开发框架\springboot\.metadata\.plugins\org.eclipse.m2e.launching\launches\m2conf6174418582168996583.tmp"/>
+    <property name="classworlds.conf" value="C:\Users\Administrator\Desktop\工作总结\4.软件开发\开发框架\springboot\.metadata\.plugins\org.eclipse.m2e.launching\launches\m2conf1531882081077095353.tmp"/>
     <property name="sun.jnu.encoding" value="GBK"/>
-    <property name="java.library.path" value="C:\dev\java\jdk\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:/dev/java/jdk/bin/../jre/bin/server;C:/dev/java/jdk/bin/../jre/bin;C:/dev/java/jdk/bin/../jre/lib/amd64;C:\Program Files\Microsoft MPI\Bin\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Microsoft SQL Server\120\Tools\Binn\;C:\dev\java\maven\apache-maven-3.3.9\bin;C:\dev\java\maven\apache-maven-3.3.9\bin;C:\dev\java\jdk\bin;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\dotnet\;G:\softlinux\apache-flume-1.8.0-bin\bin;C:\Users\Administrator\AppData\Roaming\npm;C:\Program Files\Microsoft VS Code\bin;C:\dev\java\eclipse-jee-oxygen-R-win32-x86_64\eclipse;;."/>
+    <property name="java.library.path" value="C:\dev\java\jdk\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\dev\java\jdk\jre\bin;C:/dev/java/jdk/bin/../jre/bin/server;C:/dev/java/jdk/bin/../jre/bin;C:/dev/java/jdk/bin/../jre/lib/amd64;C:\Program Files\Microsoft MPI\Bin\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Microsoft SQL Server\120\Tools\Binn\;C:\dev\java\maven\apache-maven-3.3.9\bin;C:\dev\java\maven\apache-maven-3.3.9\bin;C:\dev\java\jdk\bin;C:\Program Files\nodejs\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\dotnet\;G:\softlinux\apache-flume-1.8.0-bin\bin;C:\Program Files\Git\cmd;C:\Users\Administrator\AppData\Roaming\npm;C:\Program Files\Microsoft VS Code\bin;C:\dev\java\eclipse-jee-oxygen-R-win32-x86_64\eclipse;;."/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.class.version" value="52.0"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
@@ -60,5 +60,5 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase name="testSave" classname="com.chinasoft.it.wecode.AssetServiceTests" time="0.619"/>
+  <testcase name="testSave" classname="com.chinasoft.it.wecode.AssetServiceTests" time="0.774"/>
 </testsuite>

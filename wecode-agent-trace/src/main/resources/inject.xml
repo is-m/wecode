@@ -22,15 +22,19 @@
 		<before>
 			<![CDATA[
 				// CallStack.start();
-				System.out.println("call before ");
+				System.out.println("call before "+$class);
 				System.out.println(org.apache.commons.lang3.builder.ToStringBuilder.reflectionToString($args));
+				CodeTracer.begin();
 			]]>
 		</before>
 		<!-- 执行实际业务后注入 -->
 		<after>
 			<![CDATA[
 				System.out.println("return before");
+				CodeTracer.end();
 			]]>
 		</after>
+		<throwing>
+		</throwing>
 	</method>
 </class>

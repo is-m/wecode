@@ -3,6 +3,7 @@ package com.chinasoft.it.wecode.admin.repository;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,7 +20,9 @@ public interface PropertyRepository extends JpaRepository<Property, String> {
 
 	Property findByPath(String path);
 
-	Set<Property> findByPid(String pid);
+	List<Property> findByPid(String pid);
 
-	Set<Property> findByPathLike(String parentPath);
+	List<Property> findByPathLike(String parentPath);
+
+	List<Property> findByValueTypeIn(String[] valueTypes, Sort sort);
 }

@@ -6,6 +6,7 @@ public class App {
 		// TODO Auto-generated method stub
 		Demo demo = new Demo();
 		demo.sayHello();
+		demo.say("This new message");
 	}
 
 }

@@ -1,42 +1,41 @@
-package com.chinasoft.it.wecode.security.domain;
+package com.chinasoft.it.wecode.security.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import org.hibernate.validator.constraints.Length;
 
-import com.chinasoft.it.wecode.base.BaseEntity;
+import com.chinasoft.it.wecode.common.dto.BaseDto;
 
 /**
- * 角色
- * 
- * 角色中有一个super_admin，该角色要求忽略所有数据权限和功能权限的检查内容
+ * 角色DTO
  * 
  * @author Administrator
  *
  */
-@Entity
-@Table(name = "sys_role")
-public class Role extends BaseEntity {
+public class RoleDto extends BaseDto {
 
-	private static final long serialVersionUID = 7328361790049683148L;
+	private static final long serialVersionUID = 8273374251998295800L;
 
 	/**
 	 * 角色名称
 	 */
+	@Length(max = 255)
 	private String name;
 
 	/**
 	 * 角色代码
 	 */
+	@Length(max = 100)
 	private String code;
 
 	/**
 	 * 角色描述
 	 */
+	@Length(max = 4000)
 	private String remark;
 
 	/**
 	 * 角色首页
 	 */
+	@Length(max = 300)
 	private String url;
 
 	public String getName() {
@@ -47,20 +46,20 @@ public class Role extends BaseEntity {
 		this.name = name;
 	}
 
-	public String getRemark() {
-		return remark;
-	}
-
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
-
 	public String getCode() {
 		return code;
 	}
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 	public String getUrl() {

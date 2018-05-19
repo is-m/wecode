@@ -22,3 +22,9 @@ BTraceUtils.Profiling
 ## Javassist 
 Java学习之动态编译--字节码操作--javassist类库
 https://blog.csdn.net/haitaofeiyang/article/details/44264685
+
+Java 字节码 工具 javassist
+https://blog.csdn.net/conquer0715/article/details/51984958
+
+ 动态非侵入拦截
+https://blog.csdn.net/axman/article/details/4268189

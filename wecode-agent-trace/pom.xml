@@ -6,6 +6,7 @@
 		<artifactId>wecode</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
+	
 	<artifactId>wecode-trace-agent</artifactId>
 
 	<description>wecode java agent 方法调用追踪程序，然后事实上你需要了解的是BTrace,java动态字节码编程技术</description>
@@ -16,6 +17,19 @@
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
 			<version>3.22.0-GA</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.7</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.chinasoft.it.wecode</groupId>
+			<artifactId>wecode-trace-api</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
 	</dependencies>
@@ -50,38 +64,38 @@
 					</archive>
 				</configuration>
 			</plugin>
-			 
+
 			<!-- 打包时将依赖包打入 -->
 			<!-- https://www.cnblogs.com/dzblog/p/6913809.html -->
-            <plugin>
-            	<groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.1.0</version> 
-                <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                    <archive>
-                        <manifest>
-                            <mainClass></mainClass>
-                        </manifest>
-                        <manifestEntries>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.1.0</version>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<archive>
+						<manifest>
+							<mainClass></mainClass>
+						</manifest>
+						<manifestEntries>
 							<Premain-Class>
 								com.chinasoft.it.wecode.agent.trace.TracePremain
 							</Premain-Class>
-						</manifestEntries> 
-                    </archive>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals> 
-                    </execution>
-                </executions>
-            </plugin> 
+						</manifestEntries>
+					</archive>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 

@@ -66,7 +66,7 @@ public class ServiceMethodLogAspect {
 
 		String jsonParams = JSONUtils.getJson(argMap);
 		ApiOperation api = method.getAnnotation(ApiOperation.class);
-		String apiName = StringUtils.isEmpty(api.value()) ? method.getName() : api.value();
+		String apiName = api == null || StringUtils.isEmpty(api.value()) ? method.getName() : api.value();
 
 		log.info("API {}  calling of URI:{} JAVA:{}::{}  \r\nargs:{}", apiName, req.getRequestURI(), declaringTypeName,
 				method.getName(), jsonParams);

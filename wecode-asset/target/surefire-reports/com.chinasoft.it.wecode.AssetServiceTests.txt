@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.chinasoft.it.wecode.AssetServiceTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.559 sec - in com.chinasoft.it.wecode.AssetServiceTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.203 sec - in com.chinasoft.it.wecode.AssetServiceTests
