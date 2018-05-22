@@ -26,3 +26,26 @@ CREATE TABLE sys_role (
     PRIMARY KEY(id),
     UNIQUE (`CODE`)
 );
+
+-- 权限点
+-- DROP TABLE IF EXISTS sys_permission; 
+CREATE TABLE sys_permission (
+    `ID` VARCHAR(36) COMMENT 'ID', 
+    `PID` VARCHAR(36) COMMENT '父节点ID',
+    `CODE` VARCHAR(1000) COMMENT '权限代码',
+    `NOTE` VARCHAR(255) COMMENT '权限说明', 
+    `POLICY` VARCHAR(20) COMMENT '描述',
+    `TYPE` VARCHAR(20) COMMENT '权限点类型，module系统模块，operate系统功能',
+    `STATUS` INT COMMENT '状态，0失效，1生效',
+    PRIMARY KEY(`ID`),
+    UNIQUE (`CODE`)
+);
+
+
+-- 角色权限
+-- DROP TABLE `sys_role_permission`;
+CREATE TABLE sys_role_permission (
+  `ROLE_ID` VARCHAR(36) COMMENT '角色ID', 
+  `PERMISSION_ID` VARCHAR(36) COMMENT '权限ID'
+)
+

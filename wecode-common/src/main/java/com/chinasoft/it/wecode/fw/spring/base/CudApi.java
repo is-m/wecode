@@ -2,7 +2,6 @@ package com.chinasoft.it.wecode.fw.spring.base;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -36,7 +35,7 @@ public class CudApi<E extends BaseEntity, D extends BaseDto, R extends BaseDto> 
 	}
 
 	@ApiOperation(value = "修改", notes = "修改")
-	@PutMapping
+	@PutMapping("/{id}")
 	public R doUpdate(@PathVariable("id") String id, @RequestBody D dto) {
 		return service.update(id, dto);
 	}

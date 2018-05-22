@@ -1,9 +1,17 @@
 package com.chinasoft.it.wecode.security.domain;
 
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.chinasoft.it.wecode.base.BaseEntity;
+import com.chinasoft.it.wecode.fw.hibernate.Dynamic;
 
 /**
  * 角色
@@ -15,6 +23,7 @@ import com.chinasoft.it.wecode.base.BaseEntity;
  */
 @Entity
 @Table(name = "sys_role")
+@Dynamic
 public class Role extends BaseEntity {
 
 	private static final long serialVersionUID = 7328361790049683148L;
@@ -38,6 +47,17 @@ public class Role extends BaseEntity {
 	 * 角色首页
 	 */
 	private String url;
+
+	/**
+	 * 状态,1：生效，0：失效
+	 */
+	private Integer status;
+
+	@JoinTable(name = "sys_role_permission", joinColumns = {
+			@JoinColumn(name = "role_id", referencedColumnName = "ID") }, inverseJoinColumns = {
+					@JoinColumn(name = "permission_id", referencedColumnName = "ID") })
+	@ManyToMany(cascade=CascadeType.ALL)
+	private Set<Permission> permissions;
 
 	public String getName() {
 		return name;
@@ -69,6 +89,22 @@ public class Role extends BaseEntity {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public Set<Permission> getPermissions() {
+		return permissions;
+	}
+
+	public void setPermissions(Set<Permission> permissions) {
+		this.permissions = permissions;
 	}
 
 }

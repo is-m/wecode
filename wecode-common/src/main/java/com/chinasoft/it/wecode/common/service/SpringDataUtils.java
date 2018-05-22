@@ -18,7 +18,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.Repository;
 
-import com.chinasoft.it.wecode.common.exception.NoImplementedException;
 import com.chinasoft.it.wecode.common.exception.UnSupportException;
 import com.chinasoft.it.wecode.common.util.ArrayUtil;
 
@@ -57,7 +56,22 @@ public class SpringDataUtils {
 				Expression<?> expr = root.get(item.getField());
 
 				switch (item.getType()) {
-				case EQ:
+				case LK: // like
+					// 当值为字符串类型是，走 like %xx%，否则走 case EQ 分支
+					if (val instanceof String) {
+						predicates.add(cb.like(root.get(item.getField()), "%" + val + "%"));
+						break;
+					}
+
+				case LKI: // like and ignore case
+					// 当值为字符串类型是，走 like %xx% ，并且忽略大小写，否则走 case EQ 分支
+					if (val instanceof String) {
+						predicates.add(
+								cb.like(cb.lower(root.get(item.getField())), "%" + val.toString().toLowerCase() + "%"));
+						break;
+					}
+
+				case EQ: // equals
 					if (ArrayUtil.isArray(val)) {
 						In<Object> in = cb.in(expr);
 						for (Object v : (Object[]) val) {
@@ -68,10 +82,7 @@ public class SpringDataUtils {
 						predicates.add(cb.equal(expr, val));
 					}
 					break;
-				case LK:
-					predicates.add(cb.like(root.get(item.getField()), "%" + val + "%"));
-					break;
-				case GTE:
+				case GTE: // greater than equals
 					if (val instanceof Date) {
 						predicates.add(cb.greaterThanOrEqualTo(expr.as(Date.class), (Date) val));
 					} else if (val instanceof Byte) {
@@ -92,7 +103,7 @@ public class SpringDataUtils {
 						throw new UnSupportException("un support GTE for value Type " + val.getClass());
 					}
 					break;
-				case LTE:
+				case LTE: // less than equals
 					if (val instanceof Date) {
 						predicates.add(cb.lessThanOrEqualTo(expr.as(Date.class), (Date) val));
 					} else if (val instanceof Byte) {

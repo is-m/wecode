@@ -1,25 +1,12 @@
-package com.chinasoft.it.wecode.security.domain;
+package com.chinasoft.it.wecode.security.dto;
 
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import com.chinasoft.it.wecode.common.dto.BaseDto;
 
-import com.chinasoft.it.wecode.base.BaseEntity;
+public class PermissionDto extends BaseDto {
 
-/**
- * 权限
- * 
- * @author Administrator
- *
- */
-@Entity
-@Table(name = "sys_permission")
-public class Permission extends BaseEntity {
-
-	private static final long serialVersionUID = -2078243822238438173L;
+	private static final long serialVersionUID = 8693754019244538478L;
 
 	/**
 	 * 父节点ID
@@ -44,8 +31,15 @@ public class Permission extends BaseEntity {
 	/**
 	 * 角色，放弃维护关系，由role维护
 	 */
-	@ManyToMany(mappedBy = "permissions",cascade=CascadeType.ALL)
-	private Set<Role> roles;
+	private Set<RoleResultDto> roles;
+
+	public String getPid() {
+		return pid;
+	}
+
+	public void setPid(String pid) {
+		this.pid = pid;
+	}
 
 	public String getCode() {
 		return code;
@@ -63,14 +57,6 @@ public class Permission extends BaseEntity {
 		this.note = note;
 	}
 
-	public String getPid() {
-		return pid;
-	}
-
-	public void setPid(String pid) {
-		this.pid = pid;
-	}
-
 	public String getType() {
 		return type;
 	}
@@ -79,4 +65,11 @@ public class Permission extends BaseEntity {
 		this.type = type;
 	}
 
+	public Set<RoleResultDto> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<RoleResultDto> roles) {
+		this.roles = roles;
+	}
 }

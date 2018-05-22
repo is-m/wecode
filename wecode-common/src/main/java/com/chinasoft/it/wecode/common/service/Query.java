@@ -55,6 +55,10 @@ public @interface Query {
 		 */
 		LK,
 		/**
+		 *  像，忽略大小写
+		 */
+		LKI,
+		/**
 		 * 大/等于
 		 */
 		GTE,

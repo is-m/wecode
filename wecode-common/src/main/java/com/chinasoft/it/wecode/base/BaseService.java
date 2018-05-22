@@ -5,10 +5,6 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import javax.validation.groups.Default;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -18,15 +14,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
 
+import com.chinasoft.it.wecode.annotations.security.Operate;
 import com.chinasoft.it.wecode.common.dto.BaseDto;
-import com.chinasoft.it.wecode.common.exception.NoImplementedException;
 import com.chinasoft.it.wecode.common.mapper.BaseMapper;
 import com.chinasoft.it.wecode.common.service.SpringDataUtils;
 import com.chinasoft.it.wecode.common.validation.groups.Create;
@@ -90,6 +84,7 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R ext
 	 * @param dto
 	 * @return
 	 */
+	@Operate(code = "create", desc = "create")
 	public R create(@Validated({ Default.class, Create.class }) D dto) {
 		E beforeSave = mapper.to(dto);
 		E afterSave = repo.save(beforeSave);
@@ -102,6 +97,7 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R ext
 	 * @param dto
 	 * @return
 	 */
+	@Operate(code = "create", desc = "create")
 	public List<R> batchCreate(@Validated({ Default.class, Create.class }) List<D> dtos) {
 		if (CollectionUtils.isEmpty(dtos)) {
 			return null;
@@ -119,6 +115,7 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R ext
 	 * @param dto
 	 * @return
 	 */
+	@Operate(code = "update", desc = "update")
 	public R update(@NotBlank String id, @Validated({ Default.class, Update.class }) D dto) {
 		E beforeSave = mapper.to(dto);
 		((BaseEntity) beforeSave).setId(id);
@@ -132,6 +129,7 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R ext
 	 * @param id
 	 * @return
 	 */
+	@Operate(code = "view", desc = "view")
 	public R findOne(@NotBlank String id) {
 		E entity = repo.findOne(id);
 		return mapper.from(entity);
@@ -143,6 +141,7 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R ext
 	 * @param ids
 	 * @return
 	 */
+	@Operate(code = "view", desc = "view")
 	public List<R> findAll(Iterable<String> ids) {
 		List<E> list = repo.findAll(ids);
 		return mapper.toDtoList(list);
@@ -157,6 +156,7 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R ext
 	 * @param queryDto
 	 * @return
 	 */
+	@Operate(code = "view", desc = "view")
 	public Page<R> findPagedList(Pageable pageable, @Validated({ Query.class }) BaseDto queryDto) {
 		Page<E> pageData = SpringDataUtils.findPagedData(repo, pageable, queryDto);
 		return mapper.toResultDto(pageData);
@@ -168,6 +168,7 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R ext
 	 * @param id
 	 * @return
 	 */
+	@Operate(code = "delete", desc = "delete")
 	public void delete(@NotBlank String id) {
 		repo.delete(id);
 	}
@@ -182,6 +183,7 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R ext
 	 * @return
 	 */
 	@Transactional
+	@Operate(code = "delete", desc = "delete")
 	public void delete(String... ids) {
 		if (ArrayUtils.isEmpty(ids)) {
 			logger.warn("delete id collection is empty.");
@@ -211,6 +213,7 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R ext
 		}
 	}
 
+	@Operate(code = "create", desc = "create")
 	public List<R> save(List<R> dtos) {
 		List<E> entities = mapper.toEntities(dtos);
 		return mapper.toDtoList(repo.save(entities));

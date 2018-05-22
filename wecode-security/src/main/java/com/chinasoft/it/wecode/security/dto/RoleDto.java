@@ -1,8 +1,12 @@
 package com.chinasoft.it.wecode.security.dto;
 
+import java.util.Set;
+
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 
 import com.chinasoft.it.wecode.common.dto.BaseDto;
+import com.chinasoft.it.wecode.common.validation.annotation.NotEmpty;
 
 /**
  * 角色DTO
@@ -17,12 +21,14 @@ public class RoleDto extends BaseDto {
 	/**
 	 * 角色名称
 	 */
+	@NotEmpty
 	@Length(max = 255)
 	private String name;
 
 	/**
 	 * 角色代码
 	 */
+	@NotEmpty
 	@Length(max = 100)
 	private String code;
 
@@ -37,6 +43,14 @@ public class RoleDto extends BaseDto {
 	 */
 	@Length(max = 300)
 	private String url;
+
+	/**
+	 * 状态,1：生效，0：失效
+	 */
+	@Range(min = 0, max = 1)
+	private Integer status;
+
+	private Set<PermissionResultDto> permissions;
 
 	public String getName() {
 		return name;
@@ -68,6 +82,22 @@ public class RoleDto extends BaseDto {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public Set<PermissionResultDto> getPermissions() {
+		return permissions;
+	}
+
+	public void setPermissions(Set<PermissionResultDto> permissions) {
+		this.permissions = permissions;
 	}
 
 }
