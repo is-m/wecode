@@ -40,8 +40,7 @@ public class PermissionServiceTest {
 		RoleResultDto admin = new RoleResultDto();
 		admin.setCode(currentTimes);
 		admin.setName("ADMIN");
-		roles.add(admin);
-		permissionDto.setRoles(roles);
+		roles.add(admin); 
 		PermissionResultDto create = service.create(permissionDto);
 		System.out.println(create);
 	}

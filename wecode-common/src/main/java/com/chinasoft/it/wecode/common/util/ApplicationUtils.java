@@ -1,5 +1,8 @@
 package com.chinasoft.it.wecode.common.util;
 
+import java.lang.annotation.Annotation;
+import java.util.Map;
+
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -29,4 +32,8 @@ public class ApplicationUtils implements ApplicationContextAware {
 		return ac.getBean(clz, name);
 	}
 
+	public static Map<String, Object> getBeansWithAnnotation(Class<? extends Annotation> annotationType)
+			throws BeansException {
+		return ac.getBeansWithAnnotation(annotationType);
+	}
 }

@@ -33,6 +33,7 @@ com\chinasoft\it\wecode\common\util\ArrayUtil.class
 com\chinasoft\it\wecode\annotations\excel\FiledConstant.class
 com\chinasoft\it\wecode\common\util\JSONUtils$1.class
 com\chinasoft\it\wecode\common\util\SortConstant.class
+com\chinasoft\it\wecode\fw\hibernate\Dynamic.class
 com\chinasoft\it\wecode\common\validation\annotation\NotEmpty.class
 com\chinasoft\it\wecode\annotations\excel\ExcelSheet.class
 com\chinasoft\it\wecode\common\util\DateUtils.class

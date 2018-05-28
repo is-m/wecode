@@ -3,7 +3,6 @@ package com.chinasoft.it.wecode.security.dto;
 import com.chinasoft.it.wecode.common.dto.BaseDto;
 import com.chinasoft.it.wecode.common.service.Query;
 import com.chinasoft.it.wecode.common.service.Query.Type;
-import com.chinasoft.it.wecode.common.service.QueryIgnore;
 
 import io.swagger.annotations.ApiModelProperty;
 

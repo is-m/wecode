@@ -31,6 +31,7 @@ public class Role extends BaseEntity {
 	/**
 	 * 角色名称
 	 */
+	//@Indexed(unique=true, direction= IndexDirection.DESCENDING, dropDups=true)
 	private String name;
 
 	/**

@@ -1,7 +1,5 @@
 package com.chinasoft.it.wecode.security.dto;
 
-import java.util.Set;
-
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
@@ -48,9 +46,7 @@ public class RoleDto extends BaseDto {
 	 * 状态,1：生效，0：失效
 	 */
 	@Range(min = 0, max = 1)
-	private Integer status;
-
-	private Set<PermissionResultDto> permissions;
+	private Integer status; 
 
 	public String getName() {
 		return name;
@@ -90,14 +86,5 @@ public class RoleDto extends BaseDto {
 
 	public void setStatus(Integer status) {
 		this.status = status;
-	}
-
-	public Set<PermissionResultDto> getPermissions() {
-		return permissions;
-	}
-
-	public void setPermissions(Set<PermissionResultDto> permissions) {
-		this.permissions = permissions;
-	}
-
+	} 
 }

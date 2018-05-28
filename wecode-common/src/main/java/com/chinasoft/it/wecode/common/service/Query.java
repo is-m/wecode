@@ -11,11 +11,12 @@ import java.lang.annotation.Target;
  * 
  * 用于标注查询条件类上的参数
  * 
+ * TODO:暂不支持方法上加改注解
  * @author Administrator
  *
  */
 @Retention(RUNTIME)
-@Target({ ElementType.FIELD, ElementType.METHOD })
+@Target({ ElementType.FIELD/*, ElementType.METHOD*/ })
 public @interface Query {
 
 	/**
@@ -33,8 +34,9 @@ public @interface Query {
 	String field() default "";
 
 	/**
-	 * 校验分组
+	 * 查询分组
 	 * 
+	 * 可通过 {@code QueryResolver.resolve} 来解析条件对象上的查询条件信息
 	 * @return
 	 */
 	Class<?>[] groups() default { Default.class };

@@ -1,7 +1,5 @@
 package com.chinasoft.it.wecode.security.dto;
 
-import java.util.Set;
-
 import com.chinasoft.it.wecode.common.dto.BaseDto;
 
 public class PermissionDto extends BaseDto {
@@ -27,11 +25,6 @@ public class PermissionDto extends BaseDto {
 	 * 类型，module:模块,operate:操作
 	 */
 	private String type;
-
-	/**
-	 * 角色，放弃维护关系，由role维护
-	 */
-	private Set<RoleResultDto> roles;
 
 	public String getPid() {
 		return pid;
@@ -63,13 +56,5 @@ public class PermissionDto extends BaseDto {
 
 	public void setType(String type) {
 		this.type = type;
-	}
-
-	public Set<RoleResultDto> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Set<RoleResultDto> roles) {
-		this.roles = roles;
 	}
 }

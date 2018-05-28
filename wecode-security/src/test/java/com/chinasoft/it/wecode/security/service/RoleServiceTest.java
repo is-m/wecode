@@ -39,8 +39,7 @@ public class RoleServiceTest {
 		PermissionResultDto permissionResultDto = new PermissionResultDto();
 		permissionResultDto.setCode(currentTimes+"");
 		permissionResultDto.setNote("test child");
-		permissions.add(permissionResultDto);
-		dto.setPermissions(permissions);
+		permissions.add(permissionResultDto); 
 		roleService.create(dto);
 		
 		Page<RoleResultDto> findPagedList = roleService.findPagedList(new PageRequest(1,10), null);

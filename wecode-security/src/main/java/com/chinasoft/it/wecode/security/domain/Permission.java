@@ -8,6 +8,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.chinasoft.it.wecode.base.BaseEntity;
+import com.chinasoft.it.wecode.fw.hibernate.Dynamic;
 
 /**
  * 权限
@@ -17,6 +18,7 @@ import com.chinasoft.it.wecode.base.BaseEntity;
  */
 @Entity
 @Table(name = "sys_permission")
+@Dynamic
 public class Permission extends BaseEntity {
 
 	private static final long serialVersionUID = -2078243822238438173L;
