@@ -37,7 +37,7 @@ public class SwaggerConfig {
 	}
 
 	private List<Parameter> globalParameters() {
-		return Arrays.asList(parameter("header", "Authorization", "token", "string", "123"));
+		return Arrays.asList(parameter("header", "X-Authentication", "token", "string", "ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKemRXSWlPaUlrWjNWbGMzUWtJaXdpYVdGMElqb3hOVEkzTmprek1ERXdMQ0psZUhBaU9qRTFNamMyT1RNd056QjkuTDcydS1xR24wZXZsblM2dGtVZGdzdnFnbGRfZzNNa3A1b2Z1MzZCRy1ubw=="));
 	}
 
 	private ApiInfo apiInfo() {

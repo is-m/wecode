@@ -1,6 +1,7 @@
 package com.chinasoft.it.wecode.security.utils;
 
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -26,7 +27,7 @@ public class JwtUtil {
 
 	private static final Collection<String> innerKeys = Arrays.asList("sub", "iat", "exp");
 
-	private static final long expiredTimes = 1000 * 60 * 1;
+	private static final long expiredTimes = 1000 * 60 * 10;
 
 	@SuppressWarnings("unused")
 	private static final Logger log = LogUtils.getLogger();
@@ -63,8 +64,9 @@ public class JwtUtil {
 	}
 
 	public static void main(String[] args) {
-		String string = get("122131233", new HashMap<>());
+		String string = get("$guest$", new HashMap<>());
 		System.out.println(string);
+		System.out.println(Base64.getEncoder().encodeToString(string.getBytes()));
 		System.out.println(parse(string));
 	}
 }

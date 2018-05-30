@@ -1,6 +1,7 @@
 package com.chinasoft.it.wecode.security.servlet;
 
 import java.io.IOException;
+import java.util.Base64;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -27,13 +28,18 @@ public class UserContextFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 
 		String token = req.getHeader(TokenConstants.HEAD_AUTHENTICATION);
-		log.info("filter user context of token " + token);
 
 		if (!StringUtils.isEmpty(token)) {
+			String decodeToken = new String(Base64.getDecoder().decode(token));
+			log.info("filter user context of token " + decodeToken);
+
 			TokenService bean = ApplicationUtils.getBean(TokenService.class);
-			TokenContext tokenContext = bean.parse(token);
+			TokenContext tokenContext = bean.parse(decodeToken);
 			if (tokenContext != null) {
+				log.info("tokenContext found of {}", tokenContext);
 				UserContextManager.set(tokenContext.getUid());
+			} else {
+				log.warn("token is faild");
 			}
 		}
 

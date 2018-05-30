@@ -14,7 +14,15 @@ import com.chinasoft.it.wecode.annotations.security.Operate.Policy;
 import com.chinasoft.it.wecode.common.exception.UnSupportException;
 import com.chinasoft.it.wecode.common.util.LogUtils;
 import com.chinasoft.it.wecode.fw.spring.utils.AopUtil;
+import com.chinasoft.it.wecode.security.AuthenticationException;
+import com.chinasoft.it.wecode.security.User;
+import com.chinasoft.it.wecode.security.authorization.aop.check.ContextCheck;
+import com.chinasoft.it.wecode.security.authorization.aop.check.LoginCheck;
+import com.chinasoft.it.wecode.security.authorization.aop.check.Check;
+import com.chinasoft.it.wecode.security.authorization.aop.check.RealCheck;
+import com.chinasoft.it.wecode.security.authorization.aop.check.RoleCheck;
 import com.chinasoft.it.wecode.security.authorization.utils.AuthorizationUtil;
+import com.chinasoft.it.wecode.security.service.impl.UserContextManager;
 
 /**
  * 鉴权切面
@@ -42,33 +50,26 @@ public class AuthorizationAspect {
 				// 不检查权限
 				log.warn("a security method is not badge @Module at {}.{}", cname, mname);
 			} else {
-				
+				Check componet = null;
 				// 检查权限
 				switch (policy) {
-				case Login:
-					// 获取用户认证信息
-					
-					break;
-				case Sys:
-					// 获取用户角色
-
-					break;
-				case Default:
-					// 获取当前检查栈
-
-					break;
 				case Required:
-					// 直接检查
-
+					componet = new RealCheck(componet);
+				case Default:
+					componet = new ContextCheck(componet);
+				case Sys:
+					componet = new RoleCheck(componet);
+				case Login:
+					componet = new LoginCheck(componet);
 					break;
 				default:
 					throw new UnSupportException();
 				}
-				// 获取当前需要检查权限的权限代码
 				String code = AuthorizationUtil.getPermissionCode(annModule, cname, operate, mname);
-
+				componet.check(code);
 			}
 		}
+		
 		try {
 			joinPoint.proceed();
 		} catch (Throwable e) {
