@@ -6,6 +6,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.stereotype.Component;
 
 import com.chinasoft.it.wecode.annotations.security.Module;
@@ -32,6 +33,7 @@ import com.chinasoft.it.wecode.security.service.impl.UserContextManager;
  */
 @Component
 @Aspect
+@Conditional(AuthorizationAspectCondition.class)
 public class AuthorizationAspect {
 
 	private static final Logger log = LogUtils.getLogger();

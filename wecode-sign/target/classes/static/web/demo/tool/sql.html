@@ -1,0 +1,5 @@
+select * from (
+	select t.username,
+	rownumber() over(partion by groupColumns order by col) rn
+	from table t
+) tt where rn=1

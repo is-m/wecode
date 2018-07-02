@@ -52,6 +52,10 @@ public class ServiceMethodLogAspect {
 		// reflection
 		MethodSignature signature = (MethodSignature) joinPoint.getSignature();
 		String declaringTypeName = signature.getDeclaringTypeName();
+		if ("org.springframework.boot.autoconfigure.web.BasicErrorController".equals(declaringTypeName)) {
+			return;
+		}
+
 		Method method = signature.getMethod();
 
 		HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();

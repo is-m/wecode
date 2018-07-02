@@ -12,4 +12,9 @@ public class HomeController {
 	public String homePage() {
 		return "redirect:/dist/index.html";
 	}
+	
+	/*@GetMapping("/")
+	public String homePage() {
+		return "redirect:/index.html";
+	}*/
 }

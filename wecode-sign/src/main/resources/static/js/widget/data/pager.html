@@ -1,0 +1,34 @@
+<div class="row ui-pager" style="padding:10px 0;">
+	<div class="col-md-6 d-none d-md-block d-xl-block">
+		<span class="float-left"> 每页  <%= $widget.pageSize %> 条，当前 <%= $widget.curPage %> / <%= $widget.totalPage %> 页 </span>
+	</div>
+	<div class="col-md-6">
+		<span class="float-right ">
+			<ul class="list-inline">
+				<li class="list-inline-item prev"><a href="javascript:;" <%= $widget.curPage == 1 ? 'disabled="disabled"' : '' %>>上一页</a></li>
+				<%  
+					var begin,end;
+					if($widget.totalPage < 5){
+					   begin = 1;
+					   end = $widget.totalPage;
+					}else{
+					     if($widget.curPage < 3){
+					     	begin = 1;
+					     	end = 5;
+					     } else if(( $widget.curPage+ 2) > $widget.totalPage ) {
+					     	begin = $widget.totalPage - 5;
+					     	end = $widget.totalPage;
+					     }else{
+					     	begin = $widget.curPage - 2;
+					     	end = $widget.curPage + 2;
+					     }
+					} 
+				   for(;begin<=end;begin++){
+				%>
+				<li class="list-inline-item go <%= begin == $widget.curPage ? 'active' : ''%>"><a href="javascript:;"><%= begin  %></a></li>
+				<% }%>
+				<li class="list-inline-item next" ><a href="javascript:;" <%= $widget.curPage == $widget.totalPage ? 'disabled="disabled"' : '' %>>下一页</a></li>
+			</ul>
+		</span>
+	</div>
+</div>

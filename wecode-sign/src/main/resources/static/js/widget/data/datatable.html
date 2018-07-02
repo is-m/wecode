@@ -1,0 +1,51 @@
+<!-- 自定义列头， 分组表格，树表格，自定义展开模版表格 -->
+<div class="table-srcoll-wrapper" style="position: relative;">
+	<div class="table-scroll-header" style=" overflow:hidden;"> 
+		<table class="table table-striped" style=" width:<%= $widget._tableWidth  %>px; ">
+			<thead>
+				<tr>
+					<% if($widget.showSeq !== false){%>
+						<th width="30" class="table-th-fixed"><span><i class="fa fa-th-large" title="用于指定列的显示隐藏，是否固定，排列顺序"></i></span></th>
+					<%}%>
+					
+					<% if($widget.selectMode == "mutli"){%>
+						<th width="30" class="table-th-fixed table-th-selection"><span><input type="checkbox" /></span></th>
+					<%}%> 
+					
+					<% for(var i=0;i<$widget.columns.length;i++){ var colOp = $widget.columns[i]; %>
+				    	<th width="<%= colOp.width || '150' %>" class="text-center <%= colOp.fixed ? 'table-th-fixed' : '' %>"> 
+				    		<span class="table-th-label"><%=colOp.header%></span>
+				    	</th>
+				    <%}%> 
+				    <td class="scroll-space" width="16" style="border-bottom: 2px solid #e9ecef" >  
+				    </td>
+				</tr>
+			</thead>
+		</table>  
+	</div>
+	<!-- overflow-y:auto; -> overflow: auto -->
+	<div class="table-scroll-body"  style="overflow: auto; padding-right:16px; <%= $widget.height ? ("height:" + $widget.height + "px; ") : "" %> ; " >
+		<table class="table table-striped" style="width:<%= $widget._tableWidth  %>px;">
+			<colgroup>
+				<% if($widget.showSeq !== false){%>
+					<col style="width:30px; min-width:30px;">
+				<%}%>
+				
+				<% if($widget.selectMode == "mutli"){%>
+					<col style="width:30px; min-width:30px;"> 
+				<%}%>
+				
+				<% for(var i=0;i<$widget.columns.length;i++){ var colOp = $widget.columns[i]; %>
+					<col style="width:<%= colOp.width || '150' %>px; min-width:<%= colOp.width || '150' %>px;"> 
+				<%}%> 
+			</colgroup> 
+			<tbody class="datatable-rows">  
+			</tbody>
+		</table>   
+		<div class="table-message" style="position: absolute; width: 100%; top:0; bottom: 0; text-align: center; background: rgba(233,233,233,.1);">
+			<div class="table-message-body" style="position:absolute; top: 40%; left: 42%; background: rgba(233,233,233,.4);; padding: 20px;">
+				123
+			</div>
+		</div>
+	</div> 
+</div> 

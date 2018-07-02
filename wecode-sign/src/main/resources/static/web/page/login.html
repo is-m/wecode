@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login Page</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- 考虑到后面会做前后端分离，并会将webresource代码分离出java应用，所以不建议界面出现耦合具体语言的代码，包括webjars localer -->
+<link rel="stylesheet" href="../../css/lib/bootstrap.css" />
+<link rel="stylesheet" href="../../css/lib/iconfont.css" />
+<link rel="stylesheet" href="../../css/lib/font-awesome.css" />
+<link rel="stylesheet" href="../../css/site.css" />
+<style type="text/css">
+.login {
+	padding: 30px 20px;
+	border-radius: 8px;
+	border: #CCC 1px solid;
+	font-size: 14px;
+}
+
+.login>div {
+	width: 100%;
+}
+
+.login .login-header {
+	border-bottom: 1px solid #ccc;
+}
+
+.login .login-header h3 {
+	font-size: 20px;
+}
+
+.login .login-form .form>div {
+	margin-top: 25px;
+}
+/*<script src="StackBlur.js"></script> stackBlurImage( "blur", "canvas", 20, false );*/
+.image-blur {
+	filter: url(blur.svg#blur); /* FireFox, Chrome, Opera */
+	-webkit-filter: blur(10px); /* Chrome, Opera */
+	-moz-filter: blur(10px);
+	-ms-filter: blur(10px);
+	filter: blur(10px);
+	filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=10,
+		MakeShadow=false);
+}
+</style>
+</head>
+
+<body>
+	<div class="row screen-center login">
+		<div class="login-header clearfix">
+			<h3 class="pull-left">系统登录</h3>
+			<span class="pull-right"><small>还没有帐号，<a href="#">现在注册?</a></small></span>
+		</div>
+		<div class="login-form">
+			<form id="formLogin" class="form" action="@{/login" method="post" enctype="application/json">
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text"><i class="iconfont icon-account"></i></span>
+					</div>
+					<input class="form-control" name="username" placeholder="用户名/手机号码/邮箱" value="admin">
+				</div>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text"><i class="iconfont icon-password"></i></span>
+					</div>
+					<input class="form-control" name="passwd" placeholder="密码" type="password" value="881111">
+				</div>
+
+				<div class="form-check">
+					<label class="form-check-label"> <input class="form-check-input" type="checkbox"> 下次自动登录
+					</label> <a href="#" class="pull-right">忘记密码</a>
+				</div>
+			</form>
+		</div>
+		<div class="login-btns">
+			<button class="btn btn-primary" style="width: 100%" onclick="document.getElementById('formLogin').submit(); /* window.location='../index.html'; */">登录</button>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Home</title>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- 考虑到后面会做前后端分离，并会将webresource代码分离出java应用，所以不建议界面出现耦合具体语言的代码，包括webjars localer -->
+<script type="text/javascript" src="../servlet/environment"></script>
+<link rel="stylesheet" href="../css/lib/bootstrap.css" />
+<link rel="stylesheet" href="../css/lib/iconfont.css" />
+<link rel="stylesheet" href="../css/lib/font-awesome.css" /> 
+<link rel="stylesheet" href="../css/lib/elektron.css" /> 
+<!-- <link rel="stylesheet" href="../css/lib/ztree/demo.css" />  -->
+<link rel="stylesheet" href="../css/lib/ztree/metroStyle/metroStyle.css" /> 
+<link rel="stylesheet" href="../css/lib/jquery-confirm.css" /> 
+<link rel="stylesheet" href="../css/lib/fileinput/fileinput.css" /> 
+<link rel="stylesheet" href="../css/lib/fileinput/themes/explorer/theme.css" /> 
+
+<link rel="stylesheet" href="../css/site.css" />
+
+<style type="text/css">
+</style>
+<script type="text/javascript">
+	var wh = window.innerHeight;
+	document.write('<div id="pageLoading" class="page-loading" style="height:'+wh+'px"><div class="load-container text-center"><p><i class="load-icon fa fa-spinner fa-pulse"></i></p> <p class="load-text">正在加载...</p></div></div>');
+	window.onresize = function() {
+		var loadEl = document.getElementById("pageLoading");
+		/*
+		if (!loadEl) {
+			window.onresize = null;
+		} else {
+			loadEl.style.height = "0px";
+			var sh = document.scrollingElement.scrollHeight, wh = window.innerHeight;
+			loadEl.style.height = (sh > wh ? sh + 40 : wh) + "px";
+		}
+		*/
+	}
+
+	window.onload = function() {
+		var el= document.getElementById("pageLoading");
+		el.style.display = 'none';
+		/*if(el.parentNode){
+			el.parentNode.remove(el);
+		}  */
+	}
+	
+</script>
+</head>
+
+<body class="main-is-fixed">
+<!-- 	<navbar> </navbar>
+	<navbar> </navbar> -->
+	<!-- <div class="toolbar text-right"
+		style="position: fixed; top: 0px; width: 100%; background: transparent; font-size: 12px;">
+		<span class="pull-right"> 张三 | 系统管理员 <a href="page/login.html">安全退出</a>
+		</span>
+	</div> -->  
+	<navbar>
+		
+	</navbar>
+
+	<div class="container-fluid">
+		<div class="row"> 
+			<div id="mainMenu" data-x-widget="menu" class="col-sm-3 col-md-2" style="padding:0;"></div> 
+			<div class="col-sm-9 col-md-10 pt-3" style="padding-bottom:70px;">
+				<h3 id="nav-breadcrumb">Dashboard</h3>
+				<div class="row" id="__pageContext"> 
+					<div class="col-md-6">123</div>
+					<div class="col-md-6">234</div>
+					<div class="col-offset-2 col-md-8">
+						<button class="btn btn-primary" onclick="createUser();">创建用户</button>
+						<button class="btn btn-primary" onclick="findUser();">查询用户</button>
+						<button class="btn btn-primary" onclick="findPageUser();">查询用户（分页）</button>
+					</div>
+					<div class="col-md-12">
+						<textarea style="width: 100%; height: 400px;" id="data"></textarea>
+					</div> 
+				</div>
+				
+				<div class="row">
+					<footer class="footer text-center"> 
+							<span class="text-muted"><a href="#">致远信息</a> 2018 &copy; 版权所有</span> 
+					</footer>
+				</div> 
+			</div>
+		</div>
+	</div>
+
+	<script src="../js/lib/popper.js"></script>
+	<script src="../js/lib/require.js"></script>
+	<script type="text/javascript">
+		window.workspaceVO={user:{"id":"1","username":"admin"}};
+		// 后台：默认角色，访客
+		var roleGuest = {
+			roleName : "sys.common.guest",
+			permission : [],
+			permissionUrl : []
+		};
+
+		// 应用配置，其中部分内容为空，需要依赖后台数据填充，例如用户，数据，权限，国际化，数据字典等
+		var appConfig = {
+			// 后台：系统版本号
+			version : (new Date()).getTime(),
+			// 后台：系统上线文路径
+			contextPath : "/wecode/asset",
+			// 服务器当前时间
+			serverTimes : (new Date()).getTime(),
+			// 导航
+			siteMap : [ {
+				title : "首页",
+				href :"http://localhost:8880/wecode/asset/web/index.html"
+			} ,{
+				title:"系统管理",
+				children:[{
+					title:"用户与权限",
+					children:[{
+						title:"用户管理"
+					},{
+						title:"角色权限"
+					},{
+						title:"用户组"
+					},{
+						title:"数据范围"
+					}]
+				},{
+					title:"数据字典"
+				},{
+					title:"栏目管理"
+				}]
+			}],
+			// 后台：当前登录用户信息，默认匿名
+			user : {
+				// 用户名
+				username : "sys.common.nouser",
+				// 头像地址
+				faceUrl : null,
+				// 当前生效的角色
+				role : roleGuest,
+				// 当前用户角色列表
+				roles : [ roleGuest ]
+			},
+			// 用户相关的系统设置，例如用户可见的数据字典
+			settings : {
+				//  设置
+				"app" : {
+
+				}
+			},
+			// 用户个性化设置，例如表格位置，宽度，显示隐藏的列，下拉框记忆，等
+			profile : {
+
+			},
+			// 后台：国际化，已经根据当前用户的语言过滤过的国际化内容
+			i18n : {
+				"sys.common.nouser" : "匿名",
+				"sys.common.guest" : "访客"
+			}
+		};
+
+		requirejs.config({
+			urlArgs : 'v=' + appConfig.version,
+			baseUrl : appConfig.contextPath + '/js/',
+			paths : {
+				// paths 更多用法：http://www.tuicool.com/articles/7JBnmy
+				jquery : 'lib/jquery',
+				jqueryui :'lib/jquery-ui',
+				'jquery.datetimepicker' : "lib/bootstrap-datetimepicker",
+				'ztree' : "lib/jquery.ztree.all",
+				'bootstrap':'lib/bootstrap',
+				'Popper-utils':'lib/popper-utils',
+				'popper':'lib/popper',
+				'jquery.confirm':'lib/jquery-confirm',
+				'echart':'lib/echarts.common.min',
+				'template': 'lib/template-web',
+				'fileinput': 'lib/fileinput',
+				'fileinputTheme':'../css/lib/fileinput/themes/explorer/theme'
+			}
+			,shim: {
+				'template': {
+		            exports: 'template'
+		        },
+		        'jqueryui': {
+		             deps: ['jquery']
+		        },
+		        'jquery.datetimepicker':{
+		        	deps: ['jquery'],
+		        	exports: 'jquery.fn.datetimepicker'
+		        },
+		        'ztree':{
+		        	deps:['jquery'] 
+		        },
+		        'jquery.confirm':{
+		        	deps:["jquery"]
+		        },
+		        'popper':{
+		        	deps:['Popper-utils'],
+		        	exports:"Popper"
+		        } ,
+		        "bootstrap":{
+		        	deps:['jquery'/* ,'popper' */]
+		        } ,
+		        'fileinput':{
+		        	deps:['jquery']
+		        },
+		        'fileinputTheme':{
+		        	deps:['jquery','fileinput']
+		        }
+			}
+			/* 非AMD规范模块需要使用shim配置来加载
+			,shim: {
+			'jquery.scroll': {
+			　　deps: ['jquery'],
+			　　exports: 'jQuery.fn.scroll'
+			}
+			} */
+		});
+
+		// app
+		// ! js 模块化更多的是为了处理模块之间的依赖关系，和异步加载脚本
+		require(['rt/pageContext' ,'jquery','app','rt/core'  ,"bootstrap" , 'rt/jquery-mex','ztree' ], function(pc,$, app, core,bs,jqueryMEX,ztree) {
+			window.pageContext = pc;
+			$(app.init);
+		});
+
+		var createUser = function() {
+			var jsonData = {
+				username : "test123",
+				passwd : "test123"
+			};511
+			$.ajax({
+				type : "POST",
+				url : "@{/api/user",
+				data : JSON.stringify(jsonData),
+				contentType : "application/json"
+
+			}).success(function(data) {
+				$("#data").val(data);
+			});
+		};
+
+		var findUser = function() {
+			$.ajax({
+				type : "GET",
+				url : "@{/api/user",
+				data : {
+					id : "6ce7cf8be76e49279ef51010da59162b"
+				},
+				contentType : "application/json"
+			}).success(function(data) {
+				$("#data").val(data);
+			});
+		};
+
+		var findPageUser = function() {
+			$.ajax({
+				type : "GET",
+				url : "@{/api/user/page/15/1",
+				contentType : "application/json"
+			}).success(function(data) {
+				$("#data").val(JSON.stringify(data));
+			});
+		}
+	</script>
+</body>
+</html>

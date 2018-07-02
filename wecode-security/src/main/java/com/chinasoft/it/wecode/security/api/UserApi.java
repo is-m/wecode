@@ -1,5 +1,8 @@
 package com.chinasoft.it.wecode.security.api;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -82,12 +85,14 @@ public class UserApi {
 
 	// https://www.cnblogs.com/zuolijun/p/5644411.html
 	@ApiOperation(value = "导入用户", notes = "导入用户")
-	@PostMapping(value = "/import", consumes = "multipart/form-data", headers = "content-type=multipart/form-data", produces = "application/octet-stream")
-	public ResponseEntity<String> imports(@RequestParam(value = "file") MultipartFile file) throws Exception {
+	@PostMapping(value = "/import", consumes = "multipart/form-data", headers = "content-type=multipart/form-data", produces = "application/json"/* produces = "application/octet-stream"*/)
+	public ResponseEntity<Map<String,Object>> imports(@RequestParam(value = "file") MultipartFile file) throws Exception {
 		if (!file.isEmpty()) {
 			service.imports(file.getInputStream());
 		}
-		return ResponseEntity.ok("success");
+		Map<String,Object> result = new HashMap<>();
+		result.put("success", true);
+		return ResponseEntity.ok(result);
 	}
 
 	// https://stackoverflow.com/questions/30400477/how-to-open-local-files-in-swagger-ui
