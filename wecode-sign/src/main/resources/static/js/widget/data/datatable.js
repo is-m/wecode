@@ -23,7 +23,7 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 				'var field = colOp.field;' +
 				'var fieldValue = field ? dataItem[field] : null;' + 
 		'%>' + 
-			'<td data-field="<%=field%>">' + 
+			'<td data-field="<%=field%>" class="<%= colOp.editable !== false ? \'cell-editable\' : \'cell-read\' %>">' + 
 				'<span class="table-td-text" style="width:<%= (colOp.width || 150)-17 %>px; min-width:<%= (colOp.width || 150)-17 %>px;" data-toggle="tooltip" title="Example tooltip">' + 
 
 				'</span>' + 
@@ -74,6 +74,40 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 			var $tableHead = this.$dom.find(".table-scroll-header:eq(0)");
 			var $tableBody = this.$dom.find(".table-scroll-body:eq(0)");
 			
+			if(this.op.editable === true){
+				$tableBody.on("click",function(e){
+					var $el = $(e.target);
+					
+					console.log(e);
+					if($el.is(".table-td-text")){
+						$el = $el.closest("td");
+					}
+					if($el.is("td")){
+						var $curr = $el.children();
+						$el.data("__el",$curr);
+						
+						var colOp = self._getColumnOp($el.data("field"));
+						if(colOp.editor && colOp.editor.type){
+							var editorRender = tableEditorRenderMap[colOp.editor.type];
+							editorRender.render($el).done(function($ctrl){
+								$ctrl.xWidget().setValue("okay");
+							}); 
+						}else{
+							$editor = $("<input name='test' style='width:100%' >");
+							$editor.val($el.text());
+							$editor.on("blur",function(e){
+								var $el = $(this);
+								var $td = $el.closest("td");
+								var $text = $td.data("__el");
+								$text.html($el.val());
+								$td.html($text); 
+							});
+							$el.html($editor)
+							$editor.get(0).focus();
+						}
+					}
+				});
+			}
 			
 			
 			// TODO:检查是否存在需要绑定事件或操作的行
@@ -135,7 +169,13 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 				var _oper = this.op.operation;
 				if(_oper.search && _oper.search.btn){
 					util.el(_oper.search.btn).on("click",function(){
+						self.op.pageOp && $.extend(self.op.pageOp,{ curPage:1 });
 						self.reload();
+					});
+				}
+				if(_oper.add && _oper.add.btn){
+					util.el(_oper.add.btn).on("click",function(){
+						self._renderEditableRow();
 					});
 				}
 			}
@@ -199,6 +239,7 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 					$td.css("padding-left",(+$row.data("treeLevel") * 20) + "px")
 					
 					var record = $row.data("record"); 
+					record._isLeaf = typeof record._isLeaf !== "undefined" ? record._isLeaf : !(record.children && record.children.length);
 					var $folderIcon = $('<i class="fa {0}"></i>'.format(record._isLeaf ? "fa-file-o" : "fa-folder"));
 					if(!record._isLeaf){
 						$folderIcon.on("click",function(){
@@ -245,6 +286,17 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 				});
 			}
 		},
+		_renderEditableRow:function(){
+			console.log("添加编辑行");
+			var tempData = $.extend({},this.op,{ "_data" : [{}] });
+			var rowHtml = tmpl('datatable-datarows',{ $win:window,$widget:tempData });
+			var $row = $(rowHtml);
+			this._bindCellData($row,this.op.operation.add.data || {});
+			// 加载数据
+			var $tableDataRows = this.$dom.find(".datatable-rows:eq(0)");
+			$tableDataRows.append($row);
+			this.hideMessage(); 
+		},
 		getRowData:function(rowIndex){
 			return this.op._data[rowIndex];
 		},
@@ -282,6 +334,7 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 		},
 		reload:function(){
 			var _self = this;
+			_self.$dom.find(".table-th-selection :input").each(function(i,el){ el.checked = false; });
 			
 			// 加载数据
 			var $tableDataRows = this.$dom.find(".datatable-rows:eq(0)");
@@ -331,8 +384,7 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 						} 
 						
 						var pagerWidget = $pageEl.xWidget("pager",$.extend(true,_self.op.pageOp,_self.op._page));
-						pagerWidget.on(["pager.prev","pager.go","pager.next"],function(e,page){
-							_self.$dom.find(".table-th-selection :input").each(function(i,el){ el.checked = false; });
+						pagerWidget.on(["pager.prev","pager.go","pager.next"],function(e,page){ 
 							_self.op.pageOp.curPage = page; 
 							_self.reload();
 						});
@@ -344,7 +396,7 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 				var _treeOp = this.op.treeOp;
 				if(_treeOp){ 
 					// 根据树表格参数，重写数据格式 <i class="fa fa-file-o"></i> 
-					this.op._data = util.toTree(data,_treeOp.rootPid,_treeOp.idKey,_treeOp.pIdKey);
+					this.op._data = util.toTree(this.op._data,_treeOp.rootPId,_treeOp.idKey,_treeOp.pIdKey);
 				}
 				var rowHtml = tmpl('datatable-datarows',{ $win:window,$widget:this.op });
 				var $rows = $(rowHtml);  
@@ -370,6 +422,38 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 			}); 
 		}
 	
-	});
+	}); 
 	
+	var tableEditorRenderMap = {
+		"default":{
+			render:function($td){
+				var $el = $("<input name='xxx' />");
+				return $el;
+			},
+			setValue:function(v,record){
+				
+			},
+			getValue:function(){
+				
+			}
+		},
+		"combobox":{ 
+			render:function($td){
+				var dtd = $.Deferred();
+				require(["widget/form/combo"],function(combo){
+					var $combo = $("<div></div>");
+					$combo.xWidget("form.combo",{});
+					$td.html($combo);
+					dtd.resolve($combo);
+				});
+				return dtd;
+			},
+			setValue:function(v,record){
+				
+			},
+			getValue:function(){
+				
+			}
+		}
+	}
 });

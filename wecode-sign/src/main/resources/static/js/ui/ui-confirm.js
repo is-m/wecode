@@ -227,10 +227,13 @@ define(["jquery","jquery.confirm","rt/util"],function($,c,util){
 					content: function(){
 				        var self = this; 
 				        return $.ajax({
-				            url: op.url,
+				            url:  appConfig.contextPath + op.url,
 				            dataType: 'text',
 				            method: 'get'
 				        }).done(function (response) {
+				        	response = response.replace(/@\{\s*(\S+)\s*\}/g,function(m,i,o,n){
+				     	       return appConfig.contextPath+i;
+				     	    });
 				            self.setContentAppend($(response));
 				            // TODO 找到上级绑定js模块
 				        }).fail(function(){

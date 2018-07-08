@@ -1,1 +1,39 @@
-<script type="text/javascript" src="@{/web/admin/security/user/verifyAuthority.js}"></script>
+<script type="text/javascript"
+	src="@{/web/admin/security/user/verifyAuthority.js}"></script>
+
+<!-- <h2>这个是编辑页面</h2> -->
+<div class="container">
+	<form class="mu-form" id="formAuthority" style="padding-top: 30px;">
+		<input name="id" type="hidden" />
+		<div class="form-group row">
+			<label class="col-sm-2 col-form-label ">用户名</label>
+			<div class="col-sm-4">
+				<input name="name" type="text" class="form-control"
+					disabled="disabled">
+			</div>
+		</div>
+
+		<div class="form-group row">
+			<label class="col-sm-2 col-form-label">备注</label>
+			<div class="col-sm-10">
+				<textarea class="form-control" name="remark" rows="3"
+					disabled="disabled"></textarea>
+			</div>
+		</div>
+	</form>
+</div>
+
+<div class="mu-grid">
+	<div id="grid-toolbar" style="margin: 5px 0;">
+		<button type="button" class="btn btn-outline-secondary btn-sm nbd" id="btnAddAuthority">
+			<i class="iconfont icon-add"></i> 添加行
+		</button>
+		<button type="button" class="btn btn-outline-secondary btn-sm nbd" id="btnDelAuthority">
+			<i class="iconfont icon-delete"></i> 删除
+		</button>
+		<button type="button" class="btn btn-outline-primary btn-sm nbd" id="btnSaveAuthority">
+			<i class="iconfont icon-save"></i> 保存
+		</button>
+	</div>
+	<div id="gridVerifyAuthority"></div>
+</div>

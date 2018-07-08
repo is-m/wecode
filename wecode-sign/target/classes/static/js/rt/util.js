@@ -65,10 +65,13 @@ define([ "rt/core", "jquery", "rt/request" ], function(core, $, http) {
 	}
 	
 	// 线性数据转化为树
-	u.toTree = function toTree(data,rootId,idField,parentIdField) {
-        var tree = [],temp, _r= rootId || 0 , _i = idField || "id", _p = parentIdField || "parentId";
+	u.toTree = function toTree(data,rootId,idField,parentIdField) { 
+        var tree = [],temp, _r= (typeof rootId == 'undefined' ? 0 : rootId ), _i = idField || "id", _p = parentIdField || "parentId";
         for (var i = 0; i < data.length; i++) {
-        	 var obj = data[i];
+        	var obj = data[i];
+        	if(typeof obj.children !== 'undefined'){
+        		return data;
+        	}
             if (obj[_p] == _r) { 
                 temp = toTree(data, obj.id,_i,_p); 
                 tree.push($.extend(obj,temp.length ? {children:temp, _isLeaf : false } : {_isLeaf : true}));

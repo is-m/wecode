@@ -120,7 +120,10 @@ define(["widget/factory","jquery","rt/pageContext"],function(widget,$,pageContex
 			var $bodyEl = $("<div data-tab-id='{0}'></div>".format(pageOp.id));
 			$tabBody.append($bodyEl); 
 			$headerEl.find(".nav-link").trigger("click"); 
-			op.afterLoad && op.afterLoad($tabBody);
+			// 待页面加载完成后在触发事件
+			op.afterLoad && pageContext.listenReady($bodyEl,function(){
+				op.afterLoad($tabBody);
+			});
 			return this;
 		}
 		,selectTab:function(tabId){

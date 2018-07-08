@@ -1,5 +1,7 @@
 package com.chinasoft.it.wecode.common.proxy;
 
+import com.chinasoft.it.wecode.common.proxy.JDKInterfaceInvocationHandler.MethodProcesser;
+
 /**
  * 代理类工厂
  * 
@@ -17,19 +19,15 @@ public class InvocationFactory {
 	 * {@code 
 	 * 	
 	 *   * JDK 不支持没有接口的类实现代理
-	 *   InputStream proxyInputStream = InvocationFactory.create(tempInputStream, new InvocationAfterEvent() {
-     *      @Override
-	 *      public void handle(MethodContext context) {
-	 *          if ("close".equals(context.getMethod().getName())) {
-	 *              logger.info("外部调用了代理流的关闭代码，准备移除自动关闭流的对象.");
-	 *              autoCloseStreams.remove(context.getTarget());
-	 *          }
-	 *  	 }
-	 *   }); 
-	 * }
+	 *   InputStream proxyInputStream = InvocationFactory.create(tempInputStream, new InvocationAfterEvent()
+	 * { @Override public void handle(MethodContext context) { if
+	 * ("close".equals(context.getMethod().getName())) {
+	 * logger.info("外部调用了代理流的关闭代码，准备移除自动关闭流的对象.");
+	 * autoCloseStreams.remove(context.getTarget()); } } }); }
 	 * 
 	 * @param target
-	 * @param obersers 观察者
+	 * @param obersers
+	 *            观察者
 	 * @return
 	 * 
 	 * 
@@ -44,4 +42,10 @@ public class InvocationFactory {
 		}
 		return (T) invocationHandler.getProxy();
 	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> T newInterface(MethodProcesser processer, Class<?>... interfaces) {
+		return (T) (new JDKInterfaceInvocationHandler(processer,interfaces)).getProxy();
+	}
+
 }

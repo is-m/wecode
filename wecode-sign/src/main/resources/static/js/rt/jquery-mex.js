@@ -62,7 +62,7 @@ define([ "jquery", "popper","rt/request" ], function($, Popper,http) {
 	
 	// 元素提交，自带校验和校验回填功能
 	$.fn.formSubmit = function(type,url,sCallback,fCallback){ 
-		this.each(function(){
+		return this.each(function(){
 			var $form = $(this);
 			http.ajax(url,$form.jsonData(),sCallback,function(resp){
 				// 如果是校验失败，则回填校验内容
@@ -104,7 +104,7 @@ define([ "jquery", "popper","rt/request" ], function($, Popper,http) {
 		$dom.find(":input").each(function(i,n){
 			console.log(i,n,this,$(this));
 			var _this = $(this);
-			_this.val(res[_this.attr("name")]);
+			_this.val(data[_this.attr("name")]);
 		});
 	}
 	
@@ -112,14 +112,11 @@ define([ "jquery", "popper","rt/request" ], function($, Popper,http) {
 		var $dom = $(this);
 		if(typeof data == "string"){
 			http.doGet(data).success($.proxy(function(res){
-				debugger
 				_fillForm(this.$dom,res);
 			},{$dom : $dom})).error(function(){
-				debugger
 				alert("form fill error");
 			});
 		}else{
-			debugger
 			_fillForm($dom,data);
 		}
 	} 

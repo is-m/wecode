@@ -85,7 +85,7 @@ define(["require","jquery","rt/logger"],function(require,$,log){
 			
 			if(enableCache) pageCache[url] = html; 
 			$el.html(html);
-			
+			$el.data("inited",true);
 			$el.attr("data-module",url);
 			pageContextElStack.push($el); 
 			callback && callback(true);
@@ -132,6 +132,42 @@ define(["require","jquery","rt/logger"],function(require,$,log){
 		} 
 		pageAction ? pageAction() : log.error("执行指定页面动作时，未找到页面动作" + action); 
 	}
+	
+	var listenReady = function(el,callback){
+		if(!el) throw 'el is illegal.';
+		var retryCount = arguments[2] || 0;
+		if(retryCount > 15){
+			 throw 'listenReady faild retry count be overflow.'
+		} 
+		
+		if($(el).data("inited")){
+			callback(); 
+			return;
+		}
+		
+		setTimeout(function(){ 
+			listenReady(el,callback,retryCount+1);
+		},100);
+	}
+	
+	/**
+	 * 查找页面模块，并返回promiss对象
+	 */
+	var module = function(id){  
+		var dfd = $.Deferred();
+		var count = 0;
+		var timer = setInterval($.proxy(function(){
+			var page = pageContextMap[this.id];
+			if(page){
+				dfd.resolve(page);
+			}else if(count > 20){
+				dfd.reject("page module not found of out search count 20");
+			}
+			count ++ ; 
+		},{id:id}),100);
+		
+		return dfd;
+	}
 
 	return {
 		define:_define,
@@ -139,7 +175,9 @@ define(["require","jquery","rt/logger"],function(require,$,log){
 		shutPage:_shutPage,
 		loadPage:_loadPage,
 		get:_get,
-		$do:doAction
+		$do:doAction,
+		listenReady:listenReady,
+		module:module
 	}
 	
 });
