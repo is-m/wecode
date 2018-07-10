@@ -12,3 +12,8 @@ WeCode是一个快速开发平台，系统前端采用类华为 Jalor5（UI开�
 
 ![这里写图片描述](http://...)
 https://github.com/用户名/repository仓库名/raw/分支名master/图片文件夹名称/***.png or***.jpg
+
+![栏目列表](https://github.com/is-m/wecode/blob/master/images/catelog_1.png)
+![新增栏目](https://github.com/is-m/wecode/blob/master/images/catelog_2.png)
+![用户列表](https://github.com/is-m/wecode/blob/master/images/user_1.png)
+![新增用户](https://github.com/is-m/wecode/blob/master/images/user_2.png)
