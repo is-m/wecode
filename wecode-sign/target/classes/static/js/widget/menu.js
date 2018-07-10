@@ -20,7 +20,7 @@ define(["widget/factory","jquery"],function(widget,$){
 			var dtd = $.Deferred();
 			
 			require(["lib/metisMenu"],function(m){
-				 $('.side-nav .metismenu').metisMenu({ toggle: true }); 
+				 $('.side-nav .metismenu').metisMenu({ toggle: true,activeClass: 'active' }); 
 				 // resolve 会触发 done 的回调，reject 触发 fail 回调 
 				 dtd.resolve();
 			});

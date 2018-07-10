@@ -1,0 +1,18 @@
+<div class="container">
+	<iframe src="@{/druid/}" style="height:600px; width: 100%; border: none" id="frmSql" ></iframe>
+	<script type="text/javascript">
+	
+	var tmrCheckAndSetSqlMonitorFrame =  window.setInterval(function(){
+		if($("#frmSql").length){
+			var fContentsHeight = $("#frmSql").contents().find("body").height() + 100;
+			var fHeight = $("#frmSql").height();
+			if(fHeight != fContentsHeight){
+				 $("#frmSql").height(fContentsHeight);
+			}
+		}else{
+			console.log('no found sql monitor frame but over the timer "tmrCheckAndSetSqlMonitorFrame"');
+			window.clearInterval(tmrCheckAndSetSqlMonitorFrame);
+		}
+	},500);  
+	</script>
+</div>
