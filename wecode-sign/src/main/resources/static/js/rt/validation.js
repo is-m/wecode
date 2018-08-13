@@ -9,7 +9,7 @@ define(["jquery"],function($){
 	
 	var defaultRuleMap = {
 		"required":{
-			expr:/^\S+$/,
+			expr:/^\s+$/,
 			msg:"不能为空",
 			priority:0
 		},
@@ -57,7 +57,7 @@ define(["jquery"],function($){
 		var val = ruleObj.$dom.val();
 		for(var j=0;j<ruleObj.rules.length;j++){
 			var rule = ruleObj.rules[j],context = {arg:rule.arg , $dom:ruleObj.$dom , $rule:rule};
-			if(rule.expr && _showError(!rule.expr.test(val),val,context)) break;
+			if(rule.expr && _showError(rule.expr.test(val),val,context)) break;
 			if(rule.onValid && _showError(!rule.onValid(val,context),val,context)) break;
 		} 
 	}
