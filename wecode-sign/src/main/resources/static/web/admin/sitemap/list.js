@@ -1,9 +1,9 @@
-pageContext.define("admin.sitemap.list",["widget/data/datatable","widget/tab","widget/form/dateBox"],function(page,dt,tab,dateBox){
+pageContext.define("admin.sitemap.list",["widget/data/datatable","widget/tab"],function(page,dt,tab){
 		
 	page.ready = function(){    
 		//debugger
-		$("#createDate1").xWidget("form.DateBox",{ showIconButton:false ,format : 'yyyy-mm-dd hh:ii',minView : "hour"});
-		$("#createDate2").xWidget("form.DateBox",{ showIconButton:false ,format : 'yyyy-mm-dd hh:ii',minView : "hour"});
+		//$("#createDate1").xWidget("form.DateBox",{ showIconButton:false ,format : 'yyyy-mm-dd hh:ii',minView : "hour"});
+		//$("#createDate2").xWidget("form.DateBox",{ showIconButton:false ,format : 'yyyy-mm-dd hh:ii',minView : "hour"});
 		
 		var gridOption = {
 			selectMode:'mutli', /* 多选：mutli,单选：single,默认：normal */

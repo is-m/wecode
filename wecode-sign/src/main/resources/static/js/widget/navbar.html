@@ -14,7 +14,7 @@
 			<li class="nav-item"><a class="nav-link" href="#">Pricing</a></li>
 			<li class="nav-item"><a class="nav-link disabled" href="#">Disabled</a>
 			</li>
-			<li class="nav-item"><a class="nav-link disabled" href="#"><%=value%></a>
+			<li class="nav-item"><a class="nav-link disabled" href="#">{{value}}</a>
 			</li>
 		</ul>
 
@@ -24,12 +24,9 @@
 				<li class="">搜索</li>
 				<li class="">{{$win.workspaceVO.user.username}} 系统管理员</li>
 				<li class="">En</li>
-				<li class=""><a href="@{/logout">注销</a></li>
+				<li class=""><a href="{{ $win.appConfig.contextPath + '/logout'}}">注销</a></li>
 			</ul>
 		</div>
 	</div>
-	
-
-	
 </nav>
 	

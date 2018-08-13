@@ -30,9 +30,9 @@ public class AuthenticationApi {
 
 	@ApiOperation("获取token")
 	@GetMapping("/token")
-	public String getToken(@RequestParam(value = "userIdentifier") String userIdentifier,
+	public String getToken(@RequestParam(value = "identifier") String identifier,
 			@RequestParam(value = "secret") String secret) {
-		return tokenService.create(userIdentifier, secret);
+		return tokenService.create(identifier, secret);
 	}
 
 	

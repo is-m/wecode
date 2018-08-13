@@ -42,6 +42,7 @@
 		<module>wecode-security-authorization</module>
 		<module>wecode-security-authentication</module>
 		<module>wecode-security-core</module>
+		<module>wecode-web-support</module>
 	</modules>
 
 	<dependencyManagement>
@@ -102,6 +103,15 @@
 				<artifactId>javax.servlet-api</artifactId>
 				<version>3.1.0</version>
 			</dependency>
+			
+			<!-- hex encrpt -->
+			<!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
+			<dependency>
+			    <groupId>commons-codec</groupId>
+			    <artifactId>commons-codec</artifactId>
+			    <version>1.11</version>
+			</dependency>
+			
 		</dependencies>
 	</dependencyManagement>
 

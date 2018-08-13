@@ -105,6 +105,46 @@ define(function(require){
 		id:null,
 		ajax:{},
 	}  
+	
+	var renderWidget = function($control,Widget,widgetOption,data,templateId,templateHtml){ 
+		var widgetOp = $.extend({},Widget.define.op,widgetOption || {});
+		var widgetManager = new Widget(name,widgetOp,data);
+		
+		widgetManager.init && widgetManager.init();
+		
+		var tmpl = require("template");
+		//debugger
+		// 如果存在模版串，后续可能会判断是否需要执行初始化方法
+		if(templateHtml){			
+			tmpl(templateId,templateHtml); 
+		}
+		
+		var $data = { $win:window, $widget:widgetManager.op, value:'aui' };
+		
+		var templatedHtml = tmpl(templateId, $data);
+		
+		// widgetDefine.template = templatedHtml;  
+		
+		var $dom = $(templatedHtml);
+		
+		widgetManager.$dom = $dom;
+		var doTemplateHtml = widgetManager.beforeRender ? widgetManager.beforeRender($dom) : $dom;
+		 
+		$control.html($dom);
+		$control.data("__widget",widgetManager);
+		
+		// TODO:可以接收一个promise 对象，防止afterRender里存在异步方法
+		// TODO:后续，需要整理出一个JS执行流程的内容，存在Promise则等Promise返回后执行各个回调函数
+		
+		var promise = widgetManager.afterRender && widgetManager.afterRender();
+		if(promise && promise["done"] && promise["fail"] && promise["then"]){
+			promise.done($.proxy(widgetManager.ready,widgetManager));
+		}else{
+			widgetManager.ready && widgetManager.ready();
+		}
+		
+		componentMap[buildComponentId(Widget.name)] = widgetManager; 
+	}
 
 	$.fn.xWidget = function(name, op, data) {  
 		// 定义一个异步对象  
@@ -129,61 +169,23 @@ define(function(require){
 			var widgetDefine = Widget.define;
 			
 			var initCompoent = $.proxy(function(){  
-				if(widgetDefine.templateUri /*&& !widgetDefine.template*/){  
+				// 如果没有templateUri，那么TEMPLATE HTML 应该绑定到控件名字上
+				if(widgetDefine.templateUri && !widgetDefine.__template){  
 					var templateUri = appConfig.contextPath + "/" +widgetDefine.templateUri;
 					$.ajax({url:templateUri,async:false}).success(function(html){  
-						var widgetOp = $.extend({},widgetDefine.op,op || {});
-						var widgetManager = new Widget(name,widgetOp,data);
-						
-						widgetManager.init && widgetManager.init();
-						
-						var tmpl = require("template");
-						
-						tmpl(templateUri,html);
-						
-						var $data = {
-							$win:window,
-							$widget:widgetManager.op,
-							value:'aui'
-						}
-						
-						var templatedHtml = tmpl(templateUri, $data);
-						
-						widgetDefine.template = templatedHtml;  
-						
-						var $dom = $(templatedHtml);
-						
-						widgetManager.$dom = $dom;
-						var doTemplateHtml = widgetManager.beforeRender ? widgetManager.beforeRender($dom) : $dom;
-						 
-						$widgetBegin.html($dom);
-						$widgetBegin.data("__widget",widgetManager);
-						
-						// TODO:可以接收一个promise 对象，防止afterRender里存在异步方法
-						// TODO:后续，需要整理出一个JS执行流程的内容，存在Promise则等Promise返回后执行各个回调函数
-						
-						var promise = widgetManager.afterRender && widgetManager.afterRender();
-						if(promise && promise["done"] && promise["fail"] && promise["then"]){
-							promise.done($.proxy(widgetManager.ready,widgetManager));
-						}else{
-							widgetManager.ready && widgetManager.ready();
-						}
-						
-						componentMap[_id] = widgetManager; 
+						widgetDefine.__template = html;
+						renderWidget($widgetBegin,Widget,op,data,templateUri,html);
 					}).error(function(err){
 						console.log(err);
 						if(err.status==404){
 							widgetDefine.template = "no found component for uri ";
 							$widgetBegin.after(widgetDefine.template);
 							var widgetManager = new Widget(name,op,data,null); 
-							componentMap[_id] = widgetManager; 
+							//componentMap[_id] = widgetManager; 
 						} 
 					});
 				}else{
-					$widgetBegin.after(widgetDefine.template);
-					var widgetManager = new Widget(name,op,data,null);
-					componentMap[_id] = widgetManager;
-					//alert($widgetBegin.data("widget"));
+					renderWidget($widgetBegin,Widget,op,data,widgetDefine.templateUri,widgetDefine.__template);
 				}
 			},{Widget:Widget,widgetDefine:widgetDefine,widgetBegin:$widgetBegin,op:op});
 			

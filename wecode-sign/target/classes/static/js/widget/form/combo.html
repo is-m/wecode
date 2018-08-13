@@ -1,6 +1,19 @@
-<div class="ui-select" style="position: relative; width:100%;">
+<div class="ui-select collapsed" style="position: relative; width:100%;">
 	<div class="ui-select-selection">
-		<input class="form-control" style="width:100%;" placeholder="this is combo" > 
+		<div class="ui-select-input">
+			<input class="form-control" style="width:100%;" placeholder="this is combo" > 
+		</div> 
+		<span class="ui-select-arrow ">  
+			<i class="ui-select-icon fa fa-angle-down"></i>
+		</span>
 	</div>
-	<span class="ui-select-arrow" style=" display:block; background:rgba(F,F,F,.1); position: absolute; right:0; top:0; line-height:38px; width:30px; text-align:center; cursor:pointer;">∨</span>
+	
+	<div class="ui-select-content" style="display: none">
+		<div class="ui-select-content-filter">
+		</div>
+		<div class="ui-select-content-body">
+			ui-select-content-body
+		</div>
+	</div>
+	
 </div>

@@ -85,6 +85,19 @@ define(["require","jquery","rt/logger"],function(require,$,log){
 			
 			if(enableCache) pageCache[url] = html; 
 			$el.html(html);
+			
+			// 检查需要自动初始化的控件并完成渲染
+			// TODO:待跟app.js中同类代码重构
+			$el.find("[data-x-widget]").each(function(){
+				var $this = $(this);
+				var widgetName =  $this.data("xWidget");
+				require(["widget/"+widgetName],$.proxy(function(widget){
+					// 加载完组件则初始化组件的基本内容
+					var options = $this.data("xWidgetOption");
+					$this.xWidget(this.widgetName,$.isPlainObject(options) ? options : JSON.parse(options || "{}"));
+				},{ el:el, widgetName:widgetName })); 
+			});
+			
 			$el.data("inited",true);
 			$el.attr("data-module",url);
 			pageContextElStack.push($el); 

@@ -3,8 +3,8 @@ pageContext.define("admin.sitemap.list",["widget/data/datatable","widget/tab","w
 	
 	page.ready = function(){    
 		//debugger
-		$("#createDate1").xWidget("form.DateBox",{ showIconButton:false ,format : 'yyyy-mm-dd hh:ii',minView : "hour"});
-		$("#createDate2").xWidget("form.DateBox",{ showIconButton:false ,format : 'yyyy-mm-dd hh:ii',minView : "hour"});
+		//$("#createDate1").xWidget("form.DateBox",{ showIconButton:false ,format : 'yyyy-mm-dd hh:ii',minView : "hour"});
+		//$("#createDate2").xWidget("form.DateBox",{ showIconButton:false ,format : 'yyyy-mm-dd hh:ii',minView : "hour"});
 		
 		var gridOption = {
 			selectMode:'mutli', /* 多选：mutli,单选：single,默认：normal */

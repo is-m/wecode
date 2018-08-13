@@ -1,0 +1,14 @@
+<div class="input-append date form_datetime">
+<% if($widget.showIconButton) {%>
+	<div class="input-group">
+		<div class="input-group-prepend"> <!-- 组件图标 fa fa-puzzle-piece --> <!-- <button class="btn btn-outline-secondary add-on" type="button" id="btnSelectParent"><i class="fa fa-remove"></i></button> -->
+			<button class="btn btn-outline-secondary add-on" type="button">
+				<i class="fa fa-calendar"></i>
+			</button>
+		</div>
+		<input type="text" class="form-control" readonly="readonly">
+	</div>
+<%}else{%>
+	<input type="text" class="form-control" readonly="readonly">
+<%}%>
+</div>

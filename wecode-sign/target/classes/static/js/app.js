@@ -90,8 +90,13 @@ define(function(require, exports, module){
 			var widgetName =  $this.data("xWidget");
 			require(["widget/"+widgetName],$.proxy(function(widget){
 				// 加载完组件则初始化组件的基本内容
-				$this.xWidget(this.widgetName);
+				var options = $this.data("xWidgetOption");
+				$this.xWidget(this.widgetName,JSON.parse(options || "{}"));
 			},{ el:el, widgetName:widgetName })); 
+		});
+		
+		$(document).click(function(){  
+			console.log("document click hidden register auto process document click listener handler")
 		});
 	}
 	

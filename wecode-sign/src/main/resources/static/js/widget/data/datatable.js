@@ -82,29 +82,30 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 					if($el.is(".table-td-text")){
 						$el = $el.closest("td");
 					}
-					if($el.is("td")){
-						var $curr = $el.children();
-						$el.data("__el",$curr);
-						
+					if($el.is("td")){  
+						var editorRender = tableEditorRenderMap["default"]; 
+						var field = $el.data("field");;
 						var colOp = self._getColumnOp($el.data("field"));
-						if(colOp.editor && colOp.editor.type){
-							var editorRender = tableEditorRenderMap[colOp.editor.type];
-							editorRender.render($el).done(function($ctrl){
-								$ctrl.xWidget().setValue("okay");
+						var ctrlId = "editor_"+field;
+						var $editContainer = self.$dom.find("#"+ctrlId);
+						var top = $el.position().top;
+						if($editContainer.length){
+							$editContainer.css({ top:top ,display:"block" });
+						}else{  
+							var h = $el.outerHeight(),w=$el.outerWidth(), left = $el.position().left;
+							$editContainer = $('<div id="'+ctrlId+'" style="display:block; position:absolute; top:{0}px; left:{1}px; height:{2}px; width:{3}px;"></div>'.format(top,left,h,w))
+							
+							if(colOp.editor && colOp.editor.type){
+								editorRender = tableEditorRenderMap[colOp.editor.type]; 
+							}
+							
+							editorRender.render($editContainer).done(function($ctrl){
+								$ctrl.xWidget() && $ctrl.xWidget().setValue("okay");
 							}); 
-						}else{
-							$editor = $("<input name='test' style='width:100%' >");
-							$editor.val($el.text());
-							$editor.on("blur",function(e){
-								var $el = $(this);
-								var $td = $el.closest("td");
-								var $text = $td.data("__el");
-								$text.html($el.val());
-								$td.html($text); 
-							});
-							$el.html($editor)
-							$editor.get(0).focus();
-						}
+							
+						    self.$dom.append($editContainer);
+						    $editContainer.find("input").val("123");
+						}  
 					}
 				});
 			}
@@ -426,9 +427,13 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 	
 	var tableEditorRenderMap = {
 		"default":{
-			render:function($td){
-				var $el = $("<input name='xxx' />");
-				return $el;
+			render:function($td){ 
+				debugger
+				var dtd = $.Deferred();
+				var $ctrl = $('<input class="form-control" style="width:100%;height:100%" />');
+				$td.html($ctrl);
+				dtd.resolve($ctrl);
+				return dtd;
 			},
 			setValue:function(v,record){
 				

@@ -638,3 +638,53 @@ h1 {
 .form_datetime input {
 	font-size:1em;
 }
+
+
+/* UI */
+/* TIIP: 居中也可以绝对定位 top:50%，以及margin: 负数（元素高度的一半） */
+.ui-select .ui-select-selection {
+	position: relative;
+}
+.ui-select .ui-select-arrow {
+	display:block; 
+	background:rgba(F,F,F,.1); 
+	position: absolute; 
+	right:0; 
+	top:50%;  
+	width:30px; 
+	text-align:center; 
+	cursor:pointer;
+	margin-top: -9px;
+}
+
+.ui-select .ui-select-content {
+	background: #EEE;
+	border:1px solid #aaa;
+	border-top: 0;
+}
+
+.ui-select .ui-select-content-body .ui-select-data-item {
+	padding:5px;
+}
+
+.ui-select .ui-select-content-body .ui-select-data-item:nth-child(odd){
+	background: #FFF;
+}
+
+.ui-select .ui-select-content-body .ui-select-data-item:nth-child(even){
+	background: #EEE;
+}
+
+.ui-select .ui-select-content-body .ui-select-data-item:hover{
+	background:#777; color:#FFF;
+}
+
+.ui-select .ui-select-content-body .ui-select-data-item.selected {
+		
+}
+
+.ui-select .ui-select-content-body ul {
+	margin-bottom: 0;
+}
+ 
+ 
