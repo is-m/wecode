@@ -243,4 +243,5 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R ext
 	protected E newEntity() {
 		return newEntity(null);
 	}
+ 
 }

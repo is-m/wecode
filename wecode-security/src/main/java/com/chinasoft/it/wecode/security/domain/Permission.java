@@ -46,7 +46,7 @@ public class Permission extends BaseEntity {
 	/**
 	 * 角色，放弃维护关系，由role维护
 	 */
-	@ManyToMany(mappedBy = "permissions",cascade=CascadeType.ALL)
+	@ManyToMany(mappedBy = "permissions", cascade = CascadeType.ALL)
 	private Set<Role> roles;
 
 	public String getCode() {
@@ -78,6 +78,29 @@ public class Permission extends BaseEntity {
 	}
 
 	public void setType(String type) {
+		this.type = type;
+	}
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
+
+	public Permission() {
+
+	}
+
+	public Permission(String pid, String code, String note) {
+		this.pid = pid;
+		this.code = code;
+		this.note = note;
+	}
+
+	public Permission(String pid, String code, String note, String type) {
+		this(pid, code, note);
 		this.type = type;
 	}
 

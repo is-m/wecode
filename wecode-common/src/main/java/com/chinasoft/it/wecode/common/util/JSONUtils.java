@@ -8,10 +8,16 @@ import org.slf4j.Logger;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 public class JSONUtils {
 
-	private final static ObjectMapper objectMapper = new ObjectMapper();
+	private final static ObjectMapper objectMapper;
+	
+	static {
+		objectMapper = new ObjectMapper();
+		objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+	}
 
 	private static final Logger log = LogUtils.getLogger();
 

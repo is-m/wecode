@@ -62,17 +62,18 @@ public class CrudApi<E extends BaseEntity, D extends BaseDto, R extends BaseDto,
 	 * @param condition
 	 * @return
 	 */
-	@GetMapping
+	@GetMapping("/s")
 	@ApiOperation(value = "查询全部", notes = "查询全部(如果总记录树大于1000条将会出现异常，出现异常时建议使用分页查询)")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = PageConstants.PARAM_PAGE, value = "当前页", paramType = "query", dataType = "Long"),
 			@ApiImplicitParam(name = PageConstants.PARAM_SIZE, value = "页大小", paramType = "query", dataType = "Long"), })
 	public List<R> findAll(HttpServletRequest request, Q condition,
-			@RequestParam(name = "maxReturn", required = false, value = "false") boolean maxReturn) {
-		Page<R> pageResult = service.findPagedList(
-				new PageRequest(PageConstants.START_PAGE, maxReturn ? Integer.MAX_VALUE : 1000), condition);
+			@RequestParam(name = "maxReturn", required = false, defaultValue = "false") Boolean maxReturn) {
+		Page<R> pageResult = service.findPagedList(new PageRequest(0, maxReturn ? Integer.MAX_VALUE : 1000), condition);
 		// 下面如果出现异常解决问题有两种方法，1.重新设置最大允许值 1000=?，2.设置maxReturn=true
-		Assert.isTrue(!maxReturn && pageResult.getTotalPages() > 1, "find all is not max return but record return out of allow size 1000 ");
+		Assert.isTrue(!maxReturn && pageResult.getTotalPages() <= 1,
+				"find all is not max return flag but return out of allow size 1000 to "
+						+ pageResult.getTotalElements());
 		return pageResult.getContent();
 	}
 
@@ -94,7 +95,7 @@ public class CrudApi<E extends BaseEntity, D extends BaseDto, R extends BaseDto,
 	 * @param ids
 	 * @return
 	 */
-	@GetMapping("/s")
+	@GetMapping("/map")
 	public Map<String, R> findMapIn(@RequestParam("ids") String ids) {
 		String[] idArray = ids.split(",");
 		Map<String, R> result = new HashMap<String, R>();

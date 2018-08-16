@@ -21,16 +21,22 @@
 				<textarea class="form-control" name="remark" rows="3" disabled="disabled"></textarea>
 			</div>
 		</div>
-	</form>
+	</form> 
 	
 	<div class="row">
+	  <div class="col-sm-12">
+		<button class="btn btn-outline-secondary btn-sm" page-action="sync">权限同步</button>
+		<button class="btn btn-outline-secondary btn-sm" page-action="clear">移除无效权限</button>
+	  </div>
 	  <div class="col-sm-6">
 	    <div class="card">
 	      <div class="card-body">
 	        <h5 class="card-title">栏目权限</h5>
-	        <div id="treeCatelog" 
-		         data-x-widget="data/tree" 
-		         data-x-widget-option='{ "id":"treeCatelogEl", "dataset":"/services/base/catelog/tree" ,"check": { "enable": true } }'>
+	        <div  style="height: 180px; overflow: auto;">
+		        <div id="treeCatelog" 
+			         data-x-widget="data/tree" 
+			         data-x-widget-option='{ "id":"treeCatelogEl", "dataset":"/services/base/catelog/tree" ,"check": { "enable": true } }'>
+		        </div>
 	        </div>
 	      </div>
 	    </div>
@@ -39,10 +45,12 @@
 	    <div class="card">
 	      <div class="card-body">
 	        <h5 class="card-title">功能权限</h5>
-	        <div id="treeFunction" 
-	             data-x-widget="data/tree" 
-		         data-x-widget-option='{ "id":"treeFunctionEl", "dataset":"/services/base/catelog/tree" ,"check": { "enable": true } }'>
-	        
+	        <div style="height: 180px; overflow: auto;">
+		        <div id="treeFunction" 
+		             data-x-widget="data/tree" 
+			         data-x-widget-option='{ "id":"treeFunctionEl", "dataset":"http://localhost:8880/wecode/asset/services/security/permission/s" ,"check": { "enable": true },"data": { "key":{ "name" : "note"} ,"simpleData": { "enable": true, "idKey": "id", "pIdKey": "pid",  "rootPId": null } } }'>
+		        
+		        </div>
 	        </div>
 	      </div>
 	    </div>
