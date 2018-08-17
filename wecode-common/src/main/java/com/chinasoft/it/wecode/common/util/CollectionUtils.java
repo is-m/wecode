@@ -49,4 +49,31 @@ public class CollectionUtils {
 		}
 		return result;
 	}
+
+	/**
+	 * 集合合并
+	 * 
+	 * @param collections
+	 * @return
+	 */
+	@SafeVarargs
+	public static <T> List<T> megre(Collection<T>... collections) {
+		int totalSize = 0;
+		for (Collection<T> coll : collections) {
+			if (notEmpty(coll)) {
+				totalSize += coll.size();
+			}
+		}
+
+		if (totalSize > 0) {
+			List<T> result = new ArrayList<>(totalSize);
+			for (Collection<T> coll : collections) {
+				if (notEmpty(coll)) {
+					result.addAll(coll);
+				}
+			}
+		}
+
+		return new ArrayList<>(0);
+	}
 }

@@ -1,12 +1,8 @@
 package com.chinasoft.it.wecode.security.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,7 +17,6 @@ import com.chinasoft.it.wecode.security.authorization.service.impl.PermissionFin
 import com.chinasoft.it.wecode.security.domain.Permission;
 import com.chinasoft.it.wecode.security.dto.PermissionDto;
 import com.chinasoft.it.wecode.security.dto.PermissionResultDto;
-import com.chinasoft.it.wecode.security.dto.RoleResultDto;
 import com.chinasoft.it.wecode.security.repository.PermissionRepository;
 import com.google.common.base.Objects;
 
@@ -99,6 +94,8 @@ public class PermissionService extends BaseService<Permission, PermissionDto, Pe
 	 */
 	public void clearInvalid() {
 		List<ResourceDto> resources = finderService.scan();
+
+		// -- 清理不包含在发现的模块的节点
 		List<String> moduleCodeList = resources.parallelStream().map(ResourceDto::getPermissionCode)
 				.collect(Collectors.toList());
 		// 找到所有未和系统权限匹配的的模块
@@ -108,14 +105,15 @@ public class PermissionService extends BaseService<Permission, PermissionDto, Pe
 		// 清理权限，以及权限与角色的关系
 		List<Permission> waitRemoveOperates = repo.findByPidIn(parentIdList);
 
-		List<Permission> waitRemoveList = new ArrayList<>(moduleCodeList.size() + waitRemoveOperates.size());
-		waitRemoveList.addAll(waitRemoveModules);
-		waitRemoveList.addAll(waitRemoveOperates);
+		List<Permission> waitRemoveList = CollectionUtils.megre(waitRemoveModules, waitRemoveOperates);
 		waitRemoveList.parallelStream().forEach(item -> item.setRoles(null));
-		
+
+		// 清理角色关系数据，与实际权限数据
 		repo.save(waitRemoveList);
 		repo.delete(waitRemoveList);
-		
+
+		// -- 清理包含模块但是已经失效的功能
+
 	}
 
 }

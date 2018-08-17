@@ -8,6 +8,7 @@ pageContext.define("admin.security.role.authority",["rt/request"],function(page,
 	page.init = function(record){
 		$("#formAuthority").jsonData(record);
 		// 加载角色栏目，权限数据 
+		// 加载绑定的栏目
 	}
 	
 	page.sync = function(){
@@ -19,7 +20,13 @@ pageContext.define("admin.security.role.authority",["rt/request"],function(page,
 	}
 	
 	page.clear = function(){
-		
+		http.doDelete("/services/security/permission/clearInvalid").success(function(res){ 
+			$("#treeCatelog").xWidget().reload();
+			$("#treeFunction").xWidget().reload();
+		});
 	}
 	
+	page.closePage = function(){
+		$("#demoTab").xWidget().closeTab();
+	}
 });
