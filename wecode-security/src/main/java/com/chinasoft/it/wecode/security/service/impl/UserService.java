@@ -19,6 +19,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.chinasoft.it.wecode.annotations.security.Module;
+import com.chinasoft.it.wecode.annotations.security.Operate;
 import com.chinasoft.it.wecode.base.BaseService;
 import com.chinasoft.it.wecode.common.mapper.BaseMapper;
 import com.chinasoft.it.wecode.excel.service.IExcelExportService;
@@ -31,6 +33,7 @@ import com.chinasoft.it.wecode.security.dto.UserResultDto;
 
 //https://spring.io/blog/2011/04/26/advanced-spring-data-jpa-specifications-and-querydsl
 @Service
+@Module(code = "user", desc = "user")
 public class UserService extends BaseService<User, UserDto, UserResultDto> {
 
 	@Autowired
@@ -72,6 +75,7 @@ public class UserService extends BaseService<User, UserDto, UserResultDto> {
 	 * @param exportDto
 	 * @param output
 	 */
+	@Operate(code="export",desc="export")
 	public void export(UserExportDto exportDto, OutputStream output) throws Exception {
 		logger.info("call UserService.export {}", exportDto);
 		// 找到excel.security.user的bean
@@ -85,6 +89,7 @@ public class UserService extends BaseService<User, UserDto, UserResultDto> {
 	 * @param ruleConfigFilePath
 	 * @throws Exception
 	 */
+	//@Operate(code="import",desc="import")
 	public void imports(InputStream datafile) throws Exception {
 		excelService.imports("security.user", datafile);
 	}

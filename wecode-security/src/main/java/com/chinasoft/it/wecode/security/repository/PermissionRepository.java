@@ -38,6 +38,15 @@ public interface PermissionRepository extends JpaRepository<Permission, String>,
 	 * @return
 	 */
 	List<Permission> findByCodeNotInAndType(List<String> persistCodes, String type);
+	
+	/**
+	 * 根据权限代码与类型获取权限数据
+	 * 
+	 * @param persistCodes
+	 * @param type
+	 * @return
+	 */
+	List<Permission> findByCodeInAndType(List<String> persistCodes, String type);
 
 	/**
 	 * 根据父节点ID查找

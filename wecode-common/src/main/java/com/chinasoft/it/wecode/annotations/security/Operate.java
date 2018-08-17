@@ -30,6 +30,12 @@ public @interface Operate {
 	 * @return
 	 */
 	Policy policy() default Policy.Default;
+	
+	/**
+	 * 顺序
+	 * @return
+	 */
+	int sort() default 9;
 
 	public static enum Policy {
 		/**

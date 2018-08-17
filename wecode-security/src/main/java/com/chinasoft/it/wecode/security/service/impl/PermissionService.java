@@ -2,7 +2,9 @@ package com.chinasoft.it.wecode.security.service.impl;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -113,7 +115,27 @@ public class PermissionService extends BaseService<Permission, PermissionDto, Pe
 		repo.delete(waitRemoveList);
 
 		// -- 清理包含模块但是已经失效的功能
+		List<Permission> waitCheckModules = repo.findByCodeInAndType(moduleCodeList, TYPE_M);
+		parentIdList = waitCheckModules.parallelStream().map(Permission::getId).collect(Collectors.toList());
+		List<Permission> waitCheckOperates = repo.findByPidIn(parentIdList);
 
+		Map<String, ResourceDto> list2Map = CollectionUtils.list2Map(resources, item -> item.getPermissionCode());
+		for (Permission m : waitCheckModules) {
+			ResourceDto resourceDto = list2Map.get(m.getCode());
+			// 获取资源的权限
+			Set<String> operateCodeSet = resourceDto.getOperations().parallelStream()
+					.map(item -> item.getPermissionCode()).collect(Collectors.toSet());
+
+			List<Permission> waitRemoveOperateList = waitCheckOperates.parallelStream()
+					// 筛选当前模块所有功能
+					.filter(item -> Objects.equal(m.getId(), item.getPid()))
+					// 筛选未匹配上的功能
+					.filter(item -> !operateCodeSet.contains(item.getCode())).collect(Collectors.toList());
+
+			waitRemoveOperateList.parallelStream().forEach(item -> item.setRoles(null));
+			repo.save(waitRemoveOperateList);
+			repo.delete(waitRemoveOperateList);
+		}
 	}
 
 }
