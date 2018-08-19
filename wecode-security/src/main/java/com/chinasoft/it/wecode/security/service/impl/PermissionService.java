@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -56,7 +55,7 @@ public class PermissionService extends BaseService<Permission, PermissionDto, Pe
 				// 新增的资源节点，直接保存所有功能
 				final String resourceId = presource.getId();
 				List<Permission> collect = resource.getOperations().parallelStream()
-						.map(o -> new Permission(resourceId, o.getPermissionCode(), o.getDesc()))
+						.map(o -> new Permission(resourceId, o.getPermissionCode(), o.getDesc(), TYPE_O))
 						.collect(Collectors.toList());
 				repo.save(collect);
 			} else {
@@ -93,6 +92,7 @@ public class PermissionService extends BaseService<Permission, PermissionDto, Pe
 
 	/**
 	 * 清除失效的权限点
+	 * TODO:目前代码有BUG
 	 */
 	public void clearInvalid() {
 		List<ResourceDto> resources = finderService.scan();
@@ -100,10 +100,12 @@ public class PermissionService extends BaseService<Permission, PermissionDto, Pe
 		// -- 清理不包含在发现的模块的节点
 		List<String> moduleCodeList = resources.parallelStream().map(ResourceDto::getPermissionCode)
 				.collect(Collectors.toList());
+		
 		// 找到所有未和系统权限匹配的的模块
 		List<Permission> waitRemoveModules = repo.findByCodeNotInAndType(moduleCodeList, TYPE_M);
 		List<String> parentIdList = waitRemoveModules.parallelStream().map(Permission::getId)
 				.collect(Collectors.toList());
+		
 		// 清理权限，以及权限与角色的关系
 		List<Permission> waitRemoveOperates = repo.findByPidIn(parentIdList);
 
@@ -131,10 +133,11 @@ public class PermissionService extends BaseService<Permission, PermissionDto, Pe
 					.filter(item -> Objects.equal(m.getId(), item.getPid()))
 					// 筛选未匹配上的功能
 					.filter(item -> !operateCodeSet.contains(item.getCode())).collect(Collectors.toList());
-
-			waitRemoveOperateList.parallelStream().forEach(item -> item.setRoles(null));
-			repo.save(waitRemoveOperateList);
-			repo.delete(waitRemoveOperateList);
+			if (CollectionUtils.notEmpty(waitRemoveOperateList)) {
+				waitRemoveOperateList.parallelStream().forEach(item -> item.setRoles(null));
+				repo.save(waitRemoveOperateList);
+				repo.delete(waitRemoveOperateList);
+			}
 		}
 	}
 

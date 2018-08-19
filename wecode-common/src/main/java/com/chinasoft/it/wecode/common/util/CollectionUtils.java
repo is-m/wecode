@@ -72,6 +72,7 @@ public class CollectionUtils {
 					result.addAll(coll);
 				}
 			}
+			return result;
 		}
 
 		return new ArrayList<>(0);

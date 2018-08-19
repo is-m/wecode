@@ -2,7 +2,6 @@ package com.chinasoft.it.wecode.security.api;
 
 import javax.annotation.PostConstruct;
 
-import org.springframework.beans.factory.wiring.BeanWiringInfoResolver;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +15,7 @@ import com.chinasoft.it.wecode.security.dto.PermissionResultDto;
 import com.chinasoft.it.wecode.security.service.impl.PermissionService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @Api(tags = "权限API")
 @RestController
@@ -29,11 +29,13 @@ public class PermissionApi extends CrudApi<Permission, PermissionDto, Permission
 		service = (PermissionService) super.service;
 	}
 
+	@ApiOperation(value = "权限同步", notes = "自动识别系统权限")
 	@PostMapping("/sync")
 	public void sync() {
 		service.sync();
 	}
 
+	@ApiOperation(value = "清理无效权限", notes = "清理无效权限")
 	@DeleteMapping("/clearInvalid")
 	public void clearInvalid() {
 		service.clearInvalid();

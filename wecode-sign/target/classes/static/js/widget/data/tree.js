@@ -1,5 +1,8 @@
 define(["widget/factory","jquery","rt/util"],function(widget,$,util){ 
-	
+	/**
+	 * 事件：
+	 * after.selected(val) 选中后
+	 */
 	widget.define("data/tree",{
 		defultOption:{
 			check: {
@@ -46,16 +49,38 @@ define(["widget/factory","jquery","rt/util"],function(widget,$,util){
 		},
 		selectedNodes:function(values){
 			this.op.defaultChecked=$.isArray(values) ? values : [values];
-			$.fn.zTree.init(this.$dom, this.op , this.op._data);  
+			this.ztreeObj = $.fn.zTree.init(this.$dom, this.op , this.op._data);  
+		},
+		/**
+		 * 设置选中的值
+		 * prop:属性名
+		 * values:选中项
+		 */
+		setCheckedValues:function(prop,values){
+			var ztree = this.ztreeObj;
+			var vals = $.isArray(values) ? values : [values];
+			for(var i=0;i<vals.length;i++){
+				var node = ztree.getNodeByParam(prop,vals[i]);
+				ztree.checkNode(node, true, true);
+			} 
+		},
+		/**
+		 * 获取选中项
+		 * 
+		 * 暂时值返回状态为完全选中的数据,如果需要，后续可以给该类提供参数
+		 * 查看父节点的check_Child_State字段：1为子节点未被全选中，2表示全选中
+		 */
+		getCheckedNodes:function(){
+			return this.ztreeObj.getCheckedNodes().filter(function(item){return !item.isParent || item.check_Child_State == 2 }); 
 		},
 		bindData:function(data){ 
-			$.fn.zTree.init(self.$dom, self.op , this.op._data = data); 
+			this.ztreeObj = $.fn.zTree.init(self.$dom, self.op , this.op._data = data); 
 		},
 		reload:function(){
 			var self = this; 
 			self.$dom.html("loading...");
 			util.getDataset(this.op.dataset).done(function(data){
-				$.fn.zTree.init(self.$dom, self.op , self.op._data = data);  
+				self.ztreeObj = $.fn.zTree.init(self.$dom, self.op , self.op._data = data);  
 			});
 		}
 	});

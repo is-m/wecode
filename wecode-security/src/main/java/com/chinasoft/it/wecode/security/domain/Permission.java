@@ -93,6 +93,10 @@ public class Permission extends BaseEntity {
 
 	}
 
+	public Permission(String id) {
+		super.setId(id);
+	}
+
 	public Permission(String pid, String code, String note) {
 		this.pid = pid;
 		this.code = code;

@@ -11,6 +11,8 @@ public class RoleResultDto extends RoleDto {
 	private static final long serialVersionUID = -7907070576163420456L;
 
 	private String id;
+	
+	//private PermissionResultDto dto;
 
 	public String getId() {
 		return id;

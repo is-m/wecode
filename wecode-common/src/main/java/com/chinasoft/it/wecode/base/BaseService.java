@@ -61,7 +61,38 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R ext
 	/**
 	 * dto entity mapper
 	 */
-	protected final BaseMapper<E, D, R> mapper;
+	public final BaseMapper<E, D, R> mapper;
+
+	/**
+	 * 保存entity
+	 * 
+	 * @param entity
+	 * @return
+	 */
+	public E save(E entity) {
+		return repo.save(entity);
+	}
+
+	/**
+	 * 根据ID获取集合 
+	 * TODO:待确定是否通过单个ID来获取数据，通过单个ID获取数据也许可以使用到缓存
+	 * 
+	 * @param ids
+	 * @return
+	 */
+	public List<E> findAll2(Iterable<String> ids) {
+		return repo.findAll(ids);
+	}
+
+	/**
+	 * 根据单个ID获取数据
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public E findOne2(String id) {
+		return repo.findOne(id);
+	}
 
 	/**
 	 * entity manager
@@ -243,5 +274,5 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R ext
 	protected E newEntity() {
 		return newEntity(null);
 	}
- 
+
 }
