@@ -50,6 +50,8 @@ public interface BaseMapper<E, D, R> {
 	 * @return
 	 */
 	E to(D dto);
+	
+	E result2Entity(R dto);
 
 	/**
 	 * Result Dto List 转 Entity List

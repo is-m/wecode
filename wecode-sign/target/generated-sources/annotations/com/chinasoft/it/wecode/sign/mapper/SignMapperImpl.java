@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2018-05-23T07:37:34+0800",
+    date = "2018-08-23T01:08:03+0800",
     comments = "version: 1.2.0.CR1, compiler: javac, environment: Java 1.8.0_92 (Oracle Corporation)"
 )
 @Component
@@ -60,6 +60,22 @@ public class SignMapperImpl implements SignMapper {
     }
 
     @Override
+    public Sign result2Entity(SignResultDto arg0) {
+        if ( arg0 == null ) {
+            return null;
+        }
+
+        Sign sign = new Sign();
+
+        sign.setUserId( arg0.getUserId() );
+        sign.setSignDate( arg0.getSignDate() );
+        sign.setBeginTime( arg0.getBeginTime() );
+        sign.setEndTime( arg0.getEndTime() );
+
+        return sign;
+    }
+
+    @Override
     public List<Sign> toEntities(List<SignResultDto> arg0) {
         if ( arg0 == null ) {
             return null;
@@ -67,7 +83,7 @@ public class SignMapperImpl implements SignMapper {
 
         List<Sign> list = new ArrayList<Sign>( arg0.size() );
         for ( SignResultDto signResultDto : arg0 ) {
-            list.add( signResultDtoToSign( signResultDto ) );
+            list.add( result2Entity( signResultDto ) );
         }
 
         return list;
@@ -85,20 +101,5 @@ public class SignMapperImpl implements SignMapper {
         }
 
         return list;
-    }
-
-    protected Sign signResultDtoToSign(SignResultDto signResultDto) {
-        if ( signResultDto == null ) {
-            return null;
-        }
-
-        Sign sign = new Sign();
-
-        sign.setUserId( signResultDto.getUserId() );
-        sign.setSignDate( signResultDto.getSignDate() );
-        sign.setBeginTime( signResultDto.getBeginTime() );
-        sign.setEndTime( signResultDto.getEndTime() );
-
-        return sign;
     }
 }

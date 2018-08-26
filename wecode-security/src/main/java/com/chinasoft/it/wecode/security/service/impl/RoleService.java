@@ -1,8 +1,6 @@
 package com.chinasoft.it.wecode.security.service.impl;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,7 +17,6 @@ import com.chinasoft.it.wecode.common.mapper.BaseMapper;
 import com.chinasoft.it.wecode.common.util.CollectionUtils;
 import com.chinasoft.it.wecode.security.domain.Permission;
 import com.chinasoft.it.wecode.security.domain.Role;
-import com.chinasoft.it.wecode.security.dto.PermissionResultDto;
 import com.chinasoft.it.wecode.security.dto.RoleDto;
 import com.chinasoft.it.wecode.security.dto.RoleResultDto;
 
@@ -44,15 +41,15 @@ public class RoleService extends BaseService<Role, RoleDto, RoleResultDto> {
 		// 先清空角色权限
 		if (CollectionUtils.notEmpty(current.getPermissions())) {
 			current.setPermissions(null);
-			save(current);
+			repo.save(current);
 		}
 
 		// 权限不为空时，添加角色权限
-		if (permissionIds != null && permissionIds.length > 0) {
-			List<Permission> currentPermissions = permissionService.findAll2(Arrays.asList(permissionIds));
-			Set<Permission> permissions = new HashSet<>(currentPermissions);
+		if (permissionIds != null && permissionIds.length > 0) { 
+			Set<Permission> permissions = permissionService.findAll(Arrays.asList(permissionIds)).parallelStream()
+					.map(permissionService.getMapper()::result2Entity).collect(Collectors.toSet());
 			current.setPermissions(permissions);
-			save(current);
+			repo.save(current);
 		}
 	}
 

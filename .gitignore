@@ -1,0 +1,19 @@
+# common
+*.log
+
+# IntelliJ IDEA
+*.idea
+*.iml
+out
+gen
+/**/build/
+/**/classes/
+/**/logs/
+
+# eclipse
+/**/target/
+
+*.classpath           # 所有目录下或者后缀是.classpath
+*.project             # 所有目录下或者后缀是.project
+*.settings/*          # 所有目录下或者后缀是.settings，以及.settings下所有文件
+*.gitignore           # 所有目录下或者后缀是.gitignore

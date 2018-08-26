@@ -12,6 +12,13 @@ pageContext.define("admin.security.role.authority",["rt/request"],function(page,
 		// 加载角色栏目，权限数据 
 		http.doGet("/services/security/role/{0}/permissionIds".format(role.id)).success(function(permissionIds) {
 			$("#treeFunction").xWidget().setCheckedValues("id",permissionIds);
+			// 加载完权限后，根据权限来影响栏目的选项
+			var treeCatelog = $("#treeCatelog").xWidget();
+			var undisabledNodes = treeCatelog.getAllNodes().filter(function(item){return item.allowType!="authority";});
+			treeCatelog.setCheckNode(undisabledNodes.filter(function(item){ return !item.isParent; }), true, true); 
+			//treeCatelog.setChkDisabled(undisabledNodes,true);
+
+			// treeObj.setChkDisabled(nodes[i], true);
 		});
 		// 加载绑定的栏目
 	}
@@ -30,7 +37,7 @@ pageContext.define("admin.security.role.authority",["rt/request"],function(page,
 				function(res) {
 					$("#treeCatelog").xWidget().reload();
 					$("#treeFunction").xWidget().reload();
-				});
+		});
 	}
 
 	page.save = function() {

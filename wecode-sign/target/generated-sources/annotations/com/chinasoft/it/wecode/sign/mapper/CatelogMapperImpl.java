@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2018-05-23T07:37:34+0800",
+    date = "2018-08-23T01:08:03+0800",
     comments = "version: 1.2.0.CR1, compiler: javac, environment: Java 1.8.0_92 (Oracle Corporation)"
 )
 @Component
@@ -74,6 +74,28 @@ public class CatelogMapperImpl implements CatelogMapper {
     }
 
     @Override
+    public Catelog result2Entity(CatelogResultDto arg0) {
+        if ( arg0 == null ) {
+            return null;
+        }
+
+        Catelog catelog = new Catelog();
+
+        catelog.setId( arg0.getId() );
+        catelog.setName( arg0.getName() );
+        catelog.setPath( arg0.getPath() );
+        catelog.setFullPath( arg0.getFullPath() );
+        catelog.setIcon( arg0.getIcon() );
+        catelog.setStatus( arg0.getStatus() );
+        catelog.setSeq( arg0.getSeq() );
+        catelog.setPid( arg0.getPid() );
+        catelog.setAllowType( arg0.getAllowType() );
+        catelog.setAllowValue( arg0.getAllowValue() );
+
+        return catelog;
+    }
+
+    @Override
     public List<Catelog> toEntities(List<CatelogResultDto> arg0) {
         if ( arg0 == null ) {
             return null;
@@ -81,7 +103,7 @@ public class CatelogMapperImpl implements CatelogMapper {
 
         List<Catelog> list = new ArrayList<Catelog>( arg0.size() );
         for ( CatelogResultDto catelogResultDto : arg0 ) {
-            list.add( catelogResultDtoToCatelog( catelogResultDto ) );
+            list.add( result2Entity( catelogResultDto ) );
         }
 
         return list;
@@ -113,26 +135,5 @@ public class CatelogMapperImpl implements CatelogMapper {
         }
 
         return list;
-    }
-
-    protected Catelog catelogResultDtoToCatelog(CatelogResultDto catelogResultDto) {
-        if ( catelogResultDto == null ) {
-            return null;
-        }
-
-        Catelog catelog = new Catelog();
-
-        catelog.setId( catelogResultDto.getId() );
-        catelog.setName( catelogResultDto.getName() );
-        catelog.setPath( catelogResultDto.getPath() );
-        catelog.setFullPath( catelogResultDto.getFullPath() );
-        catelog.setIcon( catelogResultDto.getIcon() );
-        catelog.setStatus( catelogResultDto.getStatus() );
-        catelog.setSeq( catelogResultDto.getSeq() );
-        catelog.setPid( catelogResultDto.getPid() );
-        catelog.setAllowType( catelogResultDto.getAllowType() );
-        catelog.setAllowValue( catelogResultDto.getAllowValue() );
-
-        return catelog;
     }
 }

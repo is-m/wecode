@@ -31,6 +31,11 @@ define(["jquery"],function($){
 			expr:/^\d*$/,
 			msg:"必须为数值",
 			priority:1
+		},
+		"int":{
+			expr:/^\d+$/,
+			msg:"必须为整数",
+			priority:1
 		}
 	}
 	 

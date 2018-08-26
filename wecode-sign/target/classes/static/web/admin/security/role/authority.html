@@ -31,7 +31,7 @@
 	  <div class="col-sm-6">
 	    <div class="card">
 	      <div class="card-body">
-	        <h5 class="card-title">栏目权限 <a class="btn btn-outline-secondary btn-sm">展开全部</a> <a class="btn btn-outline-secondary btn-sm">展开选中项</a></h5>
+	        <h5 class="card-title">栏目权限 <a class="btn" title="展开全部">+</a></h5>
 	        <div  style="height: 180px; overflow: auto;">
 		        <div id="treeCatelog" 
 			         data-x-widget="data/tree" 
@@ -44,11 +44,12 @@
 	  <div class="col-sm-6">
 	    <div class="card">
 	      <div class="card-body">
-	        <h5 class="card-title">功能权限 + </h5>
+	        <h5 class="card-title">功能权限 <a class="btn" title="展开全部">+</a> </h5>
 	        <div style="height: 180px; overflow: auto;">
 		        <div id="treeFunction" 
 		             data-x-widget="data/tree" 
-			         data-x-widget-option='{ "id":"treeFunctionEl", "dataset":"http://localhost:8880/wecode/asset/services/security/permission/s" ,"check": { "enable": true },"data": { "key":{ "name" : "note"} ,"simpleData": { "enable": true, "idKey": "id", "pIdKey": "pid",  "rootPId": null } } }'>
+			         data-x-widget-option='{ "id":"treeFunctionEl", "dataset":"http://localhost:8880/wecode/asset/services/security/permission/s" ,"check": { "enable": true },"data": { "key":{ "name" : "note"} ,"simpleData": { "enable": true, "idKey": "id", "pIdKey": "pid",  "rootPId": null } } }'
+			         >
 		        </div>
 	        </div>
 	      </div>

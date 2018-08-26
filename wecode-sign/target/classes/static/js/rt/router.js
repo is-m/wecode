@@ -1,4 +1,4 @@
-define(["jquery"], function($) {
+define(["jquery","rt/pageContext"], function($,pc) {
 
 	"use strict";
 	var enableCache = false;
@@ -7,52 +7,69 @@ define(["jquery"], function($) {
 	// copy of http://blog.csdn.net/sunxinty/article/details/52586556
 	function Router() {
 		this.routes = {};
-		this.currentUrl = '';
+		this.url = '';
 	}
 
 	Router.prototype.route = function(path, callback) {
 		this.routes[path] = callback;
 	}; 
+	
+	// TODO 按角色显示首页
+	Router.prototype.homePage = function(){
+		// 获取系统首页配置,以及当前用户角色URL
+		// 优先检查角色是否具备URL，否则按系统首页URL展示
+		// this.refresh(workspace.user.currentRole.url || workspace.sys.homePage || "/"); 
+		
+		// 后续URL准备好后需要去除下面逻辑 
+		this.refresh("/");
+	} 
 
-	Router.prototype.refresh = function() {
-		this.currentUrl = location.hash.slice(1) || '/';
-		(this.routes[this.currentUrl] || (function(path) {
-			return function() { 
-				console.log("no register router of path "+path); 
+	Router.prototype.refresh = function(u) {
+		this.url = typeof u == "string" ? u : ( location.hash && location.hash.substring(1) || "/");
+		$.proxy(function(){
+			var path = this.url,$context = $("#__pageContext");
+			console.log("no register router of path "+path);
+
+			if(this.isHome(this.url)){
+				// TODO:Home breadcrumb难道要从后台获取（国际化接口中获取？）？
+				$("#nav-breadcrumb").html("Home")
+				$context.html("<div class='container'><h2>Welcome to My Home (No User Settings)</h2></div>")
+				return;
+			}
+			
+			// 触发卸载事件
+			pc.shutdown();
+			// 加载新页面
+			var url  = appConfig.contextPath + path;
+			if(enableCache && routeCache[url]){
+				$context.html(routeCache[url]);
+			}else{ 
 				
-				require(["rt/pageContext"],function(pageContext){
-					// 触发卸载事件
-					pageContext.shutdown();
-					// 加载新页面
-					var url  = appConfig.contextPath + path;
-					if(enableCache && routeCache[url]){
-						$("#__pageContext").html(routeCache[url]);
-					}else{ 
-						$.get(url).success(function(resp){ 
-							var html = resp.replace(/@\{\s*(\S+)\s*\}/g,function(m,i,o,n){
-						       return appConfig.contextPath+i;
-						    });
-							
-							if(enableCache) routeCache[url] = html; 
-							$("#__pageContext").html(html);
-						}).error(function(){
-							$("#__pageContext").html("<div class='col-md-12'><h2 class='center'>Page NotFound 404</h2></div>");
-						}); 
-					}
-				})
-				
-				//$("#__pageContext").render();
+				$.get(url).success(function(resp){ 
+					var html = resp.replace(/@\{\s*(\S+)\s*\}/g,function(m,i,o,n){
+				       return appConfig.contextPath+i;
+				    });
+					
+					if(enableCache) routeCache[url] = html; 
+					$context.html(html);
+				}).error(function(){
+					$context.html("<div class='col-md-12'><h2 class='center'>Page NotFound 404</h2></div>");
+				}); 
 			};
-		}(this.currentUrl)))();
+			
+			//$("#__pageContext").render(); 
+			
+		},this)(); 
 	};
+	
+	Router.prototype.isHome = function(url){  
+		return  !url || ["","/", "#" ,"#/"].contains(url.trim().replace(/^#+/,"#")) 
+	}
 
 	Router.prototype.init = function() {
 		window.addEventListener('load', this.refresh.bind(this), false);
 		window.addEventListener('hashchange', this.refresh.bind(this), false);
-		var hash = window.location.hash;
-		if(hash && hash != "#" && hash != "#/"){
-			this.refresh();
-		}
+		this.isHome(location.hash) ? this.homePage() : this.refresh(); 
 	}
 
 	return new Router();

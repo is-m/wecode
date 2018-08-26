@@ -1,4 +1,5 @@
 define([],function(){ 
+	
 	var _toString = Object.prototype.toString;
 	var _slice = Array.prototype.slice; 
 

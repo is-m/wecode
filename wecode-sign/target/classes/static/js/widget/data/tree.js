@@ -22,7 +22,8 @@ define(["widget/factory","jquery","rt/util"],function(widget,$,util){
 					pIdKey: "pid", 
 					rootPId: null
 				}
-			},
+			}, 
+			
 			dataset:[],         // [] or url string
 			expandLevel:-1 ,
 			defaultChecked: []  // []
@@ -30,7 +31,18 @@ define(["widget/factory","jquery","rt/util"],function(widget,$,util){
 		template:"<h1>Hello this navbar Widget</h1>", 
 		templateUri:"js/widget/data/tree.html",
 		init:function(){ 
-			this.op = $.extend({},this.defultOption,this.op)
+			var self = this;
+			// event proxy
+			this.op = $.extend({},this.defultOption,this.op,{ 
+				callback:{
+					onClick:function(){ 
+						self.trigger("click",this); 
+					}
+					onCheck:{
+						self.trigger("check",this); 
+					}
+				}
+			})
 		},
 		loadData:function(){
 			
@@ -47,9 +59,26 @@ define(["widget/factory","jquery","rt/util"],function(widget,$,util){
 		destory:function(){
 			
 		},
+		/**
+		 * 获取所有节点
+		 * 
+		 */
+		getAllNodes:function(){ 
+		    return this.ztreeObj.transformToArray(this.ztreeObj.getNodes());  
+		},
 		selectedNodes:function(values){
 			this.op.defaultChecked=$.isArray(values) ? values : [values];
 			this.ztreeObj = $.fn.zTree.init(this.$dom, this.op , this.op._data);  
+		},
+		setCheckNode:function(nodes,v1,v2){
+			var ztree = this.ztreeObj;
+			var vals = $.isArray(nodes) ? nodes : [nodes];
+			for(var i=0;i<vals.length;i++){
+				var item = vals[i];
+				if(item){
+					ztree.checkNode(item,v1,v2);
+				} 
+			}
 		},
 		/**
 		 * 设置选中的值
@@ -65,6 +94,18 @@ define(["widget/factory","jquery","rt/util"],function(widget,$,util){
 			} 
 		},
 		/**
+		 * 设置复选框失效
+		 */
+		setChkDisabled:function(nodes,isDisabled){
+			var ztree = this.ztreeObj,_nodes = $.isArray(nodes) ? nodes : [nodes];
+			for(var i=0;i<nodes.length;i++){
+				var item = nodes[i];
+				if(item){
+					ztree.setChkDisabled(item, true); 
+				}
+			}
+		},
+		/**
 		 * 获取选中项
 		 * 
 		 * 暂时值返回状态为完全选中的数据,如果需要，后续可以给该类提供参数
@@ -77,9 +118,10 @@ define(["widget/factory","jquery","rt/util"],function(widget,$,util){
 			this.ztreeObj = $.fn.zTree.init(self.$dom, self.op , this.op._data = data); 
 		},
 		reload:function(){
-			var self = this; 
+			var self = this;  
 			self.$dom.html("loading...");
-			util.getDataset(this.op.dataset).done(function(data){
+			util.getDataset(this.op.dataset).done(function(data){ 
+				console.log(self.op);
 				self.ztreeObj = $.fn.zTree.init(self.$dom, self.op , self.op._data = data);  
 			});
 		}
