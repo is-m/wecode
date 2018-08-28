@@ -7,11 +7,12 @@ define(["jquery"],function($){
 	 */
 	var customRuleMap = {};
 	
+	// priority:起始为1,1表示最高优先级
 	var defaultRuleMap = {
 		"required":{
-			expr:/^\s+$/,
+			expr:/^\s*$/,
 			msg:"不能为空",
-			priority:0
+			priority:1
 		},
 		"maxLength":{
 			onArgInit:function(arg){
@@ -25,27 +26,31 @@ define(["jquery"],function($){
 			onMsg:function(value,ruleContext){
 				return "内容长度不能超过 "+ruleContext.arg+" 个字符";
 			},
-			priority:1
+			priority:9
 		},
 		"numeric":{
-			expr:/^\d*$/,
+			expr:/^[^\d]*$/,
 			msg:"必须为数值",
-			priority:1
+			priority:9
 		},
 		"int":{
 			expr:/^\d+$/,
 			msg:"必须为整数",
-			priority:1
+			priority:9
 		}
 	}
 	 
 	/**
-	 * 全局添加校验器
-	 * @param ruleConfig = { expr:[string] msg:[string] onValid:[func],onError:[func], priority:[int] }
+	 * 全局添加校验器（注册校验器）
+	 * 注册后才能在控件上添加校验
+	 * 
+	 * @param name 校验器名称，
+	 * @param config = { expr:[string] msg:[string] onValid:[func],onError:[func], priority:[int] }
 	 * @author Administrator
 	 */
-	var addMethod = function(methodName,ruleConfig){ 
-		customRuleMap[method] = ruleConfig;
+	var addMethod = function(name,config){  
+		if(!name || typeof name !== "string") throw 'illegal validation name '+name;
+		customRuleMap[name] = config;
 	}
 	
 	var _getRule = function(rule){
@@ -98,7 +103,7 @@ define(["jquery"],function($){
 				var rules = [];
 				var items = $this.find("[data-rule]");
 				items.each(function(){ 
-					var _rules = $(this).data("rule").splitEx(" ")
+					var _rules = $(this).data("rule").split(/\s+/)
 					.eachReturn(function(item){ return _getRule(item); })
 					.sort(function(a,b){ return (a.priority || 99) - (b.priority || 99)  }); 
 					$(this).data("ruleCtrl",{ $dom:$(this) , rules: _rules});

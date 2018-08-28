@@ -30,6 +30,25 @@ define([],function(){
 		return oldEndsWith ?  oldEndsWith.call(_this,_end) : (_this.lastIndexOf(_end) === (_this.length-_end.length));
 	}
 	
+	String.prototype.toJSON = function(){
+		var temp = this.trim(); 
+		if(temp.length == 0) return {}; 
+		
+		try{
+			var v = temp.startsWith("{") && temp.endsWith("}") ? eval("("+this+")") : eval("({"+this+"})"); 
+			if(typeof v !== "object") {
+				throw 'illegal string to json for '+ this;
+			}
+			return v; 
+		}catch(e){
+			try{
+				return JSON.parse(temp);
+			}catch(e){
+				throw 'parse string {0} to json faild'.format(this);
+			}
+		}
+	};
+	
 	// 字符串格式化，可以是{0},{1}这种占位符，也可以是:fieldName或者{fieldName}这种占位符，但是同一时间只支持一种
 	String.prototype.format = function(){
 	    var args = arguments;
@@ -222,13 +241,16 @@ define([],function(){
 	// 事件处理 
 	
 	// 
-	var isEmpty = function(){
-		
+	var isEmpty = function(v){
+		if(v){
+			
+		}
 	}
 	
 	var getObj = function(){
 		
 	}
+	 
 	
 	return { 
 		getString:_toString(),

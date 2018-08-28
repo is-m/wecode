@@ -96,7 +96,7 @@ define(function(require, exports, module){
 		});
 		
 		$(document).click(function(){  
-			console.log("document click hidden register auto process document click listener handler")
+			console.log("document click hidden register auto process document click listener handler");
 		});
 	}
 	

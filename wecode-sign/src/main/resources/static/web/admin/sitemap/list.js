@@ -129,7 +129,7 @@ pageContext.define("admin.sitemap.list",["widget/data/datatable","widget/tab"],f
 					setting:{
 						uploadUrl:"/api/sitemap/import"
 					}
-				}
+				} 
 			}); 
 		});
 	}

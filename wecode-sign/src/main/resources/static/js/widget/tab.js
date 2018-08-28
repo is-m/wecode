@@ -36,7 +36,7 @@ define(["widget/factory","jquery","rt/pageContext"],function(widget,$,pageContex
 				// 只处理导航点击事件
 				if($trigger.is(".nav-link")){ 
 					$tabHeader.find(".active").removeClass("active");
-					$trigger.addClass("active");
+					$trigger.addClass("active"); 
 					
 					var pageId = $trigger.data("toggle");
 					var pageUrl = $trigger.data("url");

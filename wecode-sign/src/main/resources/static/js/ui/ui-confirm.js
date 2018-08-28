@@ -16,10 +16,19 @@ define(["jquery","jquery.confirm","rt/util"],function($,c,util){
 		});
 	}
 	
+	var sizeMap = {xlarge:12, large:8, medium:6, small:4, xsmall:2}
+	/**
+	 * 注意 jquery confirm 设置了medium等英文字母可能会导致动画效果不正常
+	 */
 	var defaultOp = {
 		draggable: true,
 		closeIcon: true, 
-		columnClass:"small", // xlarge 12 large 8 medium 6 small 4 xsmall 2
+		// Available animations:
+		// 2d:right, left, bottom, top, rotate, none, opacity, scale, zoom,
+		// 3d:scaleY, scaleX, rotateY, rotateYR (reverse), rotateX, rotateXR (reverse)
+		// animation: 'zoom', 
+		// closeAnimation: 'scale',
+		columnClass:"col-md-4", // xlarge 12 large 8 medium 6 small 4 xsmall 2
 		// boxWidth: '30%', or '500px' 还需要设置 useBootstrap: false,
 		title:"提示",
 		content:"确定操作吗?" 
@@ -73,10 +82,16 @@ define(["jquery","jquery.confirm","rt/util"],function($,c,util){
 		});
 	};
 	
-	// TODO:如果加载了模块，关闭时，在销毁alert前，需要先销毁模块引用
+	// TODO:如果加载了页面模块，关闭时，在销毁alert前，需要先销毁页面模块引用
 	var dialog = function(op){
 		if(op){
+			// xlarge 12 large 8 medium 6 small 4 xsmall 2
+			if(op.columnClass && sizeMap[op.columnClass]){
+				op.columnClass = "col-md-"+sizeMap[op.columnClass];
+			}
+			
 			var _op = $.extend(true,{},defaultOp,op);
+			
 			var _format = _op.format;
 			if( _format && _format.type){ 
 				var _type = _format.type,_setting = _format.setting;
@@ -242,7 +257,7 @@ define(["jquery","jquery.confirm","rt/util"],function($,c,util){
 				    }
 				});  
 			}
-			
+			debugger
 			return _op.buttons ?  $.confirm(_op) : $.dialog(_op);
 		}else{
 			window.alert('no found url');

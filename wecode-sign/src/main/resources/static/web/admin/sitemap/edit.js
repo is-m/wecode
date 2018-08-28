@@ -1,4 +1,4 @@
-pageContext.define("admin.sitemap.edit",["rt/validation","rt/request","widget/form/dateBox"],function(page,validator,http,dateBox){
+pageContext.define("admin.sitemap.edit",["rt/validation","rt/request"],function(page,validator,http,dateBox){
 	var $form = $("#formEditSitemap");
 	
 	var isCreate = true;
@@ -6,7 +6,6 @@ pageContext.define("admin.sitemap.edit",["rt/validation","rt/request","widget/fo
 	page.ready = function(){   
 		// 从后台获取校验内容并绑定到元素
 		//validator.bind($("#formEditSitemap"),"CatelogVO",["CreateGroup"]);
-		$("#createDate").xWidget("form.DateBox",{});
 		 
 		$("#btnSave").on("click",function(){
 			// 往后台添加一个栏目
