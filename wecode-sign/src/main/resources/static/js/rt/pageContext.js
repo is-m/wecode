@@ -78,7 +78,7 @@ define(["require","jquery","rt/logger"],function(require,$,log){
 			url = appConfig.contextPath + url;
 		}
 		
-		$.get(url).success(function(resp){ 
+		return $.get(url).success(function(resp){ 
 			var html = resp.replace(/@\{\s*(\S+)\s*\}/g,function(m,i,o,n){
 		       return appConfig.contextPath+i;
 		    });
@@ -93,8 +93,8 @@ define(["require","jquery","rt/logger"],function(require,$,log){
 				var widgetName =  $this.data("xWidget");
 				require(["widget/"+widgetName],$.proxy(function(widget){
 					// 加载完组件则初始化组件的基本内容
-					var options = $this.data("xWidgetOption");
-					$this.xWidget(this.widgetName,$.isPlainObject(options) ? options : options.toJSON());
+					var ops = $this.data("xWidgetOption");
+					$this.xWidget(this.widgetName,ops ? ($.isPlainObject(ops) ? ops : ops.toJSON()) : {});
 				},{ el:el, widgetName:widgetName })); 
 			});
 			
@@ -103,7 +103,7 @@ define(["require","jquery","rt/logger"],function(require,$,log){
 			pageContextElStack.push($el); 
 			callback && callback(true);
 		})
-		.error(function(){
+		.error(function(resp,status,xhr){
 			$el.html("<div class='col-md-12'><h2 class='center'>Page NotFound 404</h2></div>");
 			$el.attr("data-module","error");
 			log.error("page context load page error!"); 

@@ -169,6 +169,26 @@ define(function(require){
 			var widgetDefine = Widget.define;
 			
 			var initCompoent = $.proxy(function(){  
+				// 如果没有templateUri，该写法待和initWidget内的代码重构
+				if(!widgetDefine.templateUri){ 
+					var widgetOp = $.extend({},Widget.define.op,op || {});
+					var widgetManager = new Widget(name,widgetOp,data);
+					widgetManager.$dom = this.widgetBegin;
+					this.widgetBegin.data("__widget",widgetManager);
+					
+					widgetManager.init && widgetManager.init();
+					var promise = widgetManager.afterRender && widgetManager.afterRender();
+					if(promise && promise["done"] && promise["fail"] && promise["then"]){
+						promise.done($.proxy(widgetManager.ready,widgetManager));
+					}else{
+						widgetManager.ready && widgetManager.ready();
+					}
+					
+					
+					
+					return ;
+				}
+				
 				// 如果没有templateUri，那么TEMPLATE HTML 应该绑定到控件名字上
 				if(widgetDefine.templateUri && !widgetDefine.__template){  
 					var templateUri = appConfig.contextPath + "/" +widgetDefine.templateUri;

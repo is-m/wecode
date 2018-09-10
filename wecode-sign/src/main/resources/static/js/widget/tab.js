@@ -52,9 +52,14 @@ define(["widget/factory","jquery","rt/pageContext"],function(widget,$,pageContex
 					$curPage.show();
 					// 未初始化过才需要初始化
 					if(!$curPage.data("init")){
-						pageContext.loadPage($curPage,pageUrl,function(){ 
+						if(pageUrl){
+							pageContext.loadPage($curPage,pageUrl,function(){ 
+								self.trigger("afterLoad",$curPage); 
+							});
+						}else{
 							self.trigger("afterLoad",$curPage); 
-						});
+						}
+								
 						$curPage.data("init",true); 
 					} 
 					return false;

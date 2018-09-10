@@ -41,24 +41,7 @@ define(["jquery","rt/pageContext"], function($,pc) {
 			pc.shutdown();
 			// 加载新页面
 			var url  = appConfig.contextPath + path;
-			if(enableCache && routeCache[url]){
-				$context.html(routeCache[url]);
-			}else{ 
-				
-				$.get(url).success(function(resp){ 
-					var html = resp.replace(/@\{\s*(\S+)\s*\}/g,function(m,i,o,n){
-				       return appConfig.contextPath+i;
-				    });
-					
-					if(enableCache) routeCache[url] = html; 
-					$context.html(html);
-				}).error(function(){
-					$context.html("<div class='col-md-12'><h2 class='center'>Page NotFound 404</h2></div>");
-				}); 
-			};
-			
-			//$("#__pageContext").render(); 
-			
+			pc.loadPage($context,url);  
 		},this)(); 
 	};
 	

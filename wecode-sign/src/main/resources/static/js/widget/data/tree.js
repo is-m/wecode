@@ -37,8 +37,8 @@ define(["widget/factory","jquery","rt/util"],function(widget,$,util){
 				callback:{
 					onClick:function(){ 
 						self.trigger("click",this); 
-					}
-					onCheck:{
+					},
+					onCheck:function(){
 						self.trigger("check",this); 
 					}
 				}
