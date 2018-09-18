@@ -3,6 +3,11 @@
 		Arial, sans-serif;
 }
 
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+	font-size:.9rem;
+}
+
 /*
  * Base structure
  */ 
@@ -48,6 +53,15 @@ h1 {
 
 .sidebar .nav-link {
 	border-radius: 0;
+}
+
+.topbar {
+	padding: 0 20px;
+    background-color: #fff;
+    -webkit-box-shadow: 0 0 35px 0 rgba(154,161,171,.15);
+    box-shadow: 0 0 35px 0 rgba(154,161,171,.15);
+    margin: -5px -20px 0;
+    min-height: 50px;
 }
 
 /*
