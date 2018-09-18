@@ -1,4 +1,4 @@
-define(["widget/factory","jquery"],function(widget,$){
+define(["widget/factory","jquery","jquery.slimscroll"],function(widget,$,scroll){
 	
 	widget.define("menu",{
 		template:"<h1>Hello this navbar Widget</h1>", 
@@ -16,6 +16,10 @@ define(["widget/factory","jquery"],function(widget,$){
 			return html;
 		},
 		afterRender:function(){
+			this.$dom.find(".scroll-menu").slimScroll({ 
+				height: "100%"
+			});
+			
 			// 定义一个异步对象
 			var dtd = $.Deferred();
 			

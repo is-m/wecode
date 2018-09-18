@@ -20,6 +20,45 @@
 <link rel="stylesheet" href="../css/site.css" />
 
 <style type="text/css">
+.card-disabled {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-radius: .25rem;
+    background: rgba(255,255,255,.8);
+}
+
+.card-disabled .card-portlets-loader {
+    background-color: #313a46;
+    -webkit-animation: rotatebox 1.2s infinite ease-in-out;
+    animation: rotatebox 1.2s infinite ease-in-out;
+    height: 30px;
+    width: 30px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -15px;
+    margin-top: -15px;
+}
+
+@keyframes rotatebox{
+	0% {
+		-webkit-transform:perspective(120px) rotateX(0) rotateY(0);
+		transform:perspective(120px) rotateX(0) rotateY(0);
+	}
+	
+	50% {
+		-webkit-transform:perspective(120px) rotateX(-180.1deg) rotateY(0);
+		transform:perspective(120px) rotateX(-180.1deg) rotateY(0);
+	}
+	
+	100% {
+		-webkit-transform:perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+		transform:perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+	}
+}
 </style>
 <script type="text/javascript">
 	var wh = window.innerHeight;
@@ -48,28 +87,16 @@
 </script>
 </head>
 
-<body class="main-is-fixed">
-<!-- 	<navbar> </navbar>
-	<navbar> </navbar> -->
-	<!-- <div class="toolbar text-right"
-		style="position: fixed; top: 0px; width: 100%; background: transparent; font-size: 12px;">
-		<span class="pull-right"> 张三 | 系统管理员 <a href="page/login.html">安全退出</a>
-		</span>
-	</div> -->  
-	<navbar></navbar>
-	<div class="container-fluid">
-		<div class="row"> 
-			<div id="mainMenu" data-x-widget="menu" class="col-sm-3 col-md-2" style="padding:0;"></div> 
-			<div class="col-sm-9 col-md-10 pt-3" style="padding-bottom:70px;">
-				<h3 id="nav-breadcrumb">Home</h3>
-				<div class="row" id="__pageContext"></div>
-				<div class="row">
-					<footer class="footer text-center"> 
-						<span class="text-muted"><a href="#">致远信息</a> 2018 &copy; 版权所有</span> 
-					</footer>
-				</div> 
-			</div>
-		</div>
+<body>
+	<div class="wapper">
+		<div data-x-widget="menu"></div> 
+		<div class="content">
+			<h3 id="nav-breadcrumb">Home</h3>
+			<div class="row" id="__pageContext"></div>
+			<div class="footer text-center row">
+				<span class="text-muted"><a href="#">致远信息</a> 2018 &copy; 版权所有</span> 
+			</div> 
+		</div> 
 	</div>
 
 	<script src="../js/lib/popper.js"></script>
@@ -156,6 +183,7 @@
 				'Popper-utils':'lib/popper-utils',
 				'popper':'lib/popper',
 				'jquery.confirm':'lib/jquery-confirm',
+				'jquery.slimscroll':'lib/jquery.slimscroll',
 				'echart':'lib/echarts.common.min',
 				'template': 'lib/template-web',
 				'fileinput': 'lib/fileinput',

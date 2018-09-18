@@ -90,12 +90,12 @@ define(["require","jquery","rt/logger"],function(require,$,log){
 			// TODO:待跟app.js中同类代码重构
 			$el.find("[data-x-widget]").each(function(){
 				var $this = $(this);
-				var widgetName =  $this.data("xWidget");
+				var widgetName =  $this.data("xWidget").replace(/\./g,"/");
 				require(["widget/"+widgetName],$.proxy(function(widget){
 					// 加载完组件则初始化组件的基本内容
 					var ops = $this.data("xWidgetOption");
 					$this.xWidget(this.widgetName,ops ? ($.isPlainObject(ops) ? ops : ops.toJSON()) : {});
-				},{ el:el, widgetName:widgetName })); 
+				},{ el:el, widgetName:widgetName})); 
 			});
 			
 			$el.data("inited",true);
