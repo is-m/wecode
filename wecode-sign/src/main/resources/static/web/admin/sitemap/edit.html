@@ -54,13 +54,13 @@
   	 <label class="col-sm-2 col-form-label">是否启用</label>
       <div class="col-sm-4">
       	<div class="form-check form-check-inline">
-		  <label class="form-check-label">
-		    <input class="form-check-input" type="radio" name="status" value="1" checked="checked"> 启用
-		  </label>
-		  <label class="form-check-label">
-		    <input class="form-check-input" type="radio" name="status" value="0"> 停用
-		  </label>
-		</div> 
+		  <input class="form-check-input" type="radio" id="status1" name="status" value="1" checked="checked">
+		  <label class="form-check-label" for="status1">生效</label>
+		</div>
+		<div class="form-check form-check-inline">
+		  <input class="form-check-input" type="radio" id="status2" name="status" value="0">
+		  <label class="form-check-label" for="status2">失效</label>
+		</div>  
       </div>
       
       <label class="col-sm-2 col-form-label">显示顺序</label>

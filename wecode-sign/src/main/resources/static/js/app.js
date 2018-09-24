@@ -1,6 +1,20 @@
 define(function(require, exports, module){
+ 
+	var initLayout = function(){
+	  var $body = $("body"),$window = $(window);
+	  var ww = $window.width(); 
+	  // ww >= 768 && ww <= 1028 ? $body.addClass("enlarged") : 1 != $body.data("keep-enlarged") && $body.removeClass("enlarged");
+	  // 移动视角
+	  if(ww < 768){ 
+	    
+	  }
+	  $("#menuSwitch").click(function(){
+	    
+	  });
+	}
 	
 	var initilize = function(){
+	  initLayout();
 		// 隐藏整个页面内容
 		
 		// 绑定URL地址事件
@@ -49,6 +63,68 @@ define(function(require, exports, module){
 			// 触发地址事件 
 			console.log("trigger url default event");
 		});
+		
+
+    $("[data-toggle='popover']").each(function() {
+        var element = $(this);
+        var url = element.data("contentUrl");
+        var $popver = element.popover({
+            trigger: 'hover',//'manual',
+            html: true,
+            //title: 'kkkk',
+            // template:'',
+            placement: 'bottom',
+            content: function() {
+              // FIXME:目前看到有发起两次请求的情况
+              if(!element.data("popoverContentHtml")){
+                var contentId = $(this).attr("aria-describedby");
+                $.get(url,function(resp){ 
+                  element.data("popoverContentHtml",resp);
+                  $("#"+contentId).find(".popover-body").html(resp); 
+                });
+                // FIXME:异步加载弹出框时最好设置下弹出框的大小，以免出现异常情况，且大小应该是外部指定
+                return "<div style='width:200px'>loadding...</div>";
+              }else{
+                return element.data("popoverContentHtml");
+              }
+              //  return content();
+            },
+            delay: {hide: 100} 
+        }).on('shown.bs.popover', function (event) {
+            var that = this;
+            var contentId = $(this).attr("aria-describedby");
+            $("#"+contentId).on('mouseenter', function () {
+                $(that).attr('in', true);
+            }).on('mouseleave', function () {
+                $(that).removeAttr('in');
+                $(that).popover('hide');
+            });
+        }).on('hide.bs.popover', function (event) {
+            if ($(this).attr('in')) {
+                event.preventDefault();
+            }
+        });
+ 
+
+    }); 
+    
+    // 后续需要删除
+    //模拟动态加载内容(真实情况可能会跟后台进行ajax交互)  
+    function  content()  {      
+        var  data  =  $("<ul class='list-unstyled mb-0 text-center' style='width:180px'>"  +             
+                "<li><div style='font-size:50px;'><i class='fa  fa-user-circle'></i></div></li>"+
+                "<li>张三 </li>"  +                
+                "<li>中文 </li>"  +                
+                "<li>系统管理员</li>"  +                
+                "<li><a style='width:50%;display:inline-block'>设置</a><a style='width:50%;display:inline-block'>注销</a></li>"+
+                "</ul>");            
+        
+        return  data;  
+    }  
+    //模拟悬浮框里面的按钮点击操作  
+    function  test()  {      
+        alert('关注成功');  
+    }
 	};
 	
 	var getAllChildrens = function(dom,collector){

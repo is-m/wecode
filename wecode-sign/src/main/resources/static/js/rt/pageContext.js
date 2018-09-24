@@ -164,6 +164,13 @@ define(["require","jquery","rt/logger"],function(require,$,log){
 	}
 	
 	/**
+	 * 监听页面销毁
+	 */
+	var listenPageDestory = function(){
+	  
+	}
+	
+	/**
 	 * 查找页面模块，并返回promiss对象
 	 */
 	var module = function(id){  
@@ -172,8 +179,12 @@ define(["require","jquery","rt/logger"],function(require,$,log){
 		var timer = setInterval($.proxy(function(){
 			var page = pageContextMap[this.id];
 			if(page){
+			  clearInterval(timer);
+			  timer = null;
 				dfd.resolve(page);
 			}else if(count > 20){
+			  clearInterval(timer);
+			  timer = null;
 				dfd.reject("page module not found of out search count 20");
 			}
 			count ++ ; 

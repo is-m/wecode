@@ -8,3 +8,19 @@
 
 不同的字体库
 http://demo.amitjakhu.com/dripicons/
+
+
+可以将表格的底纹和数据行线条去除
+
+
+
+页面隐藏和关闭要按页面事件区分开，
+例如tab页签切换时的应酬 ,因为隐藏不需要清理页面的冗余元素（日期控件，tooltip（这个要隐藏））
+关闭时则需要清理当前页面对应的HTML元素（不能一刀切，只能按页面上下文处理，防止出现bug）
+
+
+系统组件需要进行拆分为几种类型，1.标签型，2.HTML扩展属性型，3.class样式型 但是3种都要可以直接通过JS渲染，界面渲染只是另一中形式
+标签型：就是在HTML上直接写<xx-table>
+属性型：就是在HTML 元素上直接扩展属性，例如<a data-toggle='tooltip' data-tooltip-title='123'>移过来看看</a>
+样式型：就是在HTML 元素的样式上直接写例如<form class='init mu-form'></form>
+

@@ -24,7 +24,12 @@ define(["widget/factory","jquery","jquery.slimscroll"],function(widget,$,scroll)
 			var dtd = $.Deferred();
 			
 			require(["lib/metisMenu"],function(m){
-				 $('.side-nav .metismenu').metisMenu({ toggle: true,activeClass: 'active' }); 
+				 $('.side-nav .metismenu').metisMenu({ 
+    			   toggle: true,
+    			   activeClass: 'active',
+    			   wheelStep: 5,
+             touchScrollStep: 20
+				 }); 
 				 // resolve 会触发 done 的回调，reject 触发 fail 回调 
 				 dtd.resolve();
 			});
