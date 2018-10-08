@@ -9,6 +9,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
+import com.chinasoft.it.wecode.annotations.security.Module;
+import com.chinasoft.it.wecode.annotations.security.Operate;
 import com.chinasoft.it.wecode.base.BaseService;
 import com.chinasoft.it.wecode.common.mapper.BaseMapper;
 import com.chinasoft.it.wecode.sign.domain.Catelog;
@@ -28,6 +30,7 @@ import com.chinasoft.it.wecode.sign.util.CatelogHelper;
  *
  */
 @Service
+@Module
 public class CatelogService extends BaseService<Catelog, CatelogDto, CatelogResultDto> {
 
 	public CatelogService(JpaRepository<Catelog, String> repository,
@@ -47,6 +50,7 @@ public class CatelogService extends BaseService<Catelog, CatelogDto, CatelogResu
 	 * @param queryDto
 	 * @return
 	 */
+	@Operate
 	public List<CatelogResultDto> findManageList(CatelogQueryDto queryDto) {
 		String name = queryDto.getName();
 		List<Catelog> result = StringUtils.isEmpty(name) ? repo.findAll() : repo.findByNameLike(name);
@@ -59,15 +63,18 @@ public class CatelogService extends BaseService<Catelog, CatelogDto, CatelogResu
 	 * @param permissionReturn 是否仅返回需要控制权限的树节点，为true时，返回包含权限控制的节点及父节点，为false时返回所有
 	 * @return
 	 */
+	@Operate
 	public List<CatelogResultDto> findTreeList( ) {
 		List<Catelog> entities = repo.findByStatusOrderBySeqAsc(CatelogConstant.STATUS_ENABLED);
 		return mapper.toTreeList(entities);
 	} 
+	
 	/**
 	 * 获取菜单列表[Simple]
 	 * 
 	 * @return
 	 */
+	@Operate
 	public List<CatelogMenuDto> findMenuList() {
 		List<Catelog> entities = repo.findByStatusOrderBySeqAsc(CatelogConstant.STATUS_ENABLED);
 		return mapper.toMenuList(entities);
@@ -79,6 +86,7 @@ public class CatelogService extends BaseService<Catelog, CatelogDto, CatelogResu
 	 * @param dto
 	 * @return
 	 */
+	@Operate
 	public CatelogResultDto create(@Validated CatelogDto dto) {
 		Catelog entity = mapper.to(dto);
 		this.setFullPath(entity);
@@ -111,6 +119,7 @@ public class CatelogService extends BaseService<Catelog, CatelogDto, CatelogResu
 	 * @param dto
 	 * @return
 	 */
+	@Operate
 	public CatelogResultDto update(String id, @Validated CatelogDto dto) {
 		Assert.hasText(id, "id cannot be null or empty");
 		Catelog entity = mapper.to(dto);

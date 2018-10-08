@@ -18,7 +18,7 @@ public class ArrayUtil {
 	}
 
 	public static boolean isArray(Object obj) {
-		return obj.getClass().isArray();
+		return obj != null && obj.getClass().isArray();
 	}
 
 }

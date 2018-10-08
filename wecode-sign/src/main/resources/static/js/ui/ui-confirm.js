@@ -1,4 +1,4 @@
-define(["jquery","jquery.confirm","rt/util"],function($,c,util){
+define(["jquery","jquery.confirm","rt/util","ztree"],function($,c,util,ztree){
 	 
 	var test = function(){
 		$.confirm({ 
@@ -88,6 +88,8 @@ define(["jquery","jquery.confirm","rt/util"],function($,c,util){
 			// xlarge 12 large 8 medium 6 small 4 xsmall 2
 			if(op.columnClass && sizeMap[op.columnClass]){
 				op.columnClass = "col-md-"+sizeMap[op.columnClass];
+			}else{
+			  op.columnClass = "col-md-12";
 			}
 			
 			var _op = $.extend(true,{},defaultOp,op);

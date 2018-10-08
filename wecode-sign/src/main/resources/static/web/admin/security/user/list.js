@@ -1,5 +1,5 @@
 // TODO: 1.pageContext 需要预加载 ，2.widget/data/datable 需要在使用时加载 
-pageContext.define("admin.sitemap.list",["widget/data/datatable","widget/tab","widget/form/dateBox"],function(page,dt,tab,dateBox){
+pageContext.define("admin.sitemap.list",["widget/data/datatable","widget/tab"],function(page,dt,tab){
 	
 	page.ready = function(){    
 		//debugger

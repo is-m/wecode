@@ -24,3 +24,5 @@ http://demo.amitjakhu.com/dripicons/
 属性型：就是在HTML 元素上直接扩展属性，例如<a data-toggle='tooltip' data-tooltip-title='123'>移过来看看</a>
 样式型：就是在HTML 元素的样式上直接写例如<form class='init mu-form'></form>
 
+
+workspaceVO中应该添加替换的HTML或者JS内容，以便上线发布时出现调试功能或者临时替换方案（但是每次发布后这些内容应该失效，防止忘记修改，需要人为指定迁移到当前版本）

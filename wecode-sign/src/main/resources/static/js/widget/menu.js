@@ -16,6 +16,7 @@ define(["widget/factory","jquery","jquery.slimscroll"],function(widget,$,scroll)
 			return html;
 		},
 		afterRender:function(){
+		  this.$dom.click(function(e){ e.stopPropagation(); });
 			this.$dom.find(".scroll-menu").slimScroll({ 
 				height: "100%"
 			});

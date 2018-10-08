@@ -1,20 +1,110 @@
 define(function(require, exports, module){
  
+  /**
+   * 初始化布局
+   */
 	var initLayout = function(){
 	  var $body = $("body"),$window = $(window);
-	  var ww = $window.width(); 
+	  var ww = $window.width();
+	  // xs=超小屏(max-width=768), sm=小屏(width=768-992)  md=中屏(992-1200)，lg=大屏(1200-max)，
+	  var isXS= ww < 768,isSM = ww >= 768 && ww < 992,isMD=ww >= 992 && ww < 1200,isLG= ww > 1200;
 	  // ww >= 768 && ww <= 1028 ? $body.addClass("enlarged") : 1 != $body.data("keep-enlarged") && $body.removeClass("enlarged");
 	  // 移动视角
-	  if(ww < 768){ 
-	    
+	  if(isXS){ 
+	    $body.addClass("sm");
+	    $(document).click(function(){
+	      $(".left-side-menu").hide();
+	    });
 	  }
-	  $("#menuSwitch").click(function(){
-	    
+	  
+	  $("#menuSwitch").click(function(e){
+	    $(".left-side-menu").toggle();
+	    // 非超小频，才自动切换样式
+	    if(!isXS){	      
+	      $body.toggleClass("sm");
+	    }
+	    e.stopPropagation();
 	  });
+	  
 	}
+	
+	/**
+	 * ajax请求初始化
+	 * 可以在此处添加公共的ajax预处理
+	 */
+	var ajaxSetup = function(){
+	  $.ajaxSetup({  
+	    // 超时
+	    timeout:5000,
+	    // 
+	    cache: false,
+	    // 发送前执行的函数
+      beforeSend: function (xhr) {
+        // 在请求前可以对数据进行加密
+        // 设置CSXF Token，用户认证的TOKEN
+        // 以及其他的透传参数
+          /*var params = arguments[1].data;
+          var data = '';
+          for (var key in params) {
+              var dataUtf8 = CryptoJS.enc.Utf8.parse(params[key]);
+              var dataBase64 = CryptoJS.enc.Base64.stringify(dataUtf8);
+              data = data.concat('&' + key + '=' + dataBase64);
+          };
+          arguments[1].data = data.substring(1, data.length);*/
+        xhr.setRequestHeader('X-Authentication-TOKEN', 'tokentest');
+      },
+      // 默认不序列化参数
+      //processData: false,
+      // 对响应的数据进行过滤，例如解密等预处理动作
+      //dataFilter: function (data,type) {
+          /*var result = '';
+          try {
+              var a = CryptoJS.enc.Base64.parse(arguments[0]);
+              var result = CryptoJS.enc.Utf8.stringify(a);
+          } catch(e) {
+              result = arguments[0];
+          } finally {
+              return result;
+          }*/
+      //},
+      error: function(jqXHR, textStatus, errorThrown){
+        switch (jqXHR.status) {
+          case (500):
+            alert("服务器系统内部错误");
+            break;
+          case (401):
+            require(["ui/ui-confirm"],function(c){
+                c.dialog({
+                  title:"登录",
+                  url:"/web/_index/miniLogin.html",
+                  columnClass:"medium" 
+                });
+            });
+            break;
+          case (403):
+            alert("无权限执行此操作");
+            break;
+          case (408):
+            alert("请求超时");
+            break;
+          case (503):
+            alert("网关超时");
+            break;
+          default:
+            alert("未知错误");
+        }
+      },
+      success: function(data) {
+        console.log(data);
+      } 
+
+  });
+	  
+	};
 	
 	var initilize = function(){
 	  initLayout();
+	  ajaxSetup();
 		// 隐藏整个页面内容
 		
 		// 绑定URL地址事件

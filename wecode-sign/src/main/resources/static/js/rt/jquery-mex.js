@@ -121,4 +121,7 @@ define([ "jquery", "popper","rt/request" ], function($, Popper,http) {
 		}
 	}  
 
+	$.fn.nameEl = function(name){
+	  return this.find("[name="+name+"]");
+	}
 });

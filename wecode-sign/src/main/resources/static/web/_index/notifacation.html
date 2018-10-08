@@ -1,2 +1,19 @@
 <!-- 通知卡片 -->
-<h3>这个是通知页面</h3>
+<ul class="nav nav-tabs nav-bordered mb-3" id="pills-tab" role="tablist">
+  <li class="nav-item" style="width:50%">
+    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-notify" role="tab" aria-controls="pills-notify" aria-selected="true">通知 5</a>
+  </li>
+  <li class="nav-item" style="width:50%">
+    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-task" role="tab" aria-controls="pills-task" aria-selected="false">任务 10</a>
+  </li> 
+</ul>
+<div class="tab-content" id="pills-tabContent">
+  <div class="tab-pane fade show active" id="pills-notify" role="tabpanel" aria-labelledby="pills-home-tab">
+	这个显示通知内容，与我相关，或者我关心的内容的最新动态
+	<a class="btn btn-primary">更多通知</a>  
+  </div>
+  <div class="tab-pane fade" id="pills-task" role="tabpanel" aria-labelledby="pills-profile-tab">
+      这里显示待办，待处理内容
+    <a class="btn btn-primary">前往任务中心</a>  
+  </div> 
+</div>

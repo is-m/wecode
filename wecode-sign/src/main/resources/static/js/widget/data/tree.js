@@ -1,4 +1,4 @@
-define(["widget/factory","jquery","rt/util"],function(widget,$,util){ 
+define(["widget/factory","jquery","rt/util",'ztree'],function(widget,$,util,tree){ 
 	/**
 	 * 事件：
 	 * after.selected(val) 选中后

@@ -321,7 +321,7 @@
 
 		// app
 		// ! js 模块化更多的是为了处理模块之间的依赖关系，和异步加载脚本
-		require(['rt/pageContext' ,'jquery','app','rt/core'  ,"bootstrap" , 'rt/jquery-mex','ztree' ], function(pc,$, app, core,bs,jqueryMEX,ztree) {
+		require(['rt/pageContext' ,'jquery','app','rt/core'  ,"bootstrap" , 'rt/jquery-mex'/* ,'ztree' */ ], function(pc,$, app, core,bs,jqueryMEX/* ,ztree */) {
 			window.pageContext = pc;
 			$(app.init); 
 		}); 

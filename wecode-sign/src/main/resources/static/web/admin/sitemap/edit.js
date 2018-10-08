@@ -1,4 +1,4 @@
-pageContext.define("admin.sitemap.edit",["rt/validation","rt/request"],function(page,validator,http,dateBox){
+pageContext.define("admin.sitemap.edit",["rt/validation","rt/request"],function(page,validator,http){
 	var $form = $("#formEditSitemap");
 	
 	var isCreate = true;

@@ -8,6 +8,9 @@ body {
 	font-size:.9rem;
 }
 
+
+
+
 /*
  * Base structure
  */ 
@@ -16,6 +19,22 @@ body {
     overflow: hidden;
     padding: 5px 20px;
     min-height: 80vh;
+}
+
+body.sm .left-side-menu {
+	display: none;
+}
+
+body.sm .left-side-menu.show {
+	display: block;
+}
+
+body.sm .left-side-menu.hide {
+	display: block;
+}
+
+body.sm .content {
+	margin-left:0;
 }
 
 a,button,.btn {
@@ -657,5 +676,44 @@ h1 {
 .ui-select .ui-select-content-body ul {
 	margin-bottom: 0;
 }
+
+
+
+/* 3rd for http://themes.getbootstrap.com/preview/?theme_id=6743&show_new=*/
+.nav-pills>li>a,.nav-tabs>li>a {
+    color: #6c757d;
+    font-weight: 600
+}
+
+.nav-pills>a {
+    color: #6c757d;
+    font-weight: 600
+}
+
+.nav-tabs.nav-bordered {
+    border-bottom: 2px solid rgba(152,166,173,.2);
+}
+
+.nav-tabs.nav-bordered .nav-item {
+    margin-bottom: -2px
+}
+
+.nav-tabs.nav-bordered li a {
+    border: 0;
+    padding: .625rem 1.25rem
+}
+
+.nav-tabs.nav-bordered li a.active {
+    border-bottom: 2px solid #727cf5
+}
+
+.nav-tabs.nav-bordered .nav-link {
+	background: transparent;
+}
+
+/* FIX:*/
+.jconfirm {
+	z-index:111
+} 
  
  

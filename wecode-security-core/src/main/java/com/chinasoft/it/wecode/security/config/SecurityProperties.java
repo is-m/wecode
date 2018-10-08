@@ -9,10 +9,24 @@ import org.springframework.context.annotation.Configuration;
 // @PropertySource(value = "config.properties")
 public class SecurityProperties {
 
-	private String authenticationHost;
+  /**
+   * 超级管理员代码，超级管理员会忽略系统所有的功能权限检查和数据权限过滤
+   */
+  private String adminRoleCode = "ADMINISTRATOR";
 
-	public String getAuthenticationHost() {
-		return authenticationHost;
-	}
+  /**
+   * 认证中心URL，存在SSO或者其他认证场景的配置该地址
+   */
+  private String authenticationHost;
+
+  public String getAdminRoleCode() {
+    return adminRoleCode;
+  }
+
+  public String getAuthenticationHost() {
+    return authenticationHost;
+  }
+
+
 
 }
