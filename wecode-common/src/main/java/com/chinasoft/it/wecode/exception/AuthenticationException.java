@@ -5,7 +5,7 @@ package com.chinasoft.it.wecode.exception;
  * @author Administrator
  *
  */
-public class NoAuthenticationException extends BaseException implements HttpCodeProvider {
+public class AuthenticationException extends BaseException implements HttpCodeProvider {
 
   /**
    * 
@@ -17,19 +17,19 @@ public class NoAuthenticationException extends BaseException implements HttpCode
     return 401;
   }
 
-  public NoAuthenticationException() {
+  public AuthenticationException() {
     super("no found accessor authentication");
   }
 
-  public NoAuthenticationException(String messageOrKey, Throwable cause) {
+  public AuthenticationException(String messageOrKey, Throwable cause) {
     super(messageOrKey, cause);
   }
 
-  public NoAuthenticationException(String messageOrKey) {
+  public AuthenticationException(String messageOrKey) {
     super(messageOrKey);
   }
 
-  public NoAuthenticationException(Throwable cause) {
+  public AuthenticationException(Throwable cause) {
     super(cause);
   }
 

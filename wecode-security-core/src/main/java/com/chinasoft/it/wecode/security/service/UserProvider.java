@@ -1,8 +1,8 @@
 package com.chinasoft.it.wecode.security.service;
 
-import com.chinasoft.it.wecode.security.User;
+import com.chinasoft.it.wecode.security.UserPrincipal;
 
 public interface UserProvider {
 
-	public User get(String uid);
+	public UserPrincipal get(String uid);
 }

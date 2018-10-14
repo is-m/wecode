@@ -1,9 +1,9 @@
 package com.chinasoft.it.wecode.security.authorization.aop.check;
 
 import com.chinasoft.it.wecode.common.util.CollectionUtils;
-import com.chinasoft.it.wecode.security.AuthenticationException;
-import com.chinasoft.it.wecode.security.AuthorizationException;
-import com.chinasoft.it.wecode.security.User;
+import com.chinasoft.it.wecode.exception.AuthenticationException;
+import com.chinasoft.it.wecode.exception.AuthorizationException;
+import com.chinasoft.it.wecode.security.UserPrincipal;
 
 /**
  * 有效角色检查
@@ -18,7 +18,7 @@ public class RoleCheck extends AbstractCheck {
 
 	@Override
 	public void doCheck(String permissionCode) throws AuthenticationException, AuthorizationException {
-		User currentUser = getCurrentUser();
+		UserPrincipal currentUser = getCurrentUser();
 		if (currentUser != null) {
 			if (CollectionUtils.isEmpty(currentUser.getRoles())) {
 				throw new AuthorizationException("no valid role for system");

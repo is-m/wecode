@@ -259,7 +259,6 @@ define(["jquery","jquery.confirm","rt/util","ztree"],function($,c,util,ztree){
 				    }
 				});  
 			}
-			debugger
 			return _op.buttons ?  $.confirm(_op) : $.dialog(_op);
 		}else{
 			window.alert('no found url');

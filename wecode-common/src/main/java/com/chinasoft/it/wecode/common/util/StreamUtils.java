@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
-import static org.springframework.util.StreamUtils.*;
 import org.slf4j.Logger;
 
 public class StreamUtils {

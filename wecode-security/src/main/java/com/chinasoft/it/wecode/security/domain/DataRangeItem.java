@@ -15,45 +15,43 @@ import com.chinasoft.it.wecode.base.BaseEntity;
 @Table(name = "sys_data_range_item")
 public class DataRangeItem extends BaseEntity {
 
-	private static final long serialVersionUID = -301769797191911365L;
+  /**
+   * 数据范围ID
+   */
+  private String dataRangeId;
 
-	/**
-	 * 数据范围ID
-	 */
-	private String dataRangeId;
+  /**
+   * 维度ID
+   */
+  private String dimensionId;
 
-	/**
-	 * 维度ID
-	 */
-	private String dimensionId;
+  /**
+   * 维度值，多个使用逗号分割,
+   */
+  private String dimensionValue;
 
-	/**
-	 * 维度值，多个使用逗号分割,
-	 */
-	private String dimensionValue;
+  public String getDataRangeId() {
+    return dataRangeId;
+  }
 
-	public String getDataRangeId() {
-		return dataRangeId;
-	}
+  public void setDataRangeId(String dataRangeId) {
+    this.dataRangeId = dataRangeId;
+  }
 
-	public void setDataRangeId(String dataRangeId) {
-		this.dataRangeId = dataRangeId;
-	}
+  public String getDimensionId() {
+    return dimensionId;
+  }
 
-	public String getDimensionId() {
-		return dimensionId;
-	}
+  public void setDimensionId(String dimensionId) {
+    this.dimensionId = dimensionId;
+  }
 
-	public void setDimensionId(String dimensionId) {
-		this.dimensionId = dimensionId;
-	}
+  public String getDimensionValue() {
+    return dimensionValue;
+  }
 
-	public String getDimensionValue() {
-		return dimensionValue;
-	}
-
-	public void setDimensionValue(String dimensionValue) {
-		this.dimensionValue = dimensionValue;
-	}
+  public void setDimensionValue(String dimensionValue) {
+    this.dimensionValue = dimensionValue;
+  }
 
 }

@@ -76,7 +76,7 @@ define(["jquery"],function($){
 		var $ctrl = context.$dom;
 		if(hasError){  
 			var message = context.$rule.msg || context.$rule.onMsg(val,context);
-			$ctrl.addClass("is-invalid").attr("data-original-title",message).attr("data-placement","bottom").tooltip('show'); 
+			$ctrl.addClass("is-invalid").attr("data-original-title",message).attr("data-placement","bottom").tooltip(); 
 			// 显示校验失败的消息时，添加blur事件
 			if(!$ctrl.data("validTriggerInited")){
 				$ctrl.data("validTriggerInited",true);

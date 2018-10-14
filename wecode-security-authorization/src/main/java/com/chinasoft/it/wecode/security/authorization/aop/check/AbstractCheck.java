@@ -1,8 +1,8 @@
 package com.chinasoft.it.wecode.security.authorization.aop.check;
 
-import com.chinasoft.it.wecode.security.AuthenticationException;
-import com.chinasoft.it.wecode.security.AuthorizationException;
-import com.chinasoft.it.wecode.security.User;
+import com.chinasoft.it.wecode.exception.AuthenticationException;
+import com.chinasoft.it.wecode.exception.AuthorizationException;
+import com.chinasoft.it.wecode.security.UserPrincipal;
 import com.chinasoft.it.wecode.security.service.impl.UserContextManager;
 
 public abstract class AbstractCheck implements Check {
@@ -13,7 +13,7 @@ public abstract class AbstractCheck implements Check {
 		this.pack = component;
 	}
 
-	protected User getCurrentUser() {
+	protected UserPrincipal getCurrentUser() {
 		return UserContextManager.get();
 	}
 

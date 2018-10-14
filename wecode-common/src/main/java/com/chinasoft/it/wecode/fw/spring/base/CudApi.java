@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.chinasoft.it.wecode.base.BaseEntity;
-import com.chinasoft.it.wecode.base.BaseService;
+import com.chinasoft.it.wecode.base.IBaseService;
 import com.chinasoft.it.wecode.common.dto.BaseDto;
 
 import io.swagger.annotations.ApiOperation;
@@ -23,27 +22,27 @@ import io.swagger.annotations.ApiOperation;
  * @param <D>
  * @param <R>
  */
-public class CudApi<E extends BaseEntity, D extends BaseDto, R extends BaseDto> {
+public class CudApi<D extends BaseDto, R extends BaseDto> {
 
-	@Autowired
-	protected BaseService<E, D, R> service;
+  @Autowired
+  protected IBaseService<D, R> service;
 
-	@ApiOperation(value = "创建", notes = "创建")
-	@PostMapping
-	public R doCreate(@RequestBody D dto) {
-		return service.create(dto);
-	}
+  @ApiOperation(value = "创建", notes = "创建")
+  @PostMapping
+  public R doCreate(@RequestBody D dto) {
+    return service.create(dto);
+  }
 
-	@ApiOperation(value = "修改", notes = "修改")
-	@PutMapping("/{id}")
-	public R doUpdate(@PathVariable("id") String id, @RequestBody D dto) {
-		return service.update(id, dto);
-	}
+  @ApiOperation(value = "修改", notes = "修改")
+  @PutMapping("/{id}")
+  public R doUpdate(@PathVariable("id") String id, @RequestBody D dto) {
+    return service.update(id, dto);
+  }
 
-	@ApiOperation(value = "删除", notes = "删除")
-	@DeleteMapping
-	public void doDelete(@RequestParam("ids") String ids) {
-		service.delete(ids.split(","));
-	}
+  @ApiOperation(value = "删除", notes = "删除")
+  @DeleteMapping
+  public void doDelete(@RequestParam("ids") String ids) {
+    service.delete(ids.split(","));
+  }
 
 }

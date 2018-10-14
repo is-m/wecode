@@ -249,12 +249,32 @@ define([],function(){
 	
 	var getObj = function(){
 		
+	} 
+	
+	// 服务端时间与本地事件差异，获取服务端时间为 浏览器当前时间 - 服务端时间差异
+	var _serverTimesDifference = null;
+	var getServerTime = function(){
+	  if(_serverTimesDifference == null){
+	    throw '请通过window.setServerTime初始化服务器时间后再进行访问';
+	  }
+	  return +(new Date()) + _serverTimesDifference;
 	}
 	 
+	var setServerTime = function(times){
+	  var stimes = +times;
+	  if(stimes < 1){
+	    throw '服务端时间设置错误 '+times;
+	  }
+	  _serverTimesDifference = +(new Date()) - stimes;
+	}
+	 
+	window.getServerTime = getServerTime;
 	
 	return { 
 		getString:_toString(),
 		_slice:_slice, 
-		trunc:trunc
+		trunc:trunc,
+		getServerTime:getServerTime,
+		setServerTime:setServerTime
 	};
 });

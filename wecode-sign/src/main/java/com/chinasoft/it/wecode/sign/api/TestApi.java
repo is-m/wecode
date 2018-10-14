@@ -1,5 +1,10 @@
 package com.chinasoft.it.wecode.sign.api;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -10,11 +15,22 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.util.IOUtils;
+import org.json.JSONObject;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.chinasoft.it.wecode.common.util.GZIPUtils;
+import com.chinasoft.it.wecode.common.util.JSONUtils;
+import com.chinasoft.it.wecode.common.util.LogUtils;
 import com.chinasoft.it.wecode.security.service.impl.UserContextManager;
 import com.chinasoft.it.wecode.sign.service.impl.CatelogService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -24,8 +40,47 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RequestMapping("/api/test")
 public class TestApi {
 
+  private static final Logger log = LogUtils.getLogger();
 	@Autowired 
 	private CatelogService catelogService;
+	
+  /**
+   * TODO 该接口后续要迁移,并且内容可能需要异步处理
+   * @throws IOException 
+   */
+  @PostMapping("/analysis")
+  @ResponseStatus(code = HttpStatus.ACCEPTED)
+  public void analysis(HttpServletRequest request, String body) throws IOException {
+    // https://blog.csdn.net/beflyabot/article/details/78053130 重复读request.reader or inputstream
+    String params = "";
+    byte[] copyToByteArray = readBytes(request.getReader(),"iso-8859-1");
+    params = new String(GZIPUtils.uncompress(copyToByteArray));
+    if (params != null && params.trim().length() > 0) {
+      // 因为前台对参数进行了 url 编码,在此进行解码
+      params = URLDecoder.decode(params, "utf-8");
+      // 将解码后的参数转换为 json 对象
+      Map obj = JSONUtils.getObj(params, Map.class);
+      log.info("{}", obj);
+    }
+  }
+  
+  /**
+   * 通过BufferedReader和字符编码集转换成byte数组
+   * @param br
+   * @param encoding
+   * @return
+   * @throws IOException
+   */
+  private byte[] readBytes(BufferedReader br,String encoding) throws IOException{
+      String str = null,retStr="";
+      while ((str = br.readLine()) != null) {
+          retStr += str;
+      }
+      if (StringUtils.isNotBlank(retStr)) {
+          return retStr.getBytes(Charset.forName(encoding));
+      }
+      return null;
+  } 
 	
 	@GetMapping("/environment")
 	public String env(HttpServletRequest req,HttpServletResponse resp) throws JsonProcessingException {

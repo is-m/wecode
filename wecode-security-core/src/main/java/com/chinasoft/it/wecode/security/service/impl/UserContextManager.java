@@ -1,21 +1,33 @@
 package com.chinasoft.it.wecode.security.service.impl;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import com.chinasoft.it.wecode.common.util.ApplicationUtils;
-import com.chinasoft.it.wecode.exception.NoAuthenticationException;
-import com.chinasoft.it.wecode.security.AuthenticationException;
+import com.chinasoft.it.wecode.exception.AuthenticationException;
 import com.chinasoft.it.wecode.security.Role;
-import com.chinasoft.it.wecode.security.User;
+import com.chinasoft.it.wecode.security.UserPrincipal;
 import com.chinasoft.it.wecode.security.config.SecurityProperties;
-import com.chinasoft.it.wecode.security.service.UserProvider;
 
 public class UserContextManager {
 
-  private static ThreadLocal<User> $ = new ThreadLocal<>();
+  private static ThreadLocal<UserPrincipal> $ = new ThreadLocal<>();
 
-  public static void set(User user) {
+  private static final List<Role> GUEST_ROLES = Arrays.asList(new Role() {
+    @Override
+    public String getCode() {
+      return "GUEST";
+    }
+
+    @Override
+    public Set<String> getPermissionCodeSet() {
+      return null;
+    }
+  });
+
+  public static void set(UserPrincipal user) {
     $.set(user);
   }
 
@@ -23,7 +35,7 @@ public class UserContextManager {
     // 加载用户信息
     // UserProvider bean = ApplicationUtils.getBean(UserProvider.class);
     // $.set(bean.get(uid));
-    $.set(new User() {
+    $.set(new UserPrincipal() {
 
       @Override
       public String getUid() {
@@ -31,38 +43,30 @@ public class UserContextManager {
       }
 
       @Override
-      public String getSecret() {
-        // TODO Auto-generated method stub
-        return null;
-      }
-
-      @Override
       public List<Role> getRoles() {
-        // TODO Auto-generated method stub
-        return null;
+        return GUEST_ROLES;
       }
 
       @Override
       public Role getActivedRole() {
-        // TODO Auto-generated method stub
-        return null;
+        return GUEST_ROLES.get(0);
       }
     });
   }
 
-  public static User get() {
+  public static UserPrincipal get() {
     return $.get();
   }
 
-  public static User get(boolean requried) throws NoAuthenticationException {
-    return Optional.ofNullable(get()).orElseThrow(NoAuthenticationException::new);
+  public static UserPrincipal get(boolean requried) throws AuthenticationException {
+    return Optional.ofNullable(get()).orElseThrow(AuthenticationException::new);
   }
 
   /**
    * 是否为超级管理员
    * @return
    */
-  public static boolean isSuperAdmin() throws NoAuthenticationException {
+  public static boolean isSuperAdmin() throws AuthenticationException {
     String adminCode = ApplicationUtils.getBean(SecurityProperties.class).getAdminRoleCode();
     return get(true).getRoles().parallelStream().anyMatch(role -> role != null && adminCode.equals(role.getCode()));
   }

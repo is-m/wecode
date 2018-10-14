@@ -1,26 +1,33 @@
-<form id="formMiniLogin">
-	<div class="form-group">
-		<label for="minUsername">用户名/邮箱/电话</label> <input type="text"
-			class="form-control" id="minUsername" name="username" data-rule="required">
-	</div>
-	<div class="form-group">
-		<label for="minPassword">密码</label> <input type="password"
-			class="form-control" id="minPassword" name="password" data-rule="required">
-	</div>
-	<div class="form-group form-check">
-		<input type="checkbox" class="form-check-input" id="exampleCheck1">
-		<label class="form-check-label" for="exampleCheck1">记住我</label>
-	</div>
-	<button name="btnLogin" type="button" class="btn btn-primary">登录</button>
-	<button name="btnRegister" type="button" class="btn btn-default">注册</button>
-</form>
+<div class="container">
+	<form id="formMiniLogin">
+		<div class="form-group">
+			<label for="minUsername" class="require">用户名/电话/邮箱</label> <input type="text"
+				class="form-control" id="minUsername" name="username" data-rule="required">
+		</div>
+		<div class="form-group">
+			<label for="minPassword" class="require">密码</label> <input type="password"
+				class="form-control" id="minPassword" name="password" data-rule="required">
+		</div>
+		<div class="form-group form-check">
+			<input type="checkbox" class="form-check-input" id="exampleCheck1">
+			<label class="form-check-label" for="exampleCheck1">记住我</label>
+		</div>
+		<button name="btnLogin" type="button" class="btn btn-primary">登录</button>
+		<button name="btnRegister" type="button" class="btn btn-default">注册</button>
+	</form>
+</div>
 
 <script>
   require(["jquery", "service/login"], function($, loginService) {
     var $form = $("#formMiniLogin");
 
     $form.nameEl("btnLogin").click(function() {
-      loginService.login($form);
+      loginService.login($("#formMiniLogin")).done(function(){
+        // TODO:重新加载用户信息，并会回填当前window上下文
+        // 关闭弹窗,miniLoginDialog 该函数在 app.js 文件中设置
+        window.miniLoginDialog.close();
+        delete window["miniLoginDialog"];
+      });
       return false;
     });
 

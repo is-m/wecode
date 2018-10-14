@@ -106,7 +106,7 @@ public class CatelogService extends BaseService<Catelog, CatelogDto, CatelogResu
 		} else if (CatelogHelper.isRoot(entity)) {
 			entity.setFullPath(path);
 		} else {
-			Catelog parentCatelog = repo.findOne(entity.getPid());
+			Catelog parentCatelog = repo.getOne(entity.getPid());
 			Assert.notNull(parentCatelog, "parent catelog not found of " + entity.getId());
 			entity.setFullPath(parentCatelog.getFullPath() + path);
 		}

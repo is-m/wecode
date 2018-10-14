@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+
 /**
  * Servlet 工具类
  * @author Administrator
@@ -22,13 +23,19 @@ public class ServletUtils {
    */
   public static String getRemoteAddr(HttpServletRequest request) {
     String ip = request.getHeader("x-forwarded-for");
-    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+    if (StringUtil.emptyOrIgnoreCaseEquals(ip, "unknown")) {
       ip = request.getHeader("Proxy-Client-IP");
     }
-    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+    if (StringUtil.emptyOrIgnoreCaseEquals(ip, "unknown")) {
       ip = request.getHeader("WL-Proxy-Client-IP");
     }
-    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+    if (StringUtil.emptyOrIgnoreCaseEquals(ip, "unknown")) {
+      ip = request.getHeader("HTTP_CLIENT_IP");
+    }
+    if (StringUtil.emptyOrIgnoreCaseEquals(ip, "unknown")) {
+      ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+    }
+    if (StringUtil.emptyOrIgnoreCaseEquals(ip, "unknown")) {
       ip = request.getRemoteAddr();
     }
     return "0:0:0:0:0:0:0:1".equals(ip) ? "127.0.0.1" : ip;

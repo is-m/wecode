@@ -12,19 +12,19 @@ import com.chinasoft.it.wecode.security.authentication.service.LoginService;
 @Controller
 public class LoginApi {
 
-	private LoginService loginService;
+  private LoginService loginService;
 
-	@RequestMapping("/login")
-	public String login(HttpServletRequest req, HttpServletResponse resp) {
-		String indexPage = "/web/index.html"; 
-		
-		return "redirect:"+indexPage;
-	}
+  @RequestMapping("/login")
+  public String login(HttpServletRequest req, HttpServletResponse resp) {
+    String indexPage = "/web/index.html";
 
-	@RequestMapping("/logout")
-	public String logout(HttpServletRequest req, HttpServletResponse resp) {  
-		//  TODO 这个配置可能是通过字典配置的，也可能是当前系统的登录页面
-		String loginPage = "/web/page/login.html"; 
-		return "redirect:"+loginPage;
-	}
+    return "redirect:" + indexPage;
+  }
+
+  @RequestMapping("/logout")
+  public String logout(HttpServletRequest req, HttpServletResponse resp) {
+    // TODO 这个配置可能是通过字典配置的，也可能是当前系统的登录页面
+    String loginPage = "/web/page/login.html";
+    return "redirect:" + loginPage;
+  }
 }

@@ -205,8 +205,10 @@
 			version : (new Date()).getTime(),
 			// 后台：系统上线文路径
 			contextPath : "/wecode/asset",
-			// 服务器当前时间
+			// 后台：服务器当前时间
 			serverTimes : (new Date()).getTime(),
+			// 后台：监控数据接收地址
+			analysisApiUrl:"/api/test/analysis",
 			// 导航
 			siteMap : [ {
 				title : "首页",
@@ -258,7 +260,9 @@
 				"sys.common.guest" : "访客"
 			}
 		};
-
+		
+		window.$$path = appConfig.contextPath;
+		
 		requirejs.config({
 			urlArgs : 'v=' + appConfig.version,
 			baseUrl : appConfig.contextPath + '/js/',
@@ -278,6 +282,7 @@
 				'fileinput': 'lib/fileinput',
 				'fileinputTheme':'../css/lib/fileinput/themes/explorer/theme',
 				'holder':'lib/holder',
+				'pako':'lib/pako'
 			}
 			,shim: {
 				'template': {
@@ -323,6 +328,7 @@
 		// ! js 模块化更多的是为了处理模块之间的依赖关系，和异步加载脚本
 		require(['rt/pageContext' ,'jquery','app','rt/core'  ,"bootstrap" , 'rt/jquery-mex'/* ,'ztree' */ ], function(pc,$, app, core,bs,jqueryMEX/* ,ztree */) {
 			window.pageContext = pc;
+			core.setServerTime(appConfig.serverTimes);
 			$(app.init); 
 		}); 
 			

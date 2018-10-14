@@ -1,4 +1,4 @@
-define(function(require, exports, module){
+define(["rt/store"],function(store){
  
   /**
    * 初始化布局
@@ -51,7 +51,10 @@ define(function(require, exports, module){
               data = data.concat('&' + key + '=' + dataBase64);
           };
           arguments[1].data = data.substring(1, data.length);*/
-        xhr.setRequestHeader('X-Authentication-TOKEN', 'tokentest');
+        var userToken = store.get("$USER_TOKEN$");
+        if(userToken){
+          xhr.setRequestHeader('X-Authentication', userToken);
+        }
       },
       // 默认不序列化参数
       //processData: false,
@@ -73,16 +76,22 @@ define(function(require, exports, module){
             alert("服务器系统内部错误");
             break;
           case (401):
-            require(["ui/ui-confirm"],function(c){
-                c.dialog({
-                  title:"登录",
-                  url:"/web/_index/miniLogin.html",
-                  columnClass:"medium" 
-                });
-            });
+            // 不存在登录页时才弹出登录页
+            if(!$("#formMiniLogin").length){
+              require(["ui/ui-confirm"],function(c){
+                window.miniLoginDialog = c.dialog({ title:" ", url:"/web/_index/miniLogin.html", columnClass:"medium"  });
+              });
+            }else{
+              // TODO:待修改需要根据校验或者什么问题来定位显示错误信息
+              //alert(jqXHR.responseJSON);
+              alert(jqXHR.responseText);
+            } 
             break;
           case (403):
             alert("无权限执行此操作");
+            break;
+          case (404):
+            alert("未找到资源");
             break;
           case (408):
             alert("请求超时");
@@ -95,14 +104,28 @@ define(function(require, exports, module){
         }
       },
       success: function(data) {
-        console.log(data);
+        //console.log(data);
       } 
 
   });
 	  
 	};
 	
+	// 监听浏览器异常，上报
+	var listenExplorerError = function(){
+	  window.onerror = function(msg, url, line){       
+	    // https://blog.csdn.net/hj7jay/article/details/62215252 
+	    require(["rt/analysis"],function(analysis){
+	      // t:timestamp 时间错,m:metric 指标,v:value 值, a1:扩展属性1,a2 扩展属性2,a3 扩展属性3(使用mongoDB,或者mysql JSON 类型字段存放更多的补充信息)
+	      analysis.push({ t:window.getServerTime(),v:0, msg : msg, url:url, line:line})
+	    });
+	    console.log( "真不幸，又出错了\n\n错误信息：" + msg   + "\n所在文件：" + url + "\n错误行号：" + line + "\r"+window.userAgent);
+	    
+    }
+	}
+	
 	var initilize = function(){
+	  listenExplorerError();
 	  initLayout();
 	  ajaxSetup();
 		// 隐藏整个页面内容
@@ -263,6 +286,7 @@ define(function(require, exports, module){
 		
 		$(document).click(function(){  
 			console.log("document click hidden register auto process document click listener handler");
+			//$(".tooltip").tooltip("hide");
 		});
 	}
 	

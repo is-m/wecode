@@ -20,6 +20,7 @@ import javax.sql.DataSource;
 @Configuration
 @ConditionalOnClass(com.alibaba.druid.pool.DruidDataSource.class)
 @ConditionalOnProperty(name = "spring.datasource.type", havingValue = "com.alibaba.druid.pool.DruidDataSource", matchIfMissing = true)
+//@Deprecated
 public class DruidDataSourceConfiguration {
  
     @SuppressWarnings("unchecked")

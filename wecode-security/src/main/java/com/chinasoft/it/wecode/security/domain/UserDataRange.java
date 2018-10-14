@@ -15,32 +15,30 @@ import com.chinasoft.it.wecode.base.BaseEntity;
 @Table(name = "sys_user_data_range")
 public class UserDataRange extends BaseEntity {
 
-	private static final long serialVersionUID = 5155056067778551962L;
+  /**
+   * 用户ID
+   */
+  private String userId;
 
-	/**
-	 * 用户ID
-	 */
-	private String userId;
+  /**
+   * 数据范围ID
+   */
+  private String dataRangeId;
 
-	/**
-	 * 数据范围ID
-	 */
-	private String dataRangeId;
+  public String getUserId() {
+    return userId;
+  }
 
-	public String getUserId() {
-		return userId;
-	}
+  public void setUserId(String userId) {
+    this.userId = userId;
+  }
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+  public String getDataRangeId() {
+    return dataRangeId;
+  }
 
-	public String getDataRangeId() {
-		return dataRangeId;
-	}
-
-	public void setDataRangeId(String dataRangeId) {
-		this.dataRangeId = dataRangeId;
-	}
+  public void setDataRangeId(String dataRangeId) {
+    this.dataRangeId = dataRangeId;
+  }
 
 }

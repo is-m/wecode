@@ -18,44 +18,43 @@ import javax.persistence.Entity;
 @Table(name = "sys_data_range")
 public class DataRange extends BaseEntity {
 
-	private static final long serialVersionUID = -1493345011927538551L;
 
-	/**
-	 * 范围名称
-	 */
-	private String name;
+  /**
+   * 范围名称
+   */
+  private String name;
 
-	/**
-	 * 范围描述
-	 */
-	private String remark;
+  /**
+   * 范围描述
+   */
+  private String remark;
 
-	/**
-	 * 是否生效
-	 */
-	private boolean enabled;
+  /**
+   * 是否生效
+   */
+  private boolean enabled;
 
-	public String getName() {
-		return name;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	public String getRemark() {
-		return remark;
-	}
+  public String getRemark() {
+    return remark;
+  }
 
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
+  public void setRemark(String remark) {
+    this.remark = remark;
+  }
 
-	public boolean isEnabled() {
-		return enabled;
-	}
+  public boolean isEnabled() {
+    return enabled;
+  }
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
+  public void setEnabled(boolean enabled) {
+    this.enabled = enabled;
+  }
 }

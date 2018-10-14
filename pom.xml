@@ -6,11 +6,14 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
+	<!-- 2.0 https://blog.csdn.net/qq_38431305/article/details/80917047 <parent> 
+		<groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-parent</artifactId> 
+		<version>1.5.10.RELEASE</version> <relativePath /> </parent> -->
+	<!-- Inherit defaults from Spring Boot -->
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.10.RELEASE</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<version>2.0.5.RELEASE</version>
 	</parent>
 
 	<properties>
@@ -31,10 +34,7 @@
 		<module>wecode-security</module>
 		<module>wecode-excel</module>
 		<module>wecode-distributed</module>
-		<!-- 
-		<module>wecode-data-multiTenancy</module>
-		<module>wecode-data-tenant</module>
-		 -->
+		<!-- <module>wecode-data-multiTenancy</module> <module>wecode-data-tenant</module> -->
 		<module>wecode-excel-engine</module>
 		<module>wecode-agent-trace</module>
 		<module>wecode-trace-api</module>
@@ -96,33 +96,37 @@
 			<dependency>
 				<groupId>com.alibaba</groupId>
 				<artifactId>druid</artifactId>
-				<version>1.0.31</version>
+				<version>1.1.11</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>javax.servlet-api</artifactId>
 				<version>3.1.0</version>
 			</dependency>
-			
+
+			<!-- https://blog.csdn.net/q_linchao/article/details/80693214 -->
+			<!-- https://github.com/alibaba/druid/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98 -->
+			<!-- https://mvnrepository.com/artifact/com.alibaba/druid-spring-boot-starter -->
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>druid-spring-boot-starter</artifactId>
+				<version>1.1.10</version>
+			</dependency>
+
 			<!-- hex encrpt -->
 			<!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
 			<dependency>
-			    <groupId>commons-codec</groupId>
-			    <artifactId>commons-codec</artifactId>
-			    <version>1.11</version>
+				<groupId>commons-codec</groupId>
+				<artifactId>commons-codec</artifactId>
+				<version>1.11</version>
 			</dependency>
-			
+
 		</dependencies>
 	</dependencyManagement>
 
 	<dependencies>
-		<!-- 
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId> 
-			<scope>provided</scope>
-		</dependency>
-		 -->
+		<!-- <dependency> <groupId>org.projectlombok</groupId> <artifactId>lombok</artifactId> 
+			<scope>provided</scope> </dependency> -->
 	</dependencies>
 
 	<build>

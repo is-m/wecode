@@ -1,5 +1,5 @@
 // 登录服务
-define(["jquery","rt/validation"],function($,v){
+define(["jquery","rt/validation","rt/store"],function($,v,store){
 
   var _login = function(postData){
     if(!postData.username || !postData.password){
@@ -7,10 +7,17 @@ define(["jquery","rt/validation"],function($,v){
     }
     
     return $.ajax({
-      type:"POST",
-      url:"login.do",
-      data:postData,
+      type:"get",
+      url:$$path + "/security/authentication/token",
+      data:{ identifier:postData.username 
+        , secret:postData.password
+        ,verifyCode:null  
+      },
       dataType:"json"
+    }).success(function(tokenObject){
+      alert("登录成功，设置用户token之前");
+      store.set("$USER_TOKEN$",tokenObject.token,tokenObject.expire);
+      alert("登录成功 "+store.get("$USER_TOKEN$"));
     });
   };
   
@@ -51,12 +58,12 @@ define(["jquery","rt/validation"],function($,v){
       }
       
       alert("准备用帐号[{0}]密码[{1}]登录".format(postData.username,postData.password));
-      _login(postData);
+      _login(postData).success(dtd.resolve).error(dtd.reject);
       //alert("准备用帐号[{0}]密码[{1}]登录".format(username,password));
       return dtd;
     } ,
     logout:function(){
-      
+      store.remove("$USER_TOKEN$");
     }
   }  
   

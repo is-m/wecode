@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.chinasoft.it.wecode.common.util.StringUtil;
-import com.chinasoft.it.wecode.security.User;
+import com.chinasoft.it.wecode.security.UserPrincipal;
 import com.chinasoft.it.wecode.security.config.SecurityProperties;
 import com.chinasoft.it.wecode.security.service.UserProvider;
 
@@ -28,7 +28,7 @@ public class NetUserProvider implements UserProvider {
 	private SecurityProperties properties;
 
 	@Override
-	public User get(String uid) {
+	public UserPrincipal get(String uid) {
 		Assert.isTrue(StringUtil.isEmpty(properties.getAuthenticationHost()), "auth host no configured.");
 		return null;
 	}

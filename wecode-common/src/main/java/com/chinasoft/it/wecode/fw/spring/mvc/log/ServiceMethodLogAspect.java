@@ -31,53 +31,48 @@ import io.swagger.annotations.ApiOperation;
 @Component
 public class ServiceMethodLogAspect {
 
-	private ObjectMapper om = new ObjectMapper();
+  private ObjectMapper om = new ObjectMapper();
 
-	private static final Logger log = LoggerFactory.getLogger(ServiceMethodLogAspect.class);
+  private static final Logger log = LoggerFactory.getLogger(ServiceMethodLogAspect.class);
 
-	// usage sample @Before("controllerAspect()")
-	@Pointcut("@annotation(com.annotation.SystemServiceLog)")
-	public void serviceAspect() {
-	}
+  // usage sample @Before("controllerAspect()")
+  @Pointcut("@annotation(com.annotation.SystemServiceLog)")
+  public void serviceAspect() {}
 
-	// @Around(value="@annotation(apiLog)") public Object around(ProceedingJoinPoint
-	// pjp, ApiLog apiLog) {
-	// @Before("@annotation(org.springframework.web.bind.annotation.RequestMapping)")
-	@Before("@annotation(org.springframework.web.bind.annotation.GetMapping) "
-			+ "|| @annotation(org.springframework.web.bind.annotation.PostMapping)"
-			+ "|| @annotation(org.springframework.web.bind.annotation.PutMapping)"
-			+ "|| @annotation(org.springframework.web.bind.annotation.DeleteMapping)"
-			+ "|| @annotation(org.springframework.web.bind.annotation.RequestMapping)")
-	public void before(JoinPoint joinPoint) {
-		// reflection
-		MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-		String declaringTypeName = signature.getDeclaringTypeName();
-		if ("org.springframework.boot.autoconfigure.web.BasicErrorController".equals(declaringTypeName)) {
-			return;
-		}
+  // @Around(value="@annotation(apiLog)") public Object around(ProceedingJoinPoint
+  // pjp, ApiLog apiLog) {
+  // @Before("@annotation(org.springframework.web.bind.annotation.RequestMapping)")
+  @Before("@annotation(org.springframework.web.bind.annotation.GetMapping) " + "|| @annotation(org.springframework.web.bind.annotation.PostMapping)"
+      + "|| @annotation(org.springframework.web.bind.annotation.PutMapping)" + "|| @annotation(org.springframework.web.bind.annotation.DeleteMapping)"
+      + "|| @annotation(org.springframework.web.bind.annotation.RequestMapping)")
+  public void before(JoinPoint joinPoint) {
+    // reflection
+    MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+    String declaringTypeName = signature.getDeclaringTypeName();
+    if ("org.springframework.boot.autoconfigure.web.BasicErrorController".equals(declaringTypeName)) {
+      return;
+    }
 
-		Method method = signature.getMethod();
+    Method method = signature.getMethod();
 
-		HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+    HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
-		// arg
-		Map<String, Object> argMap = new TreeMap<>();
-		String[] argumentNames = signature.getParameterNames();
-		for (int i = 0, j = joinPoint.getArgs().length; i < j; i++) {
-			Object arg = joinPoint.getArgs()[i];
-			argMap.put(argumentNames[i], arg instanceof Serializable ? arg : arg.toString());
-		}
+    // arg
+    Map<String, Object> argMap = new TreeMap<>();
+    String[] argumentNames = signature.getParameterNames();
+    for (int i = 0, j = joinPoint.getArgs().length; i < j; i++) {
+      Object arg = joinPoint.getArgs()[i];
+      argMap.put(argumentNames[i], arg == null ? "$null$" : (arg instanceof Serializable ? arg : arg.toString()));
+    }
 
-		String jsonParams = JSONUtils.getJson(argMap);
-		ApiOperation api = method.getAnnotation(ApiOperation.class);
-		String apiName = api == null || StringUtils.isEmpty(api.value()) ? method.getName() : api.value();
+    String jsonParams = JSONUtils.getJson(argMap);
+    ApiOperation api = method.getAnnotation(ApiOperation.class);
+    String apiName = api == null || StringUtils.isEmpty(api.value()) ? method.getName() : api.value();
 
-		log.info("API {}  calling of URI:{} JAVA:{}::{}  \r\nargs:{}", apiName, req.getRequestURI(), declaringTypeName,
-				method.getName(), jsonParams);
-	}
-	/*
-	 * @Before("@annotation(org.springframework.web.bind.annotation.GetMapping)")
-	 * public void around(JoinPoint joinPoint) { System.out.println("有人在调用API方法啦");
-	 * }
-	 */
+    log.info("API {}  calling of URI:{} JAVA:{}::{}  \r\nargs:{}", apiName, req.getRequestURI(), declaringTypeName, method.getName(), jsonParams);
+  }
+  /*
+   * @Before("@annotation(org.springframework.web.bind.annotation.GetMapping)") public void
+   * around(JoinPoint joinPoint) { System.out.println("有人在调用API方法啦"); }
+   */
 }

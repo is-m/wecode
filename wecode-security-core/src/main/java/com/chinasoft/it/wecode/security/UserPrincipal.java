@@ -2,21 +2,14 @@ package com.chinasoft.it.wecode.security;
 
 import java.util.List;
 
-public interface User {
+public interface UserPrincipal {
 
 	/**
 	 * 获取用户标识（用户名，id，手机，邮箱）
 	 * 
 	 * @return
 	 */
-	String getUid();
-
-	/**
-	 * 安全码(可能是加密后的密码，又或是手机认证代码)
-	 * 
-	 * @return
-	 */
-	String getSecret();
+	String getUid(); 
 
 	/**
 	 * 当前活动的角色

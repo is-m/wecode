@@ -10,14 +10,14 @@ package com.chinasoft.it.wecode.common.util;
  */
 public interface SortConstant {
 
-	String PARAM_SORT = "sort";
+  String PARAM_SORT = "sort";
 
-	String PARAM_SPLITTER = ",";
+  String PARAM_SPLITTER = ",";
 
-	String DIRECTION_ASC = "ASC";
+  String DIRECTION_ASC = "ASC";
 
-	String DIRECTION_DESC = "DESC";
+  String DIRECTION_DESC = "DESC";
 
-	String DIRECTION_DEFAULT = DIRECTION_ASC;
+  String DIRECTION_DEFAULT = DIRECTION_ASC;
 
 }

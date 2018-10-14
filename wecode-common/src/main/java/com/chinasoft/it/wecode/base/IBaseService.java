@@ -1,0 +1,99 @@
+package com.chinasoft.it.wecode.base;
+
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import com.chinasoft.it.wecode.common.dto.BaseDto;
+
+/**
+ * 基础服务接口
+ * @author Administrator
+ *
+ * @param <D> 数据对象
+ * @param <R> 返回结果对象
+ */
+public interface IBaseService<D extends BaseDto, R extends BaseDto> {
+
+  /**
+   * 创建对象
+   * 
+   * @param dto
+   * @return
+   */
+  R create(D dto);
+
+  /**
+   * 批量创建对象
+   * 
+   * @param dto
+   * @return
+   */
+  List<R> batchCreate(List<D> dtos);
+
+  /**
+   * 修改函数，该函数过于凶险，尽可能的少用
+   * 
+   * 后续应该是根据ID查询出来后，考虑：按属性不为空的逐个替换，而非整体使用外部传进来的参数
+   * 
+   * @param id
+   * @param dto
+   * @return
+   */
+  R update(String id, D dto);
+
+  /**
+   * 根据ID获取对象
+   * 
+   * @param id
+   * @return
+   */
+  R findOne(String id);
+
+  /**
+   * 查询 对象 (ID In List)
+   * 
+   * @param ids
+   * @return
+   */
+  List<R> findAll(Iterable<String> ids);
+
+  /**
+   * 分页查询 (如果存在非Equals类型的查询条件是，如果要使用该接口，repository 必须实现 JpaSpecificationExecutor
+   * 接口) findByUseridLikeOrUserNameLike 如果like不生效，可以使用Containing
+   * findByIpContaining
+   * 
+   * @param pageable
+   * @param queryDto
+   * @return
+   */
+  Page<R> findPagedList(Pageable pageable, BaseDto queryDto);
+
+  /**
+   * 根据ID删除
+   * 
+   * @param id
+   * @return
+   */
+  void delete(String id);
+
+  // JPA
+  // https://www.cnblogs.com/fengru/p/5922793.html?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+  /**
+   * 根据ID删除 TODO:删除时，jpa有进行过一次查询后再进行的删除,而且是执行的多条删除语句，需要看看是否需要优化
+   * TODO:未关联删除，需要人为的去找到关联删除项
+   * 
+   * @param id
+   * @return
+   */
+  void delete(String... ids);
+
+  /**
+   * 批量保存
+   * @param dtos
+   * @return
+   */
+  List<R> save(List<R> dtos);
+
+}

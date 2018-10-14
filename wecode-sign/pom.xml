@@ -12,10 +12,10 @@
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/javax.inject/javax.inject -->
 		<dependency>
-		    <groupId>javax.inject</groupId>
-		    <artifactId>javax.inject</artifactId> 
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
 		</dependency>
-	
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -24,8 +24,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<!-- <exclusions> <exclusion> <groupId>org.springframework.boot</groupId> 
+				<artifactId>spring-boot-starter-logging</artifactId> </exclusion> </exclusions> -->
 		</dependency>
-
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-log4j2</artifactId> 
+			</dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
@@ -86,6 +89,10 @@
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
 		</dependency>
+		
+		<!-- TODO 这个需要迁移到parent，并且需要确认是否只在调试版本下才引入 -->
+		<!-- https://www.cnblogs.com/cnjavahome/p/8421846.html -->
+		<!-- log4jdbc --> 
 	</dependencies>
 
 
