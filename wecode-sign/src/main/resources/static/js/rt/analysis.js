@@ -7,12 +7,12 @@ define(["rt/request","pako"],function(http,pako){
 	var data = [];
 	var enableAnalysis = !!appConfig.analysisApiUrl;
 	var analysisDataTimer = null;
+	var dataUrl = null;
 	if(enableAnalysis){
+	  dataUrl =  window.$$path + window.appConfig.analysisApiUrl;;
 	  analysisDataTimer = window.setInterval(function(){
-	  
   	  if(data.length){
-  	    var item = null;
-  	    var tempData = [];
+  	    var item = null,tempData = [];
   	    while((item = data.pop()) != null){
   	      tempData.push(item);
   	    }
@@ -20,7 +20,7 @@ define(["rt/request","pako"],function(http,pako){
   	    // 对 JSON 字符串进行压缩
   	    var waitPostData = encodeURIComponent(JSON.stringify(tempData));
   	    // pako.gzip(params) 默认返回一个 Uint8Array 对象,如果此时使用 Ajax 进行请求,参数会以数组的形式进行发送,为了解决该问题,添加 {to: "string"} 参数,返回一个二进制的字符串
-  	    http.doPost(window.$$path + window.appConfig.analysisApiUrl,pako.gzip(waitPostData, { to: "string" }));
+  	    http.doPost(dataUrl,pako.gzip(waitPostData, { to: "string" }));
   	  }
   	  
   	},10000);

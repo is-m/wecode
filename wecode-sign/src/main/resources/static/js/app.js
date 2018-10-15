@@ -35,7 +35,7 @@ define(["rt/store"],function(store){
 	var ajaxSetup = function(){
 	  $.ajaxSetup({  
 	    // 超时
-	    timeout:5000,
+	    //timeout:5000,
 	    // 
 	    cache: false,
 	    // 发送前执行的函数
