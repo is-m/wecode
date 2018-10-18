@@ -36,9 +36,9 @@ public class ValidationProcessor {
   }
 
   public static void valid(Object waitFor, Class<?>... groups) throws ValidationException {
-    if (waitFor == null) {
+    /*if (waitFor == null) {
       throw new NullPointerException("待校验的对象不能为空");
-    }
+    }*/
 
     Set<ConstraintViolation<Object>> result = getValidator().validate(waitFor, groups);
     if (CollectionUtils.notEmpty(result)) {

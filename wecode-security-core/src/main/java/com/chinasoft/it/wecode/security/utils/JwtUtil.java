@@ -15,6 +15,7 @@ import org.springframework.util.Base64Utils;
 
 import com.chinasoft.it.wecode.common.util.LogUtils;
 import com.chinasoft.it.wecode.common.util.StringUtil;
+import com.chinasoft.it.wecode.exception.AuthenticationException;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -28,9 +29,16 @@ import io.jsonwebtoken.SignatureException;
  */
 public class JwtUtil {
 
-  private static final String KEY_SECRET = StringUtil.random(10);
+  private static String KEY_SECRET = StringUtil.random(10);
 
-  private static final Collection<String> innerKeys = Arrays.asList("sub", "iat", "exp");
+  public static final String CLAIM_SUB = "sub";
+
+  public static final String CLAIM_IAT = "iat";
+
+  public static final String CLAIM_EXP = "exp";
+
+  // sub : subject , iat : create time , exp: expired time
+  private static final Collection<String> innerKeys = Arrays.asList(CLAIM_SUB, CLAIM_IAT, CLAIM_EXP);
 
   private static final long EXPIRED_TIMES = 1000 * 60 * 60;
 
@@ -51,7 +59,7 @@ public class JwtUtil {
    */
   public static String get(String uid, Map<String, Object> claims, long expiredTimes) {
     if (claims != null && !claims.isEmpty()) {
-      List<String> collect = claims.keySet().stream().filter(item -> innerKeys.contains(item)).collect(Collectors.toList());
+      List<String> collect = claims.keySet().parallelStream().filter(innerKeys::contains).collect(Collectors.toList());
       Assert.isTrue(collect.size() == 0, "参数 claims 错误， 存在关键参数 " + collect);
     }
 
@@ -72,20 +80,31 @@ public class JwtUtil {
    * @param token
    * @return
    */
-  public static Map<String, Object> parse(String token) {
+  public static JwtEntity parse(String token) throws AuthenticationException {
     try {
-      return Jwts.parser().setSigningKey(KEY_SECRET).parseClaimsJws(base64Token ? new String(Base64Utils.decodeFromString(token)) : token).getBody();
-    } catch (SignatureException | ExpiredJwtException e) {
+      Map<String, Object> result =
+          Jwts.parser().setSigningKey(KEY_SECRET).parseClaimsJws(base64Token ? new String(Base64Utils.decodeFromString(token)) : token).getBody();
+      return new JwtEntity(result);
+    } catch (SignatureException e) {
       // SignatureException 密钥不正确
+      throw new AuthenticationException("密钥不正确", e);
+    } catch (ExpiredJwtException e) {
       // ExpiredJwtException 过期
-      return null;
+      throw new AuthenticationException("用户TOKEN已经过期", e);
     } catch (Exception e) {
-      return null;
+      throw new AuthenticationException("未知异常", e);
     }
   }
 
   public static boolean valid(String token) {
     return parse(token) == null;
+  }
+
+  /**
+   * 刷新token认证签名,刷新后将失效所有基于jwt的Token
+   */
+  public static void refreshSignKey() {
+    KEY_SECRET = StringUtil.random(10);
   }
 
   public static void main(String[] args) {

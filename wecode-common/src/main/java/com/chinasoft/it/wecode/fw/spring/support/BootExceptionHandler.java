@@ -48,7 +48,7 @@ public class BootExceptionHandler {
     Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
     StringBuilder strBuilder = new StringBuilder();
     for (ConstraintViolation<?> violation : violations) {
-      strBuilder.append(violation.getMessage() + "\n");
+      strBuilder.append(violation.getPropertyPath()).append(" - ").append(violation.getMessage()).append("\n");
     }
     return ResponseEntity.status(HttpStatus.valueOf(400)).body(strBuilder.toString());
   }

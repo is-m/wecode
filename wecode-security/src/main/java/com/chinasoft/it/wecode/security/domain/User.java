@@ -2,7 +2,6 @@ package com.chinasoft.it.wecode.security.domain;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 

@@ -1,5 +1,7 @@
 package com.chinasoft.it.wecode.common.util;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -7,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -58,6 +61,14 @@ public class ServletUtils {
       }
     }
     return result;
+  }
+
+  public static void write(HttpServletResponse resp, String value, int statusCode) throws UnsupportedEncodingException, IOException {
+    resp.setHeader("Content-type", "text/html;charset=UTF-8");
+    resp.setStatus(statusCode);
+    if (!StringUtil.isEmpty(value)) {
+      resp.getOutputStream().write(value.getBytes("utf-8"));
+    }
   }
 
 }

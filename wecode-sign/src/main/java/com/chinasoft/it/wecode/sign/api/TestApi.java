@@ -45,7 +45,7 @@ public class TestApi {
   @ResponseStatus(code = HttpStatus.ACCEPTED)
   public void analysis(HttpServletRequest request, @RequestBody String compressData) throws IOException {
     // https://blog.csdn.net/beflyabot/article/details/78053130 重复读request.reader or inputstream
-    String params = new String(GZIPUtils.unCompressURI(compressData));
+    String params = new String(GZIPUtils.uncompressURI(compressData));
     if (!StringUtil.isEmpty(params)) {
       // 因为前台对参数进行了 url 编码,在此进行解码
       params = URLDecoder.decode(params, "utf-8");

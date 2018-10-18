@@ -5,11 +5,9 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.validation.groups.Default;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import javax.validation.constraints.NotBlank;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -17,16 +15,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-import org.springframework.validation.annotation.Validated;
 
 import com.chinasoft.it.wecode.annotations.security.Operate;
 import com.chinasoft.it.wecode.common.dto.BaseDto;
 import com.chinasoft.it.wecode.common.mapper.BaseMapper;
 import com.chinasoft.it.wecode.common.service.SpringDataUtils;
-import com.chinasoft.it.wecode.common.validation.groups.Create;
-import com.chinasoft.it.wecode.common.validation.groups.Query;
-import com.chinasoft.it.wecode.common.validation.groups.Update;
-import com.chinasoft.it.wecode.fw.spring.SelfInjectAware;
 
 /**
  * 服务类父类
@@ -42,7 +35,7 @@ import com.chinasoft.it.wecode.fw.spring.SelfInjectAware;
  * @param <R>
  *            ResultDto
  */
-public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R extends BaseDto> implements IBaseService<D, R>, SelfInjectAware {
+public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R extends BaseDto> implements IBaseService<D, R> {
 
   /**
    * logger
@@ -63,12 +56,6 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R ext
    * dto entity mapper
    */
   protected final BaseMapper<E, D, R> mapper;
-
-  /**
-   * 
-   */
-  protected IBaseService<D, R> self;
-
 
   /**
    * entity manager
@@ -92,7 +79,7 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R ext
    */
   @Override
   @Operate(code = "create", desc = "create")
-  public R create(@Validated({Default.class, Create.class}) D dto) {
+  public R create(D dto) {
     E beforeSave = mapper.to(dto);
     E afterSave = repo.save(beforeSave);
     return mapper.from(afterSave);
@@ -105,7 +92,7 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R ext
    */
   @Override
   @Operate(code = "create", desc = "create")
-  public List<R> batchCreate(@Validated({Default.class, Create.class}) List<D> dtos) {
+  public List<R> batchCreate(List<D> dtos) {
     if (CollectionUtils.isEmpty(dtos)) {
       return null;
     }
@@ -113,14 +100,10 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R ext
     return repo.saveAll(entities).stream().map(entity -> mapper.from(entity)).collect(Collectors.toList());
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see com.chinasoft.it.wecode.base.IBaseService#update(java.lang.String, D)
-   */
+
   @Override
   @Operate(code = "update", desc = "update")
-  public R update(@NotBlank String id, @Validated({Default.class, Update.class}) D dto) {
+  public R update(String id, D dto) {
     E beforeSave = mapper.to(dto);
     ((BaseEntity) beforeSave).setId(id);
     E afterSave = repo.save(beforeSave);
@@ -134,7 +117,7 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R ext
    */
   @Override
   @Operate(code = "view", desc = "view")
-  public R findOne(@NotBlank String id) {
+  public R findOne(String id) {
     E entity = repo.getOne(id);
     return mapper.from(entity);
   }
@@ -159,7 +142,7 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R ext
    */
   @Override
   @Operate(code = "view", desc = "view")
-  public Page<R> findPagedList(Pageable pageable, @Validated({Query.class}) BaseDto queryDto) {
+  public Page<R> findPagedList(Pageable pageable, BaseDto queryDto) {
     Page<E> pageData = SpringDataUtils.findPagedData(repo, pageable, queryDto);
     return mapper.toResultDto(pageData);
   }
@@ -171,7 +154,7 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R ext
    */
   @Override
   @Operate(code = "delete", desc = "delete")
-  public void delete(@NotBlank String id) {
+  public void delete(String id) {
     repo.deleteById(id);
   }
 
@@ -255,10 +238,4 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R ext
     return this.mapper;
   }
 
-
-  @SuppressWarnings("unchecked")
-  @Override
-  public void setSelf(Object o) {
-    self = (IBaseService<D, R>) o;
-  }
 }

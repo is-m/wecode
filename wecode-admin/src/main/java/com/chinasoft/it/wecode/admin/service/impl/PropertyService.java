@@ -91,7 +91,7 @@ public class PropertyService extends BaseService<Property, PropertyDto, Property
     return parentProperty.getPath() + "." + property.getName();
   }
 
-  public PropertyResultDto update(String id, @Valid PropertyDto dto) {
+  public PropertyResultDto update(String id, PropertyDto dto) {
     if (StringUtils.isEmpty(id))
       throw new ValidationException("{id:不能为空}");
     ValidationProcessor.valid(dto);

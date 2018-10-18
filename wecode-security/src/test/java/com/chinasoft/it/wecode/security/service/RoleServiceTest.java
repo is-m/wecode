@@ -15,7 +15,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.chinasoft.it.wecode.SecurityTestApp;
-import com.chinasoft.it.wecode.security.dto.PermissionDto;
 import com.chinasoft.it.wecode.security.dto.PermissionResultDto;
 import com.chinasoft.it.wecode.security.dto.RoleDto;
 import com.chinasoft.it.wecode.security.dto.RoleResultDto;
@@ -42,7 +41,7 @@ public class RoleServiceTest {
 		permissions.add(permissionResultDto); 
 		roleService.create(dto);
 		
-		Page<RoleResultDto> findPagedList = roleService.findPagedList(new PageRequest(1,10), null);
+		Page<RoleResultDto> findPagedList = roleService.findPagedList(PageRequest.of(1,10), null);
 		System.out.println(findPagedList);
 	}
 }

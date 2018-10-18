@@ -51,9 +51,9 @@ define(["rt/store"],function(store){
               data = data.concat('&' + key + '=' + dataBase64);
           };
           arguments[1].data = data.substring(1, data.length);*/
-        var userToken = store.get("$USER_TOKEN$");
-        if(userToken){
-          xhr.setRequestHeader('X-Authentication', userToken);
+        var tokenObj = store.get("$USER_TOKEN$");
+        if(tokenObj){
+          xhr.setRequestHeader('X-Authentication', tokenObj.token);
         }
       },
       // 默认不序列化参数
@@ -117,9 +117,13 @@ define(["rt/store"],function(store){
 	    // https://blog.csdn.net/hj7jay/article/details/62215252 
 	    require(["rt/analysis"],function(analysis){
 	      // t:timestamp 时间错,m:metric 指标,v:value 值, a1:扩展属性1,a2 扩展属性2,a3 扩展属性3(使用mongoDB,或者mysql JSON 类型字段存放更多的补充信息)
-	      analysis.push({ t:window.getServerTime(),v:0, msg : msg, url:url, line:line})
+	      try{
+	        analysis.push({ m:"WEB.JS.ERROR",v:0, msg : msg, url:url, line:line})
+	      }catch(e){
+	        alert('analysis push error '+e);
+	      }
 	    });
-	    console.log( "真不幸，又出错了\n\n错误信息：" + msg   + "\n所在文件：" + url + "\n错误行号：" + line + "\r"+window.userAgent);
+	    //alert( "真不幸，又出错了\n\n错误信息：" + msg   + "\n所在文件：" + url + "\n错误行号：" + line + "\r"+window.userAgent);
 	    
     }
 	}

@@ -1,8 +1,11 @@
 package com.chinasoft.it.wecode.security.dto;
 
+import javax.validation.constraints.NotBlank;
+
 import org.hibernate.validator.constraints.Length;
 
 import com.chinasoft.it.wecode.common.dto.BaseDto;
+import com.chinasoft.it.wecode.common.validation.groups.Create;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -24,6 +27,7 @@ public class UserDto extends BaseDto {
 	 */
 	@ApiModelProperty(name = "password", notes = "密码", example = "123456")
 	@Length(min = 3, max = 100)
+	@NotBlank(groups= {Create.class})
 	private String password;
 
 	/**

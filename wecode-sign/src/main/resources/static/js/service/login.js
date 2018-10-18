@@ -16,7 +16,7 @@ define(["jquery","rt/validation","rt/store"],function($,v,store){
       dataType:"json"
     }).success(function(tokenObject){
       alert("登录成功，设置用户token之前");
-      store.set("$USER_TOKEN$",tokenObject.token,tokenObject.expire);
+      store.set("$USER_TOKEN$",tokenObject,tokenObject.expire);
       alert("登录成功 "+store.get("$USER_TOKEN$"));
     });
   };

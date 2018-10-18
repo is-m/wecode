@@ -2,18 +2,33 @@ package com.chinasoft.it.wecode.base;
 
 import java.util.List;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.groups.Default;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.validation.annotation.Validated;
 
 import com.chinasoft.it.wecode.common.dto.BaseDto;
+import com.chinasoft.it.wecode.common.validation.groups.Create;
+import com.chinasoft.it.wecode.common.validation.groups.Query;
+import com.chinasoft.it.wecode.common.validation.groups.Update;
+import com.chinasoft.it.wecode.fw.spring.support.BeanValidationConfiguration;
 
 /**
  * 基础服务接口
+ * 
+ * 已经融合了Spring method validation
+ * @Validated 需要将 MethodValidationPostProcessor 开启后方可生效（xml or bean config ）
+ * @see BeanValidationConfiguration
  * @author Administrator
  *
  * @param <D> 数据对象
  * @param <R> 返回结果对象
  */
+@Validated
 public interface IBaseService<D extends BaseDto, R extends BaseDto> {
 
   /**
@@ -22,7 +37,8 @@ public interface IBaseService<D extends BaseDto, R extends BaseDto> {
    * @param dto
    * @return
    */
-  R create(D dto);
+  @Validated({Default.class, Create.class})
+  R create(@Valid D dto);
 
   /**
    * 批量创建对象
@@ -30,7 +46,8 @@ public interface IBaseService<D extends BaseDto, R extends BaseDto> {
    * @param dto
    * @return
    */
-  List<R> batchCreate(List<D> dtos);
+  @Validated({Default.class, Create.class})
+  List<R> batchCreate(@Valid List<D> dtos);
 
   /**
    * 修改函数，该函数过于凶险，尽可能的少用
@@ -41,7 +58,8 @@ public interface IBaseService<D extends BaseDto, R extends BaseDto> {
    * @param dto
    * @return
    */
-  R update(String id, D dto);
+  @Validated({Default.class, Update.class})
+  R update(@NotBlank String id, @Valid D dto);
 
   /**
    * 根据ID获取对象
@@ -49,7 +67,7 @@ public interface IBaseService<D extends BaseDto, R extends BaseDto> {
    * @param id
    * @return
    */
-  R findOne(String id);
+  R findOne(@NotBlank String id);
 
   /**
    * 查询 对象 (ID In List)
@@ -68,7 +86,7 @@ public interface IBaseService<D extends BaseDto, R extends BaseDto> {
    * @param queryDto
    * @return
    */
-  Page<R> findPagedList(Pageable pageable, BaseDto queryDto);
+  Page<R> findPagedList(Pageable pageable, @Validated({Query.class}) BaseDto queryDto);
 
   /**
    * 根据ID删除
@@ -76,7 +94,7 @@ public interface IBaseService<D extends BaseDto, R extends BaseDto> {
    * @param id
    * @return
    */
-  void delete(String id);
+  void delete(@NotBlank String id);
 
   // JPA
   // https://www.cnblogs.com/fengru/p/5922793.html?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
@@ -87,7 +105,8 @@ public interface IBaseService<D extends BaseDto, R extends BaseDto> {
    * @param id
    * @return
    */
-  void delete(String... ids);
+  @Validated
+  void delete(@NotEmpty String... ids);
 
   /**
    * 批量保存

@@ -97,14 +97,24 @@ public class GZIPUtils {
   }
 
   /**
-   * @param jsUriStr :字符串类型为：%1F%C2%8B%08%00%00%00%00%00%00%03%C2%B3)%C2%B0K%2CNI%03c%20i%C2%A3_%60%C3%87e%03%11%23%C2%82%0Dc%C2%A6%25%C3%82XH%C3%B2jyI%C3%85%05%C3%96%60%1E%00%17%C2%8E%3Dvf%00%00%00
-   * @return 生成正常字符串
-   * @throws IOException 
+   * 解压decode过的数据
+   * @param val
+   * @return
+   * @throws IOException
    */
-  public static String unCompressURI(String jsUriStr) throws IOException {
-    String decodeJSUri = URLDecoder.decode(jsUriStr, "UTF-8");
-    String gzipCompress = uncompress(decodeJSUri);
-    return gzipCompress;
+  public static String uncompressURI(String val) throws IOException {
+    return uncompressURI(val, false);
+  }
+
+  /**
+   * 解压Decoder过的数据
+   * @param val
+   * @param isBeforeDecoder
+   * @return
+   * @throws IOException
+   */
+  public static String uncompressURI(String val, boolean isBeforeDecoder) throws IOException {
+    return isBeforeDecoder ? uncompress(URLDecoder.decode(val, "UTF-8")) : URLDecoder.decode(uncompress(val), "UTF-8");
   }
 
   public static void main(String[] args) throws IOException {

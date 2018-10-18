@@ -202,13 +202,18 @@
 		// 应用配置，其中部分内容为空，需要依赖后台数据填充，例如用户，数据，权限，国际化，数据字典等
 		var appConfig = {
 			// 后台：系统版本号
-			version : (new Date()).getTime(),
+			version : +(new Date()),
 			// 后台：系统上线文路径
 			contextPath : "/wecode/asset",
 			// 后台：服务器当前时间
-			serverTimes : (new Date()).getTime(),
+			serverTimes : +(new Date()),
 			// 后台：监控数据接收地址
 			analysisApiUrl:"/api/test/analysis",
+			// 后台：前端监控数据接收频率
+			analysisSendInterval:1000 * 10,
+			// 后台：当前访问用户的IP地址
+			clientIp:'127.0.0.1',
+			serverIp:'192.168.0.1',
 			// 导航
 			siteMap : [ {
 				title : "首页",

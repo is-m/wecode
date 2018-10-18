@@ -13,6 +13,11 @@ public class TokenResponseDto {
   private String token;
 
   /**
+   * 用户身份
+   */
+  private String identifier;
+
+  /**
    * 有效时长
    */
   private Long expire;
@@ -33,10 +38,23 @@ public class TokenResponseDto {
     this.expire = expire;
   }
 
+  public String getIdentifier() {
+    return identifier;
+  }
+
+  public void setIdentifier(String identifier) {
+    this.identifier = identifier;
+  }
+
   public TokenResponseDto() {}
 
   public TokenResponseDto(String token, Long expire) {
+    this(token, null, expire);
+  }
+
+  public TokenResponseDto(String token, String identifier, Long expire) {
     this.token = token;
+    this.identifier = identifier;
     this.expire = expire;
   }
 

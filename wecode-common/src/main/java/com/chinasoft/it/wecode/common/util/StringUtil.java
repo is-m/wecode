@@ -1,5 +1,7 @@
 package com.chinasoft.it.wecode.common.util;
 
+import java.net.URLDecoder;
+
 public class StringUtil {
 
   private static final char[] BCHARS = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
@@ -49,4 +51,38 @@ public class StringUtil {
     }
     return false;
   }
+
+  /**
+   * Illegal hex characters in escape (%) pattern - For input string: “</”
+   * @param outBuffer
+   * @return
+   */
+  public static String replacer(StringBuffer outBuffer) {
+
+    String data = outBuffer.toString();
+    try {
+      StringBuffer tempBuffer = new StringBuffer();
+      int incrementor = 0;
+      int dataLength = data.length();
+      while (incrementor < dataLength) {
+        char charecterAt = data.charAt(incrementor);
+        if (charecterAt == '%') {
+          tempBuffer.append("<percentage>");
+        } else if (charecterAt == '+') {
+          tempBuffer.append("<plus>");
+        } else {
+          tempBuffer.append(charecterAt);
+        }
+        incrementor++;
+      }
+      data = tempBuffer.toString();
+      data = URLDecoder.decode(data, "utf-8");
+      data = data.replaceAll("<percentage>", "%");
+      data = data.replaceAll("<plus>", "+");
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return data;
+  }
+
 }

@@ -16,6 +16,7 @@ import com.chinasoft.it.wecode.exception.AuthenticationException;
 import com.chinasoft.it.wecode.security.UserPrincipal;
 import com.chinasoft.it.wecode.security.dto.TokenResponseDto;
 import com.chinasoft.it.wecode.security.spi.UserDetailService;
+import com.chinasoft.it.wecode.security.utils.JwtEntity;
 import com.chinasoft.it.wecode.security.utils.JwtUtil;
 
 import io.swagger.annotations.Api;
@@ -116,20 +117,39 @@ public class AuthenticationApi {
     return buildTokenResponseDto(identifier, expiryTimes);
   }
 
+  /**
+   * TOKEN刷新
+   * 用于前端定时调用并重置到当前前端存储，以便防止token过期后中断正在访问系统的用户的操作
+   * @param token
+   * @return
+   */
+  @ApiOperation("刷新token")
+  @GetMapping("/token/refresh")
+  public TokenResponseDto refreshToken(@RequestParam("token") String token) {
+    JwtEntity jwtEntity = JwtUtil.parse(token);
+    return buildTokenResponseDto(jwtEntity.getUid(), jwtEntity.effectiveTimes());
+  }
+
+  @ApiOperation(value = "刷新token认证签名", notes = "刷新后将失效所有基于jwt的Token(超级管理员才能操作)")
+  @GetMapping("/token/refreshSignKey")
+  public void refreshTokenSignKey() {
+    JwtUtil.refreshSignKey();
+  }
+
   private static final long HOUR = 1000 * 60 * 60;
   private static final long DAY = HOUR * 24;
   private static final long WEEK = DAY * 7;
   private static final long MONTH = WEEK * 4;
   private static final long[] EXPIRY_RANGE = new long[] {999999999, HOUR, DAY, WEEK, MONTH};
 
-  private TokenResponseDto buildTokenResponseDto(String identifier, short expiryTimes) {
+  private TokenResponseDto buildTokenResponseDto(String identifier, long expiryTimes) {
     if (expiryTimes < 1) {
       throw new IllegalArgumentException("非法的有效时间设置");
     }
 
-    long expired = System.currentTimeMillis() + (expiryTimes > 4 ? expiryTimes : EXPIRY_RANGE[expiryTimes]);
+    long expired = System.currentTimeMillis() + (expiryTimes > 4 ? expiryTimes : EXPIRY_RANGE[(int) expiryTimes]);
     String token = JwtUtil.get(identifier, null, expired);
-    return new TokenResponseDto(token, expired);
+    return new TokenResponseDto(token, identifier, expired);
   }
 
 }
