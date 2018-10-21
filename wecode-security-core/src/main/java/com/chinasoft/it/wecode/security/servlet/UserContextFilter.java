@@ -86,9 +86,7 @@ public class UserContextFilter extends OncePerRequestFilter {
     try {
       jwtEntity = JwtUtil.parse(token);
     } catch (AuthenticationException e) {
-      ServletUtils.write(resp, e.getMessage(), e.getCode());
-      e.printStackTrace();
-      return;
+      log.warn("token exists but cannot read user for cause:{}", e.getMessage());
     }
 
     if (jwtEntity != null) {

@@ -43,7 +43,7 @@ define([], function() {
         var item = JSON.parse(val);
         if (item.exp) {
           // 未过期
-          if (item.exp > window.getServerTime()) { return item.val; }
+          if (item.exp > WeApp.getServerTime()) { return item.val; }
           delete db[key];
           console.log('access expired data for store of key ' + key);
           return null;

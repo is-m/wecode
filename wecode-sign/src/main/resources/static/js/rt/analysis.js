@@ -42,7 +42,7 @@ define(["rt/request","pako","rt/store"],function(http,pako,store){
 	          return;
 	        } 
 	        
-	        item["t"] = window.getServerTime(); // timestamp
+	        item["t"] = WeApp.getServerTime(); // timestamp
 	        item["a"] = navigator.userAgent;    // agent info
 	        
 	        try{

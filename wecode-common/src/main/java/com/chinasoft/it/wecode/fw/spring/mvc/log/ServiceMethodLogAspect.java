@@ -31,8 +31,6 @@ import io.swagger.annotations.ApiOperation;
 @Component
 public class ServiceMethodLogAspect {
 
-  private ObjectMapper om = new ObjectMapper();
-
   private static final Logger log = LoggerFactory.getLogger(ServiceMethodLogAspect.class);
 
   // usage sample @Before("controllerAspect()")
@@ -65,11 +63,13 @@ public class ServiceMethodLogAspect {
       argMap.put(argumentNames[i], arg == null ? "$null$" : (arg instanceof Serializable ? arg : arg.toString()));
     }
 
-    String jsonParams = JSONUtils.getJson(argMap);
     ApiOperation api = method.getAnnotation(ApiOperation.class);
     String apiName = api == null || StringUtils.isEmpty(api.value()) ? method.getName() : api.value();
 
-    log.info("API {}  calling of URI:{} JAVA:{}::{}  \r\nargs:{}", apiName, req.getRequestURI(), declaringTypeName, method.getName(), jsonParams);
+    log.info("API {}  calling of URI:{} JAVA:{}::{}  ", apiName, req.getRequestURI(), declaringTypeName, method.getName());
+    if (!argMap.isEmpty()) {
+      log.info(JSONUtils.getJson(argMap));
+    }
   }
   /*
    * @Before("@annotation(org.springframework.web.bind.annotation.GetMapping)") public void

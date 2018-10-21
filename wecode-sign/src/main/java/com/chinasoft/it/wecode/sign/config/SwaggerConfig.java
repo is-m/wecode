@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.chinasoft.it.wecode.common.util.CollectionUtils;
 import com.chinasoft.it.wecode.security.utils.JwtUtil;
 
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -43,7 +44,7 @@ public class SwaggerConfig {
   }
 
   private List<Parameter> globalParameters() {
-    return Arrays.asList(parameter("header", "X-Authentication", "token", "string", JwtUtil.get("$guest$", null)));
+    return Arrays.asList(parameter("header", "X-Authentication", "token", "string", JwtUtil.get("$guest$", CollectionUtils.newMap("clientIp", "*"))));
   }
 
   private ApiInfo apiInfo() {

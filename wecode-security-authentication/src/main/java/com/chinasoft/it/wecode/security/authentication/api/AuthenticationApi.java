@@ -1,16 +1,26 @@
 package com.chinasoft.it.wecode.security.authentication.api;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.filter.RequestContextFilter;
 
+import com.chinasoft.it.wecode.common.util.CollectionUtils;
 import com.chinasoft.it.wecode.common.util.NumberUtils;
+import com.chinasoft.it.wecode.common.util.ServletUtils;
 import com.chinasoft.it.wecode.common.util.StringUtil;
 import com.chinasoft.it.wecode.exception.AuthenticationException;
 import com.chinasoft.it.wecode.security.UserPrincipal;
@@ -18,6 +28,7 @@ import com.chinasoft.it.wecode.security.dto.TokenResponseDto;
 import com.chinasoft.it.wecode.security.spi.UserDetailService;
 import com.chinasoft.it.wecode.security.utils.JwtEntity;
 import com.chinasoft.it.wecode.security.utils.JwtUtil;
+import com.google.common.base.Objects;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -47,6 +58,29 @@ public class AuthenticationApi {
    * SESSION KEY：安全码
    */
   private static final String K_SECRETCODE = "$$USER_AUTHENTICATION_SECRETCODE";
+
+  /**
+   * 获取安全码
+   * @return
+   */
+  @ApiOperation("获取手机安全码（短信通知）")
+  @GetMapping("/moble/securiyCode")
+  public void getPhoneSecurtyCode(String phoneNumber) {
+    String sessionKey = "USER_SECCODE_" + phoneNumber;
+    Object securityCodeString = session.getAttribute(sessionKey);
+    if (securityCodeString != null && !StringUtils.isEmpty(securityCodeString.toString())) {
+      String[] securityCodeArray = securityCodeString.toString().split("$$");
+      long securityCodeSendTime = Long.valueOf(securityCodeArray[1]);
+      long timeDifference = System.currentTimeMillis() - securityCodeSendTime;
+      Assert.isTrue(timeDifference > MINITUS, String.format("请在 %s 秒后再调用接口", timeDifference));
+    }
+    // 校验手机号码
+    int securityCodeRandom = RandomUtils.nextInt(10000, 99999);;
+    session.setAttribute(sessionKey, securityCodeRandom + "$$" + System.currentTimeMillis());
+    // TODO:短信通知
+    // smsServcice.send("Template_String_Id",securityCodeRandom);
+  }
+
 
   /**
    * 获取用户令牌
@@ -127,6 +161,10 @@ public class AuthenticationApi {
   @GetMapping("/token/refresh")
   public TokenResponseDto refreshToken(@RequestParam("token") String token) {
     JwtEntity jwtEntity = JwtUtil.parse(token);
+    Map<String, Object> payload = jwtEntity.getPayload();
+    if (!payload.containsKey("clientIp") || !Objects.equal(getRequestIp(), payload.get("clientIp"))) {
+      throw new AuthenticationException("认证失败");
+    }
     return buildTokenResponseDto(jwtEntity.getUid(), jwtEntity.effectiveTimes());
   }
 
@@ -136,20 +174,34 @@ public class AuthenticationApi {
     JwtUtil.refreshSignKey();
   }
 
-  private static final long HOUR = 1000 * 60 * 60;
+  private static final long MINITUS = 1000 * 60;
+  private static final long HOUR = MINITUS * 60;
   private static final long DAY = HOUR * 24;
   private static final long WEEK = DAY * 7;
   private static final long MONTH = WEEK * 4;
   private static final long[] EXPIRY_RANGE = new long[] {999999999, HOUR, DAY, WEEK, MONTH};
 
+  /**
+   * 获取响应
+   * FIXME：需要考虑是否依赖 客户端IP来再强化一次TOKEN的有效范围
+   * @param identifier
+   * @param expiryTimes
+   * @return
+   */
   private TokenResponseDto buildTokenResponseDto(String identifier, long expiryTimes) {
     if (expiryTimes < 1) {
       throw new IllegalArgumentException("非法的有效时间设置");
     }
 
     long expired = System.currentTimeMillis() + (expiryTimes > 4 ? expiryTimes : EXPIRY_RANGE[(int) expiryTimes]);
-    String token = JwtUtil.get(identifier, null, expired);
+    Map<String, Object> payload = CollectionUtils.newMap("clientIp", getRequestIp());
+    String token = JwtUtil.get(identifier, payload, expired);
     return new TokenResponseDto(token, identifier, expired);
+  }
+
+  private String getRequestIp() {
+    ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+    return ServletUtils.getRemoteAddr(sra.getRequest());
   }
 
 }

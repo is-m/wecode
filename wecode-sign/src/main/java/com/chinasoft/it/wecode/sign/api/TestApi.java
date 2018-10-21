@@ -43,7 +43,7 @@ public class TestApi {
    */
   @PostMapping("/analysis")
   @ResponseStatus(code = HttpStatus.ACCEPTED)
-  public void analysis(HttpServletRequest request, @RequestBody String compressData) throws IOException {
+  public void analysis(@RequestBody String compressData) throws IOException {
     // https://blog.csdn.net/beflyabot/article/details/78053130 重复读request.reader or inputstream
     String params = new String(GZIPUtils.uncompressURI(compressData));
     if (!StringUtil.isEmpty(params)) {

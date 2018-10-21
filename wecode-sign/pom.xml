@@ -50,13 +50,39 @@
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
+			<!-- fixbug swagger AbstractSerializableParameter    : Illegal DefaultValue  for parameter type integer -->
+			<!-- https://blog.csdn.net/u011685400/article/details/82142799?utm_source=blogxgwz0 -->
+			<exclusions>
+		        <exclusion>
+		            <groupId>io.swagger</groupId>
+		            <artifactId>swagger-annotations</artifactId>
+		        </exclusion>
+		        <exclusion>
+		            <groupId>io.swagger</groupId>
+		            <artifactId>swagger-models</artifactId>
+		        </exclusion>
+		    </exclusions> 
 			<scope>compile</scope>
+		</dependency>
+		<!-- fixbug swagger AbstractSerializableParameter    : Illegal DefaultValue  for parameter type integer -->
+		<!-- https://blog.csdn.net/u011685400/article/details/82142799?utm_source=blogxgwz0 -->
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>1.5.21</version>
+		</dependency>
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-models</artifactId>
+			<version>1.5.21</version>
 		</dependency>
 
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
 		</dependency>
+
+		
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -88,10 +114,10 @@
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
 		</dependency>
-		
+
 		<!-- TODO 这个需要迁移到parent，并且需要确认是否只在调试版本下才引入 -->
 		<!-- https://www.cnblogs.com/cnjavahome/p/8421846.html -->
-		<!-- log4jdbc --> 
+		<!-- log4jdbc -->
 	</dependencies>
 
 

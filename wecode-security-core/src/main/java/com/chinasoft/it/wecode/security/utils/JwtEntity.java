@@ -1,5 +1,6 @@
 package com.chinasoft.it.wecode.security.utils;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,6 +57,9 @@ public class JwtEntity {
   }
 
   public Map<String, Object> getPayload() {
+    if (payload == null) {
+      payload = new HashMap<>();
+    }
     return payload;
   }
 

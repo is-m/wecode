@@ -38,7 +38,7 @@ public class BootExceptionHandler {
   }
 
   /**
-   * 拦截校验失败异常
+   * 拦截Bean Validation校验失败异常
    * @param e
    * @return
    */

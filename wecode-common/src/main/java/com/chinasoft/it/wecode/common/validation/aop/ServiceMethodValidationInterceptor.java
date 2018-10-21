@@ -31,6 +31,7 @@ import com.chinasoft.it.wecode.common.validation.ValidationProcessor;
 @Aspect
 //@Component
 @Order(5)
+@Deprecated
 public class ServiceMethodValidationInterceptor {
 
   private static Logger logger = LogUtils.getLogger();

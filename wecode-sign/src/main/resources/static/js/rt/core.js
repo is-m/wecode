@@ -1,4 +1,5 @@
 define([],function(){ 
+	var _globalConfig = {};
 	
 	var _toString = Object.prototype.toString;
 	var _slice = Array.prototype.slice; 
@@ -247,6 +248,29 @@ define([],function(){
 		}
 	}
 	
+	// https://blog.csdn.net/kongjiea/article/details/17612899
+	var browser={
+      versions:function(){ 
+         var u = navigator.userAgent, app = navigator.appVersion; 
+         return {//移动终端浏览器版本信息 
+              trident: u.indexOf('Trident') > -1, //IE内核
+              presto: u.indexOf('Presto') > -1, //opera内核
+              webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+              gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+              mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+              ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+              android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+              iPhone: u.indexOf('iPhone') > -1 , //是否为iPhone或者QQHD浏览器
+              iPad: u.indexOf('iPad') > -1, //是否iPad  
+              webApp: u.indexOf('Safari') == -1, //是否web应该程序，没有头部与底部
+              weixin: u.indexOf('MicroMessenger') > -1, //是否微信 
+              qq: u.match(/\sQQ/i) == " qq" //是否QQ
+          };
+       }(),
+      language:(navigator.browserLanguage || navigator.language).toLowerCase()
+	}
+
+	
 	var getObj = function(){
 		
 	} 
@@ -254,27 +278,31 @@ define([],function(){
 	// 服务端时间与本地事件差异，获取服务端时间为 浏览器当前时间 - 服务端时间差异
 	var _serverTimesDifference = null;
 	var getServerTime = function(){
-	  if(_serverTimesDifference == null){
-	    throw '请通过window.setServerTime初始化服务器时间后再进行访问';
-	  }
+	  if(_serverTimesDifference == null) throw '请通过window.setServerTime初始化服务器时间后再进行访问'; 
 	  return +(new Date()) + _serverTimesDifference;
 	}
 	 
 	var setServerTime = function(times){
 	  var stimes = +times;
-	  if(stimes < 1){
-	    throw '服务端时间设置错误 '+times;
-	  }
+	  if(!stimes || stimes < 1) throw '服务端时间设置错误 '+times; 
 	  _serverTimesDifference = +(new Date()) - stimes;
 	}
-	 
-	window.getServerTime = getServerTime;
+	
+	var initGlobalConfig = function(){
+	  _globalConfig = config || {};
+    setServerTime(_globalConfig.serverTimes);
+	}
 	
 	return { 
 		getString:_toString(),
 		_slice:_slice, 
 		trunc:trunc,
-		getServerTime:getServerTime,
-		setServerTime:setServerTime
+		getServerTime:getServerTime, 
+		browser:browser,
+		initGlobalConfig:function(config){
+		  _globalConfig = config || {};
+		  setServerTime(_globalConfig.serverTimes);
+		},
+		body:document.body
 	};
 });

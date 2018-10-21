@@ -1,6 +1,7 @@
 package com.chinasoft.it.wecode.common.util;
 
 import java.net.URLDecoder;
+import java.text.MessageFormat;
 
 public class StringUtil {
 
@@ -83,6 +84,19 @@ public class StringUtil {
       e.printStackTrace();
     }
     return data;
+  }
+
+  /**
+   * 字符串格式化
+   * @param pattern
+   * @param arguments
+   * @return
+   */
+  public static String format(String pattern, Object... arguments) {
+    if (isEmpty(pattern) || ArrayUtil.isEmpty(arguments)) {
+      return pattern;
+    }
+    return MessageFormat.format(pattern, arguments);
   }
 
 }

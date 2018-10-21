@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -13,7 +12,9 @@ import org.slf4j.Logger;
 import org.springframework.util.Assert;
 import org.springframework.util.Base64Utils;
 
+import com.chinasoft.it.wecode.common.util.CollectionUtils;
 import com.chinasoft.it.wecode.common.util.LogUtils;
+import com.chinasoft.it.wecode.common.util.RandomUtl;
 import com.chinasoft.it.wecode.common.util.StringUtil;
 import com.chinasoft.it.wecode.exception.AuthenticationException;
 
@@ -65,7 +66,6 @@ public class JwtUtil {
 
     // 为访客时延长过期时间
     Date expiration = new Date("$guest$".equals(uid) ? 9999999999999L : expiredTimes);
-
     String token = Jwts.builder().setSubject(uid) // 用户
         .addClaims(claims) // payload
         .setIssuedAt(new Date()) // 签发时间
@@ -81,9 +81,9 @@ public class JwtUtil {
    * @return
    */
   public static JwtEntity parse(String token) throws AuthenticationException {
+    String realToken = base64Token ? new String(Base64Utils.decodeFromString(token)) : token;
     try {
-      Map<String, Object> result =
-          Jwts.parser().setSigningKey(KEY_SECRET).parseClaimsJws(base64Token ? new String(Base64Utils.decodeFromString(token)) : token).getBody();
+      Map<String, Object> result = Jwts.parser().setSigningKey(KEY_SECRET).parseClaimsJws(realToken).getBody();
       return new JwtEntity(result);
     } catch (SignatureException e) {
       // SignatureException 密钥不正确
@@ -108,7 +108,7 @@ public class JwtUtil {
   }
 
   public static void main(String[] args) {
-    String string = get("$guest$", new HashMap<>());
+    String string = get("$guest$", CollectionUtils.newMap("123", "123"));
     System.out.println(string);
     System.out.println(Base64.getEncoder().encodeToString(string.getBytes()));
     System.out.println(parse(string));

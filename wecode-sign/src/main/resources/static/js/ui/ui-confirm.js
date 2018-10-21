@@ -264,12 +264,28 @@ define(["jquery","jquery.confirm","rt/util","ztree"],function($,c,util,ztree){
 			window.alert('no found url');
 		}
 	};
+	
+	var tip = function(msg,type){
+	  var m = msg,t = type || 1;
+	  if(typeof m != "undefined"){
+	    $(WeApp.body).append("<div >操作成功</div>")
+	  }
+	}
+	
+	var errTip = function(msg){
+	  tip(msg,0);
+	}
+	
+	var okTip = function(msg){
+	  tip(msg,1);
+	}
 	 
 	return {
 		test:test,
 		alert:alert,
 		confirm:confirm,
-		dialog:dialog 
+		dialog:dialog,
+		tip:tip
 	};
 	
 });
