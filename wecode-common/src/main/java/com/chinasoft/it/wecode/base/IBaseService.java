@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.validation.annotation.Validated;
 
+import com.chinasoft.it.wecode.annotations.security.Operate;
 import com.chinasoft.it.wecode.common.dto.BaseDto;
 import com.chinasoft.it.wecode.common.validation.groups.Create;
 import com.chinasoft.it.wecode.common.validation.groups.Query;
@@ -38,6 +39,7 @@ public interface IBaseService<D extends BaseDto, R extends BaseDto> {
    * @return
    */
   @Validated({Default.class, Create.class})
+  @Operate(code = "create", desc = "create")
   R create(@Valid D dto);
 
   /**

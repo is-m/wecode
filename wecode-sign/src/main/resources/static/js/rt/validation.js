@@ -10,7 +10,7 @@ define(["jquery"],function($){
 	// priority:起始为1,1表示最高优先级
 	var defaultRuleMap = {
 		"required":{
-			expr:/^\s*$/,
+			expr:/^\S+$/,
 			msg:"不能为空",
 			priority:1
 		},
@@ -29,7 +29,7 @@ define(["jquery"],function($){
 			priority:9
 		},
 		"numeric":{
-			expr:/^[^\d]*$/,
+			expr:/^\d*$/,
 			msg:"必须为数值",
 			priority:9
 		},
@@ -67,7 +67,7 @@ define(["jquery"],function($){
 		var val = ruleObj.$dom.val();
 		for(var j=0;j<ruleObj.rules.length;j++){
 			var rule = ruleObj.rules[j],context = {arg:rule.arg , $dom:ruleObj.$dom , $rule:rule};
-			if(rule.expr && _showError(rule.expr.test(val),val,context)) break;
+			if(rule.expr && _showError(!rule.expr.test(val),val,context)) break;
 			if(rule.onValid && _showError(!rule.onValid(val,context),val,context)) break;
 		} 
 	}
@@ -84,7 +84,6 @@ define(["jquery"],function($){
 					_validRuleContextItem($(this).data("ruleCtrl"));
 				});
 			}
-			
 		}else if(context.$dom.is(".is-invalid")){
 			$ctrl.removeClass("is-invalid").tooltip('dispose'); 
 		}

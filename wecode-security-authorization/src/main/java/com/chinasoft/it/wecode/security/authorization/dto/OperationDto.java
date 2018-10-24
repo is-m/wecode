@@ -53,32 +53,6 @@ public class OperationDto extends BaseAuthorizationDto {
     return "OperationDto [policy=" + policy + ", resourceCode=" + resourceCode + "]";
   }
 
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((policy == null) ? 0 : policy.hashCode());
-    result = prime * result + ((resourceCode == null) ? 0 : resourceCode.hashCode());
-    return result;
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    OperationDto other = (OperationDto) obj;
-    if (policy != other.policy)
-      return false;
-    if (resourceCode == null) {
-      if (other.resourceCode != null)
-        return false;
-    } else if (!resourceCode.equals(other.resourceCode))
-      return false;
-    return true;
-  }
+  
 
 }

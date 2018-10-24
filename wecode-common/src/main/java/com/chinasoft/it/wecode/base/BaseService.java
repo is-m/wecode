@@ -78,7 +78,6 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R ext
    * @see com.chinasoft.it.wecode.base.IBaseService#create(D)
    */
   @Override
-  @Operate(code = "create", desc = "create")
   public R create(D dto) {
     E beforeSave = mapper.to(dto);
     E afterSave = repo.save(beforeSave);

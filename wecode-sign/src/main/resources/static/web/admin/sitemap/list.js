@@ -56,18 +56,18 @@ pageContext.define("admin.sitemap.list",["widget/data/datatable","widget/tab"],f
 						return value ? "<i class='fa fa-"+value+"'></i>" : "";
 					}
 				},{
-					field:"url",
+					field:"uri",
 					header:"访问路径",
 					width:150
 				},{
-					field:"showMode",
+					field:"target",
 					header:"访问方式",
 					width:150,
 					format:{
 						dict:"sitemap.showMode"
 					}
 				},{
-					field:"parentId",
+					field:"pid",
 					header:"父节点",
 					width:100
 				},{
@@ -75,18 +75,18 @@ pageContext.define("admin.sitemap.list",["widget/data/datatable","widget/tab"],f
 					header:"顺序",
 					width:50
 				},{
-					field:"enabled",
+					field:"status",
 					header:"启用",
 					width:50
 				},{
-					field:"showMode",
+					field:"allowType",
 					header:"显示方式",
 					width:150,
 					format:{
 						dict:"sitemap.showMode"
 					}
 				},{
-					field:"showValue",
+					field:"allowValue",
 					header:"显示值",
 					width:150
 				},{

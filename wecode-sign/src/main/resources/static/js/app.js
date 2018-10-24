@@ -183,9 +183,8 @@ define(["rt/store"],function(store){
 		
 
     $("[data-toggle='popover']").each(function() {
-        var element = $(this);
-        var url = element.data("contentUrl");
-        var $popver = element.popover({
+        var $el = $(this),url = $el.data("contentUrl"),width=$el.data("width") ;
+        var $popver = $el.popover({
             trigger: 'hover',//'manual',
             html: true,
             //title: 'kkkk',
@@ -193,16 +192,16 @@ define(["rt/store"],function(store){
             placement: 'bottom',
             content: function() {
               // FIXME:目前看到有发起两次请求的情况
-              if(!element.data("popoverContentHtml")){
+              if(!$el.data("popoverContentHtml")){
                 var contentId = $(this).attr("aria-describedby");
                 $.get(url,function(resp){ 
-                  element.data("popoverContentHtml",resp);
+                  $el.data("popoverContentHtml",resp);
                   $("#"+contentId).find(".popover-body").html(resp); 
                 });
                 // FIXME:异步加载弹出框时最好设置下弹出框的大小，以免出现异常情况，且大小应该是外部指定
-                return "<div style='width:200px'>loadding...</div>";
+                return "<div style='width:{0}'>loadding...</div>".format(width || "200px");
               }else{
-                return element.data("popoverContentHtml");
+                return $el.data("popoverContentHtml");
               }
               //  return content();
             },

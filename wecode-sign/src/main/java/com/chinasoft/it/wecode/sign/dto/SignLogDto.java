@@ -2,51 +2,49 @@ package com.chinasoft.it.wecode.sign.dto;
 
 import java.util.Date;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.NotEmpty;
 
 public class SignLogDto {
 
-	@NotEmpty
-	private String userId;
+  @NotBlank
+  private String userId;
 
-	@NotNull
-	private Date signTime;
+  @NotNull
+  private Date signTime;
+  
+  @NotBlank
+  private String signPoint;
 
-	@NotEmpty
-	private String signPoint;
+  public String getUserId() {
+    return userId;
+  }
 
-	public String getUserId() {
-		return userId;
-	}
+  public void setUserId(String userId) {
+    this.userId = userId;
+  }
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+  public Date getSignTime() {
+    return signTime;
+  }
 
-	public Date getSignTime() {
-		return signTime;
-	}
+  public void setSignTime(Date signTime) {
+    this.signTime = signTime;
+  }
 
-	public void setSignTime(Date signTime) {
-		this.signTime = signTime;
-	}
+  public String getSignPoint() {
+    return signPoint;
+  }
 
-	public String getSignPoint() {
-		return signPoint;
-	}
+  public void setSignPoint(String signPoint) {
+    this.signPoint = signPoint;
+  }
 
-	public void setSignPoint(String signPoint) {
-		this.signPoint = signPoint;
-	}
+  public SignLogDto() {}
 
-	public SignLogDto() {
-	}
-
-	public SignLogDto(String userId, Date signTime, String signPoint) {
-		this.userId = userId;
-		this.signTime = signTime;
-		this.signPoint = signPoint;
-	}
+  public SignLogDto(String userId, Date signTime, String signPoint) {
+    this.userId = userId;
+    this.signTime = signTime;
+    this.signPoint = signPoint;
+  }
 }

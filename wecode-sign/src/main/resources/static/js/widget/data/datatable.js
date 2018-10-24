@@ -23,11 +23,7 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 				'var field = colOp.field;' +
 				'var fieldValue = field ? dataItem[field] : null;' + 
 		'%>' + 
-			'<td data-field="<%=field%>" class="<%= colOp.editable !== false ? \'cell-editable\' : \'cell-read\' %>">' + 
-				'<span class="table-td-text" style="width:<%= (colOp.width || 150)-17 %>px; min-width:<%= (colOp.width || 150)-17 %>px;" data-toggle="tooltip" title="Example tooltip">' + 
-
-				'</span>' + 
-			'</td>' + 
+			'<td data-field="<%=field%>" class="table-cell <%= colOp.editable !== false ? \'cell-editable\' : \'cell-read\' %>"></td>' + 
 		'<%}%>   ' + 
 		'</tr>' + 
 		'<%}%> ';
@@ -233,11 +229,11 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 			// 初始化行
 			// 加载树字段内容
 			if(_treeOp){  
-				$rows.find("td[data-field={0}] span".format(this.op._treeColumn.field)).each(function(n,i){ 
+				$rows.find("td[data-field={0}]".format(this.op._treeColumn.field)).each(function(n,i){ 
 					var $td = $(this);
 					var $row = $td.closest("tr");
 					$td.css("text-align","left");
-					$td.css("padding-left",(+$row.data("treeLevel") * 20) + "px")
+					$td.css("padding-left",(+$row.data("treeLevel") * 20 + 10) + "px")
 					
 					var record = $row.data("record"); 
 					record._isLeaf = typeof record._isLeaf !== "undefined" ? record._isLeaf : !(record.children && record.children.length);
@@ -322,13 +318,13 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 					var value = record[field];
 					if(colOp.renderer){
 						// 渲染数据
-						var renderValue = colOp.renderer(value,record,colOp,$cell.find(".table-td-text"));
+						var renderValue = colOp.renderer(value,record,colOp,$cell);
 						// 如果返回值不为 undefined 则进行渲染，控件设置方也可以使用$cell自己来社会资单元格内容,如果人为渲染了内容又返回了内容则会用返回的内容替换手动渲染的内容
 						if(typeof renderValue !== 'undefined'){
-							$cell.find(".table-td-text").html(colOp.renderer(value,record,colOp,$cell));
+							$cell.html(colOp.renderer(value,record,colOp,$cell));
 						}
 					}else{
-						$cell.find(".table-td-text").html(value);
+						$cell.html(value);
 					} 
 				}
 			});

@@ -4,6 +4,7 @@ import org.springframework.util.StringUtils;
 
 import com.chinasoft.it.wecode.sign.domain.Catelog;
 
+@Deprecated
 public class CatelogHelper {
 
 	public static boolean isRoot(Catelog catelog) {

@@ -44,9 +44,9 @@ public class PermissionFinderService {
 				}
 
 				OperationDto operation = new OperationDto();
-
-				operation.setCode(StringUtil.getString(annOperation.code(), clz.getName()));
-				operation.setDesc(StringUtil.getString(annOperation.desc(), clz.getName()));
+				
+				operation.setCode(StringUtil.getString(annOperation.code(), method.getName()));
+				operation.setDesc(StringUtil.getString(annOperation.desc(), method.getName()));
 				operation.setPolicy(annOperation.policy());
 
 				resource.addOperation(operation);

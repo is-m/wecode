@@ -9,84 +9,70 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_NULL)
 public class CatelogMenuDto extends BaseDto {
 
-	private static final long serialVersionUID = 349857223109032278L;
+  private static final long serialVersionUID = 349857223109032278L;
 
-	/**
-	 * 栏目名称
-	 */
-	private String name;
+  /**
+   * 栏目名称
+   */
+  private String name;
 
-	/**
-	 * 栏目短路径
-	 */
-	private String path;
+  /**
+   * uri
+   */
+  private String uri;
 
-	/**
-	 * 栏目完整路径
-	 */
-	private String fullPath;
 
-	/**
-	 * 图标
-	 */
-	private String icon;
+  /**
+   * 图标
+   */
+  private String icon;
 
-	/**
-	 * 子栏目
-	 */
-	private List<CatelogMenuDto> children;
+  /**
+   * 子栏目
+   */
+  private List<CatelogMenuDto> children;
 
-	public String getName() {
-		return name;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	public String getPath() {
-		return path;
-	}
+  public String getUri() {
+    return uri;
+  }
 
-	public void setPath(String path) {
-		this.path = path;
-	}
+  public void setUri(String uri) {
+    this.uri = uri;
+  }
 
-	public String getFullPath() {
-		return fullPath;
-	}
+  public String getIcon() {
+    return icon;
+  }
 
-	public void setFullPath(String fullPath) {
-		this.fullPath = fullPath;
-	}
+  public void setIcon(String icon) {
+    this.icon = icon;
+  }
 
-	public String getIcon() {
-		return icon;
-	}
+  public List<CatelogMenuDto> getChildren() {
+    return children;
+  }
 
-	public void setIcon(String icon) {
-		this.icon = icon;
-	}
+  public void setChildren(List<CatelogMenuDto> children) {
+    this.children = children;
+  }
 
-	public List<CatelogMenuDto> getChildren() {
-		return children;
-	}
+  public CatelogMenuDto() {}
 
-	public void setChildren(List<CatelogMenuDto> children) {
-		this.children = children;
-	}
+  public CatelogMenuDto(String name, String uri, String icon) {
+    this.name = name;
+    this.uri = uri;
+    this.icon = icon;
+  }
 
-	public CatelogMenuDto() {
-	}
-
-	public CatelogMenuDto(String name, String path, String fullPath, String icon) {
-		this.name = name;
-		this.path = path;
-		this.fullPath = fullPath;
-		this.icon = icon;
-	}
-
-	public CatelogMenuDto(CatelogResultDto dto) {
-		this(dto.getName(), dto.getPath(), dto.getFullPath(), dto.getIcon());
-	}
+  public CatelogMenuDto(CatelogResultDto dto) {
+    this(dto.getName(), dto.getUri(), dto.getIcon());
+  }
 }

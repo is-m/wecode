@@ -287,11 +287,19 @@ define([],function(){
 	  if(!stimes || stimes < 1) throw '服务端时间设置错误 '+times; 
 	  _serverTimesDifference = +(new Date()) - stimes;
 	}
-	
+
 	var initGlobalConfig = function(){
 	  _globalConfig = config || {};
     setServerTime(_globalConfig.serverTimes);
 	}
+	
+	var idMap = {};
+	var idGenerator = function(prix){
+	  if(!idMap[prix]){
+	    idMap[prix] = 1;
+	  }
+	  return prix + idMap[prix]++
+	};
 	
 	return { 
 		getString:_toString(),
@@ -303,6 +311,7 @@ define([],function(){
 		  _globalConfig = config || {};
 		  setServerTime(_globalConfig.serverTimes);
 		},
+		newId:idGenerator,
 		body:document.body
 	};
 });

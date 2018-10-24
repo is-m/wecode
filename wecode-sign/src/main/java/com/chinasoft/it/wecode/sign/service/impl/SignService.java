@@ -8,14 +8,12 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Base64Utils;
 
 import com.alibaba.druid.util.StringUtils;
 import com.chinasoft.it.wecode.common.exception.ValidationException;
 import com.chinasoft.it.wecode.common.util.DESUtil;
 import com.chinasoft.it.wecode.common.util.DateUtils;
 import com.chinasoft.it.wecode.common.util.LogUtils;
-import com.chinasoft.it.wecode.common.util.MapperUtils;
 import com.chinasoft.it.wecode.sign.domain.Sign;
 import com.chinasoft.it.wecode.sign.dto.SignLogDto;
 import com.chinasoft.it.wecode.sign.dto.SignResultDto;
@@ -94,10 +92,6 @@ public class SignService {
     signLogService.create(signLogDto);
 
     return mapper.from(repo.save(daySign));
-  }
-
-  private void validSignPoint(String signPoint) throws ValidationException {
-
   }
 
   public Page<SignResultDto> findMySignPagedList(Pageable pageable, String userId) {

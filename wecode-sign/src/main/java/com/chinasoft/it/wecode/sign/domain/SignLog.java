@@ -13,37 +13,36 @@ import com.chinasoft.it.wecode.base.BaseEntity;
 @Table(name = "sn_sign_log")
 public class SignLog extends BaseEntity {
 
-	private static final long serialVersionUID = 5646332069260558367L;
 
-	private String userId;
+  private String userId;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date signTime;
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date signTime;
 
-	private String signPoint;
+  private String signPoint;
 
-	public String getUserId() {
-		return userId;
-	}
+  public String getUserId() {
+    return userId;
+  }
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+  public void setUserId(String userId) {
+    this.userId = userId;
+  }
 
-	public Date getSignTime() {
-		return signTime;
-	}
+  public Date getSignTime() {
+    return signTime;
+  }
 
-	public void setSignTime(Date signTime) {
-		this.signTime = signTime;
-	}
+  public void setSignTime(Date signTime) {
+    this.signTime = signTime;
+  }
 
-	public String getSignPoint() {
-		return signPoint;
-	}
+  public String getSignPoint() {
+    return signPoint;
+  }
 
-	public void setSignPoint(String signPoint) {
-		this.signPoint = signPoint;
-	}
+  public void setSignPoint(String signPoint) {
+    this.signPoint = signPoint;
+  }
 
 }

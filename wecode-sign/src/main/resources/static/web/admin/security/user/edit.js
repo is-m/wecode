@@ -1,4 +1,4 @@
-pageContext.define("admin.security.user.edit",["rt/validation"], function(page) {
+pageContext.define("admin.security.user.edit",["rt/validation","ui/ui-confirm"], function(page,v,m) {
 
 	var isCreate = true;
 	
@@ -25,11 +25,11 @@ pageContext.define("admin.security.user.edit",["rt/validation"], function(page) 
 		if(isValid){ 
 			$("#formEditUser").formSubmit("post","/services/security/user",function(resp){
 				// 关闭页签，刷新表格
+			  m.okTip("新增成功");
 				page.closePage();
 				$("#gridUser").xWidget().reload();
-				//$("#btnSearch").trigger("click");
 			},function(resp){
-				alert('server error');
+			  m.errTip("系统异常");
 			}); 
 		}
 	}

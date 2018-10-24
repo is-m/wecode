@@ -13,7 +13,7 @@
 	      <div class="input-group-prepend">
 		    <button class="btn btn-outline-secondary" type="button" id="btnSelectIcon" title="显示图标">无</button>
 		  </div>
-	      <input name="name" type="text" class="form-control" data-rule="required maxLength:5"  >
+	      <input name="name" type="text" class="form-control" data-rule="required maxLength:5">
 	      <input name="icon" type="hidden" />
 	    </div> 
       </div>
@@ -33,13 +33,13 @@
     <div class="form-group row">
       <label class="col-sm-2 col-form-label">访问路径</label>
       <div class="col-sm-4">
-        <input name="url" type="text" class="form-control" id="inputEmail3" placeholder="">
+        <input name="uri" type="text" class="form-control" >
       </div>
       
       <label class="col-sm-2 col-form-label">访问方式</label>
       <div class="col-sm-4">
-      	<select name="accessMode" class="form-control">
-		  <option value="inner" selected="selected">内部链接</option>
+      	<select name="target" class="form-control">
+		  <option value="page" selected="selected">内部链接</option>
 		  <option value="iframe">嵌入页面</option>
 		  <option value="window">新窗口</option>
 		</select> 
@@ -65,14 +65,14 @@
       
       <label class="col-sm-2 col-form-label">显示顺序</label>
       <div class="col-sm-4">
-        <input name="seq" class="form-control" id="inputEmail3" placeholder="" data-rule="required numeric">
+        <input name="seq" class="form-control"  data-rule="required numeric">
       </div> 
     </div>
     
     <div class="form-group row">
       <label class="col-sm-2 col-form-label">显示模式</label>
       <div class="col-sm-4">
-        <select class="form-control" name="visibleMode">
+        <select class="form-control" name="allowType">
 		  <option value="all" selected="selected">全部可见</option>
 		  <option value="hasChildren">有子栏目时可见</option>
 		  <option value="hasPermission">有权限时可见</option>

@@ -717,4 +717,38 @@ h1 {
 	z-index:111
 } 
  
- 
+/* 模糊(毛玻璃)效果  https://www.jb51.net/css/412009.html */
+.view-filter {
+	background: inherit;
+    -webkit-filter: blur(3px);
+    -moz-filter: blur(3px);
+    -ms-filter: blur(3px);
+    -o-filter: blur(3px);
+    filter: blur(3px);
+    filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=4, MakeShadow=false);	
+}
+
+.table-cell {
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* fixed居中*/
+.store-success {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 99999;
+    margin: auto;
+    width: 80px;
+    height: 20px;
+    line-height: 20px;
+    padding: 5px 10px;
+    color: #fff;
+    font-size: 14px;
+    text-align: center;
+    background: rgba(0,0,0,0.5);
+} 

@@ -2,7 +2,6 @@ define(["jquery","jquery.confirm","rt/util","ztree"],function($,c,util,ztree){
 	 
 	var test = function(){
 		$.confirm({ 
-		    
 		    title: 'Confirm!',
 		    content: '确认要删除吗？',
 		    buttons: {
@@ -264,12 +263,19 @@ define(["jquery","jquery.confirm","rt/util","ztree"],function($,c,util,ztree){
 			window.alert('no found url');
 		}
 	};
-	
+	var tipBgColorMap = ["rgba(255,0,0,.9)","rgba(0,180,0,.9)"];
 	var tip = function(msg,type){
 	  var m = msg,t = type || 1;
 	  if(typeof m != "undefined"){
-	    $(WeApp.body).append("<div >操作成功</div>")
-	  }
+	    var tipId = WeApp.newId("tip");
+	    // <i class='fa fa-times' style='font-size: 20px;'></i>
+	    $(WeApp.body).append("<div id='{0}' style='position:fixed; top:20px; left:50%; background:{1}; z-index:10; padding:8px;  color:white; font-size:16px;' >{2}</div>".format(tipId,tipBgColorMap[type],m))
+	    setTimeout(function(){  
+	      $("#"+tipId).fadeOut(100,function(){
+	        $(this).remove();
+	      });  
+	    },1500);
+	  } 
 	}
 	
 	var errTip = function(msg){
@@ -279,13 +285,20 @@ define(["jquery","jquery.confirm","rt/util","ztree"],function($,c,util,ztree){
 	var okTip = function(msg){
 	  tip(msg,1);
 	}
+	
+	var taskTip = function(op){
+	  alert('准备在TASK 区域添加提示，TASK 区域的提示可能是按秒隐藏，可能是按进度和完成状态解决隐藏显示，当任务失败时，还要考虑是否重新运行还是让用户点击 知道了');
+	}
 	 
 	return {
 		test:test,
 		alert:alert,
 		confirm:confirm,
 		dialog:dialog,
-		tip:tip
+		tip:tip,
+		errTip:errTip,
+		okTip:okTip,
+		task:taskTip
 	};
 	
 });
