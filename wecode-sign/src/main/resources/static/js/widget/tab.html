@@ -1,5 +1,5 @@
 <div class="tab-wrapper">
-	<ul class="nav nav-tabs ui-tabs tab-header">
+	<ul class="nav nav-tabs tab-header <%=$widget.style || 'ui-tabs'%>">
 	  <% var pages = $widget.pages;$win.console.log(pages); %>
 	  <% for(var i=0;i <pages.length;i++) { var page = pages[i]; page.id = page.id || "tab-item-"+i; %>
 		  <li class="nav-item">
@@ -9,7 +9,7 @@
 		  </li>
 	  <% } %> 
 	</ul> 
-	<div class="ui-tabs tab-body">   
+	<div class="tab-body <%=$widget.style || 'ui-tabs'%>">   
 	  <% for(var i=0;i <pages.length;i++) { var page = pages[i];%>
 	 	<div data-tab-id="<%=page.id%>"></div> 
 	  <%}%>
