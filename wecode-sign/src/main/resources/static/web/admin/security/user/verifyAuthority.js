@@ -9,8 +9,8 @@ pageContext.define("admin.security.user.verifyAuthority",["widget/data/datatable
         url:"/web/admin/security/user/userRole.html", 
         allowClose:true
       },{
-        title:"系统角色", 
-        url:"/web/admin/security/user/userRole.html", 
+        title:"我的数据范围", 
+        url:"/web/admin/security/user/userDataRange.html", 
         allowClose:true
       }]
     }); 

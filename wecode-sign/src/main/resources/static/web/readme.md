@@ -26,3 +26,11 @@ http://demo.amitjakhu.com/dripicons/
 
 
 workspaceVO中应该添加替换的HTML或者JS内容，以便上线发布时出现调试功能或者临时替换方案（但是每次发布后这些内容应该失效，防止忘记修改，需要人为指定迁移到当前版本）
+
+
+boostrap 组件
+https://www.cnblogs.com/landeanfen/archive/2016/06/22/5461849.html
+
+
+
+组件开发原则，能用HTML解决的不要用js，能用js解决的不要走服务
