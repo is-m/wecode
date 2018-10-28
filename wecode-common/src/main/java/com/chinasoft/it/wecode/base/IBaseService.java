@@ -117,4 +117,11 @@ public interface IBaseService<D extends BaseDto, R extends BaseDto> {
    */
   List<R> save(List<R> dtos);
 
+  /**
+   * 是否存在数据
+   * @param id
+   * @param enabled
+   * @return
+   */
+  boolean isExists(String id);
 }

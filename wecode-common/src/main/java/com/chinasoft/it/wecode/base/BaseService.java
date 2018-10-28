@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -20,6 +21,7 @@ import com.chinasoft.it.wecode.annotations.security.Operate;
 import com.chinasoft.it.wecode.common.dto.BaseDto;
 import com.chinasoft.it.wecode.common.mapper.BaseMapper;
 import com.chinasoft.it.wecode.common.service.SpringDataUtils;
+import com.chinasoft.it.wecode.common.util.Assert;
 
 /**
  * 服务类父类
@@ -237,4 +239,12 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDto, R ext
     return this.mapper;
   }
 
+  @Override
+  public boolean isExists(String id) {
+    Query query = em.createQuery("select count(1) from " + entityClass.getName() + " where id=:id");
+    query.setParameter("id", id);
+    Long count = (Long) query.getSingleResult();
+    Assert.isTrue(count < 2, "id '{}' matching to multiple records of size {} ", id, count);
+    return count == 1;
+  }
 }

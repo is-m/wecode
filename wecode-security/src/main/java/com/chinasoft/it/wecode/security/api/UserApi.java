@@ -39,62 +39,62 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/services/security/user")
 public class UserApi {
 
-	@Autowired
-	private UserService service;
+  @Autowired
+  private UserService service;
 
-	@ApiOperation(value = "创建用户", notes = "创建用户")
-	@PostMapping
-	public UserResultDto create(@RequestBody UserDto dto) {
-		return service.create(dto);
-	}
+  @ApiOperation(value = "创建用户", notes = "创建用户")
+  @PostMapping
+  public UserResultDto create(@RequestBody UserDto dto) {
+    return service.create(dto);
+  }
 
-	@ApiOperation(value = "修改用户", notes = "修改用户")
-	@PutMapping("/{id}")
-	public UserResultDto update(@PathVariable("id") String id, @RequestBody UserDto dto) {
-		return service.update(id, dto);
-	}
+  @ApiOperation(value = "修改用户", notes = "修改用户")
+  @PutMapping("/{id}")
+  public UserResultDto update(@PathVariable("id") String id, @RequestBody UserDto dto) {
+    return service.update(id, dto);
+  }
 
-	@GetMapping
-	@ApiOperation(value = "查询用户列表（分页）", notes = "查询用户列表（分页）")
-	@ApiImplicitParams({
-			@ApiImplicitParam(name = PageConstants.PARAM_PAGE, value = "当前页", paramType = "query", dataType = "Long"),
-			@ApiImplicitParam(name = PageConstants.PARAM_SIZE, value = "页大小", paramType = "query", dataType = "Long"), })
-	public Page<UserResultDto> findPagedList(HttpServletRequest request, UserQueryDto dto) {
-		return service.findPagedData(WebUtils.getPageable(request), dto);
-	}
+  @GetMapping
+  @ApiOperation(value = "查询用户列表（分页）", notes = "查询用户列表（分页）")
+  @ApiImplicitParams({@ApiImplicitParam(name = PageConstants.PARAM_PAGE, value = "当前页", paramType = "query", dataType = "Long"),
+      @ApiImplicitParam(name = PageConstants.PARAM_SIZE, value = "页大小", paramType = "query", dataType = "Long"),})
+  public Page<UserResultDto> findPagedList(HttpServletRequest request, UserQueryDto dto) {
+    return service.findPagedData(WebUtils.getPageable(request), dto);
+  }
 
-	@ApiOperation(value = "按ID查询单个用户", notes = "按ID查询单个用户")
-	@GetMapping("/{id}")
-	public UserResultDto findOne(@PathVariable("id") String id) {
-		return service.findOne(id);
-	}
+  @ApiOperation(value = "按ID查询单个用户", notes = "按ID查询单个用户")
+  @GetMapping("/{id}")
+  public UserResultDto findOne(@PathVariable("id") String id) {
+    return service.findOne(id);
+  }
 
-	@ApiOperation(value = "按ID删除用户", notes = "按ID删除用户，多个用 , 分割")
-	@DeleteMapping
-	public void delete(@RequestParam("ids") String ids) {
-		service.delete(ids.split(","));
-	}
+  @ApiOperation(value = "按ID删除用户", notes = "按ID删除用户，多个用 , 分割")
+  @DeleteMapping
+  public void delete(@RequestParam("ids") String ids) {
+    service.delete(ids.split(","));
+  }
 
-	@ApiOperation(value = "导出用户", notes = "导出用户")
-	@GetMapping("/export")
-	public ResponseEntity<String> export(HttpServletResponse resp, UserExportDto exportDto) throws Exception {
-		ExcelServletUtils.setExcelResponse(resp, "UserList");
-		service.export(exportDto, resp.getOutputStream());
-		return ResponseEntity.ok("success");
-	}
+  @ApiOperation(value = "导出用户", notes = "导出用户")
+  @GetMapping("/export")
+  public ResponseEntity<String> export(HttpServletResponse resp, UserExportDto exportDto) throws Exception {
+    ExcelServletUtils.setExcelResponse(resp, "UserList");
+    service.export(exportDto, resp.getOutputStream());
+    return ResponseEntity.ok("success");
+  }
 
-	// https://www.cnblogs.com/zuolijun/p/5644411.html
-	@ApiOperation(value = "导入用户", notes = "导入用户")
-	@PostMapping(value = "/import", consumes = "multipart/form-data", headers = "content-type=multipart/form-data", produces = "application/json"/* produces = "application/octet-stream"*/)
-	public ResponseEntity<Map<String,Object>> imports(@RequestParam(value = "file") MultipartFile file) throws Exception {
-		if (!file.isEmpty()) {
-			service.imports(file.getInputStream());
-		}
-		Map<String,Object> result = new HashMap<>();
-		result.put("success", true);
-		return ResponseEntity.ok(result);
-	}
+  // https://www.cnblogs.com/zuolijun/p/5644411.html
+  @ApiOperation(value = "导入用户", notes = "导入用户")
+  @PostMapping(value = "/import", consumes = "multipart/form-data", headers = "content-type=multipart/form-data",
+      produces = "application/json"/* produces = "application/octet-stream" */)
+  public ResponseEntity<Map<String, Object>> imports(@RequestParam(value = "file") MultipartFile file) throws Exception {
+    if (!file.isEmpty()) {
+      service.imports(file.getInputStream());
+    }
+    Map<String, Object> result = new HashMap<>();
+    result.put("success", true);
+    return ResponseEntity.ok(result);
+  }
 
-	// https://stackoverflow.com/questions/30400477/how-to-open-local-files-in-swagger-ui
-	// https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#relative-schema-file-example
+  // https://stackoverflow.com/questions/30400477/how-to-open-local-files-in-swagger-ui
+  // https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#relative-schema-file-example
 }

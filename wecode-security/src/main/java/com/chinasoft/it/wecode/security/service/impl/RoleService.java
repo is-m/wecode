@@ -1,6 +1,7 @@
 package com.chinasoft.it.wecode.security.service.impl;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -13,6 +14,7 @@ import org.springframework.util.Assert;
 
 import com.chinasoft.it.wecode.annotations.security.Module;
 import com.chinasoft.it.wecode.annotations.security.Operate;
+import com.chinasoft.it.wecode.annotations.security.Operate.Policy;
 import com.chinasoft.it.wecode.base.BaseService;
 import com.chinasoft.it.wecode.common.mapper.BaseMapper;
 import com.chinasoft.it.wecode.common.util.CollectionUtils;
@@ -58,5 +60,7 @@ public class RoleService extends BaseService<Role, RoleDto, RoleResultDto> {
   public Set<String> getPermissionIds(@NotEmpty String roleId) {
     return repo.getOne(roleId).getPermissions().parallelStream().map(Permission::getId).collect(Collectors.toSet());
   }
+
+
 
 }

@@ -13,13 +13,20 @@ import org.springframework.data.domain.Persistable;
 public abstract class BaseEntity implements Persistable<String> {
 
   /**
-   * IdentifierGenerator，分布式系统可能还需要
+   * IdentifierGenerator，分布式系统可能还需要 自定义主键策略
    * https://blog.csdn.net/xufei_0320/article/details/78707661
    */
   @Id
   @GeneratedValue(generator = "system-uuid")
   @GenericGenerator(name = "system-uuid", strategy = "uuid")
   private String id;
+
+  /*
+   * EnumType: ORDINAL 枚举序数 默认选项（int）。eg:TEACHER 数据库存储的是 0 STRING：枚举名称 (String)。eg:TEACHER 数据库存储的是
+   * "TEACHER"
+   * 
+   * @Enumerated(EnumType.STRING) private AccountType accountType = AccountType.TEACHER;
+   */
 
   public String getId() {
     return id;

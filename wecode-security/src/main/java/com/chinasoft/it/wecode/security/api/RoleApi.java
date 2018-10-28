@@ -2,8 +2,7 @@ package com.chinasoft.it.wecode.security.api;
 
 import java.util.Set;
 
-import javax.annotation.PostConstruct;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,12 +24,9 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/services/security/role")
 public class RoleApi extends CrudApi<RoleDto, RoleResultDto, RoleQueryDto> {
 
+  @Autowired
   private RoleService service;
 
-  @PostConstruct
-  public void init() {
-    service = (RoleService) super.service;
-  }
 
   /**
    * 角色授权

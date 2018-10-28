@@ -1,8 +1,14 @@
 package com.chinasoft.it.wecode.security.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.chinasoft.it.wecode.base.BaseEntity;
@@ -46,6 +52,10 @@ public class User extends BaseEntity {
    * 状态，0：失效，1：生效
    */
   private Integer status;
+/*
+  @ManyToMany(targetEntity = Role.class, fetch = FetchType.EAGER)
+  @JoinTable(name = "sys_user_role", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "role_id")})
+  private Set<Role> roles = new HashSet<>();*/
 
   public String getName() {
     return name;

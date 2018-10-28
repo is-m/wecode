@@ -34,3 +34,11 @@ https://www.cnblogs.com/landeanfen/archive/2016/06/22/5461849.html
 
 
 组件开发原则，能用HTML解决的不要用js，能用js解决的不要走服务
+
+
+
+
+
+
+优秀代码模版
+spring security  https://blog.csdn.net/u012556150/article/details/51441480

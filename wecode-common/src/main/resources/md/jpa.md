@@ -6,8 +6,8 @@ http://www.spring4all.com/article/391
 
 虽然使用mybaits可以通过一个VO搞定所有事情，代码结构简单直观
 
-
-
+Spring data jpa中Query和@Query分别返回map结果集
+https://www.cnblogs.com/wucongyun/p/6730582.html
 
 
 

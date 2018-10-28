@@ -755,7 +755,7 @@ h1 {
 
 /* metro tiles http://www.bootcss.com/p/metro-ui-css/tiles.html */
 .card.selected {
-	border: 4px #2d89ef solid;
+	border: 2px #2d89ef solid;
 }
 
 /* 加图标 https://www.cnblogs.com/zccst/p/3655069.html */
@@ -781,3 +781,7 @@ h1 {
     top: 0;
     z-index: 1001;
 }
+
+/* alert https://github.com/sweetalert2/sweetalert2 */
+/* bootstrap-notify */
+/* bootstrap plugins  http://ju.outofmemory.cn/entry/145667 */
