@@ -1,3 +1,9 @@
-<div id="<%= $widget.id %>" class="ztree">
-<!-- 树 -->
+<div class="tree">
+	<div class="tree-loading"></div>
+	<% if($widget.filterable){ %>
+	<input type="text" class="tree-filter form-control">
+	<%}%>
+	<div id="<%= $widget.id %>" class="ztree">
+	<!-- 树 -->
+	</div>
 </div>

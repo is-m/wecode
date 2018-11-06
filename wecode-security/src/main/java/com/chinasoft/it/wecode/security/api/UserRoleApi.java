@@ -52,7 +52,8 @@ public class UserRoleApi {
    * 获取用户可选的角色列表
    */
   @GetMapping("/user/{userId}/selectableRoles")
-  public List<RoleResultDto> findUserSelectableRoles(@PathVariable("userId") String userId, @RequestParam("roleName") String roleName) {
+  public List<RoleResultDto> findUserSelectableRoles(@PathVariable("userId") String userId,
+      @RequestParam(value = "roleName", required = false) String roleName) {
     return null;
   }
 }

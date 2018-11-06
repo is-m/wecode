@@ -1,4 +1,6 @@
-define(["widget/factory","jquery","rt/util",'ztree'],function(widget,$,util,tree){ 
+define(["widget/factory","jquery","rt/util",'ztree',"lib/jquery.ztree.exhide"],function(widget,$,util,tree,exhide){ 
+  
+   
 	/**
 	 * 事件：
 	 * after.selected(val) 选中后
@@ -53,8 +55,8 @@ define(["widget/factory","jquery","rt/util",'ztree'],function(widget,$,util,tree
 		afterRender:function(){ 
 			this.reload();
 		},
-		ready:function(){
-			
+		ready:function(){ 
+		  
 		},
 		destory:function(){
 			
@@ -68,7 +70,7 @@ define(["widget/factory","jquery","rt/util",'ztree'],function(widget,$,util,tree
 		},
 		selectedNodes:function(values){
 			this.op.defaultChecked=$.isArray(values) ? values : [values];
-			this.ztreeObj = $.fn.zTree.init(this.$dom, this.op , this.op._data);  
+			this.ztreeObj = $.fn.zTree.init(this.$dom.find(".ztree:eq(0)"), this.op , this.op._data);  
 		},
 		setCheckNode:function(nodes,v1,v2){
 			var ztree = this.ztreeObj;
@@ -114,15 +116,27 @@ define(["widget/factory","jquery","rt/util",'ztree'],function(widget,$,util,tree
 		getCheckedNodes:function(){
 			return this.ztreeObj.getCheckedNodes().filter(function(item){return !item.isParent || item.check_Child_State == 2 }); 
 		},
+		_initTree:function(data){
+		  var self = this;
+		  self.ztreeObj = $.fn.zTree.init(self.$dom.find(".ztree:eq(0)"), self.op , this.op._data = data); 
+		  self.$dom.find(".tree-loading").html("");
+		  // 如果开启了过滤的华重新绑定事件
+		  if(self.op.filterable){
+		    self.$dom.find(".tree-filter").unbind("input propertychange");
+        require(["lib/jquery.ztree.fuzzySearch"],function(fuzzySearch){
+          // zTreeId, searchField, isHighLight, isExpand
+          fuzzySearch(self.op.id,self.$dom.find(".tree-filter"),true,true);
+        });
+		  }
+		},
 		bindData:function(data){ 
-			this.ztreeObj = $.fn.zTree.init(self.$dom, self.op , this.op._data = data); 
+			
 		},
 		reload:function(){
 			var self = this;  
-			self.$dom.html("loading...");
+			self.$dom.find(".tree-loading").html("loading...");
 			util.getDataset(this.op.dataset).done(function(data){ 
-				console.log(self.op);
-				self.ztreeObj = $.fn.zTree.init(self.$dom, self.op , self.op._data = data);  
+			  self._initTree(data);
 			});
 		}
 	});

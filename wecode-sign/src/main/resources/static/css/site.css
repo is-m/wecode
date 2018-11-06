@@ -782,6 +782,27 @@ h1 {
     z-index: 1001;
 }
 
+.card {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: none;
+    -webkit-box-shadow: 0 0 35px 0 rgba(154,161,171,.15);
+    box-shadow: 0 0 35px 0 rgba(154,161,171,.15);
+    margin-bottom: 30px;
+    border-radius: unset;
+    border: 0;
+}
+
 /* alert https://github.com/sweetalert2/sweetalert2 */
 /* bootstrap-notify */
 /* bootstrap plugins  http://ju.outofmemory.cn/entry/145667 */

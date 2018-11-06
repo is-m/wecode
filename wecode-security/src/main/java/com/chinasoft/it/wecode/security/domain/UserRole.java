@@ -15,6 +15,7 @@ import com.chinasoft.it.wecode.base.BaseEntity;
 @Table(name = "sys_user_role")
 public class UserRole extends BaseEntity {
 
+  
   /**
    * 用户ID
    */

@@ -9,6 +9,12 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.domain.Persistable;
 
+/**
+ * 
+ * @author Administrator
+ *
+ */
+
 @MappedSuperclass
 public abstract class BaseEntity implements Persistable<String> {
 

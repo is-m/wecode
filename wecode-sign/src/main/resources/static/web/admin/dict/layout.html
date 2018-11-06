@@ -1,6 +1,28 @@
 <script type="text/javascript" src="@{/web/admin/dict/layout.js}"></script>
-<!-- 必须以 col-[xx]-xx 作为起始标签 -->
-<div class="col-md-12" > 
-	<div id="demoTab" ></div> 
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-3 ">
+			<div class="card">
+				<div class="card-body">
+				<div data-x-widget="data/tree"
+					data-x-widget-option='id:"treeProperty", "dataset":"/services/base/property/tree" ,"check": { "enable": false },"filterable":true,"view":{"filter":true,"expandLevel":1}'>
+					这是一棵树</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-9 ">
+			<div class="card">
+			<div class="card-body">
+				<span>基本属性</span>
+				<hr />
+				<span>列表值</span>
+				<hr />
+				
+			</div>
+			</div>
+			 
+		</div>
+	</div>
+
 </div>
- 
