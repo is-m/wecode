@@ -184,7 +184,7 @@
 	</div>
 	<div class="fixed-bottom" style="left:auto; right:20px; border:1px solid #000;">这个是额外的工具</div>
 
-	<script src="../js/lib/popper.js"></script>
+	<!-- <script src="../js/lib/popper.js"></script> -->
 	<script src="../js/lib/require.js"></script>
 	<script type="text/javascript">
 		
@@ -269,15 +269,21 @@
 		requirejs.config({
 			urlArgs : 'v=' + appConfig.version,
 			baseUrl : appConfig.contextPath + '/js/',
+			// fixbug https://stackoverflow.com/questions/52260089/require-js-load-cdn-bootstrap-and-cdn-popper
+			//        https://requirejs.org/docs/api.html#config-map
+			map: {
+			    '*': {
+			        'popper.js': 'popper'
+			    }
+			},
 			paths : {
 				// paths 更多用法：http://www.tuicool.com/articles/7JBnmy
-				jquery : 'lib/jquery',
-				jqueryui :'lib/jquery-ui',
+				'jquery' : 'lib/jquery',
+				'jqueryui' :'lib/jquery-ui',
 				'jquery.datetimepicker' : "lib/bootstrap-datetimepicker",
 				'ztree' : "lib/jquery.ztree.all",
 				'bootstrap':'lib/bootstrap',
-				'Popper-utils':'lib/popper-utils',
-				'popper':'lib/popper',
+				'Popper-utils':'lib/popper-utils', 
 				'jquery.confirm':'lib/jquery-confirm',
 				'jquery.slimscroll':'lib/jquery.slimscroll',
 				'echart':'lib/echarts.common.min',
@@ -285,7 +291,8 @@
 				'fileinput': 'lib/fileinput',
 				'fileinputTheme':'../css/lib/fileinput/themes/explorer/theme',
 				'holder':'lib/holder',
-				'pako':'lib/pako'
+				'pako':'lib/pako',
+				'popper':'lib/popper'
 			}
 			,shim: {
 				'template': {
@@ -304,18 +311,14 @@
 		        'jquery.confirm':{
 		        	deps:["jquery"]
 		        },
-		        'popper':{
-		        	deps:['Popper-utils'],
-		        	exports:"Popper"
-		        } ,
-		        "bootstrap":{
-		        	deps:['jquery'/* ,'popper' */]
-		        } ,
 		        'fileinput':{
 		        	deps:['jquery']
 		        },
 		        'fileinputTheme':{
 		        	deps:['jquery','fileinput']
+		        },
+		        'popper':{
+		          deps:['Popper-utils'] 
 		        }
 			}
 			/* 非AMD规范模块需要使用shim配置来加载
@@ -328,7 +331,7 @@
 		});
 
 		// app ! js 模块化更多的是为了处理模块之间的依赖关系，和异步加载脚本
-		require(['rt/pageContext' ,'jquery','app','rt/core'  ,"bootstrap" , 'rt/jquery-mex'/* ,'ztree' */ ], function(pc,$, app, core,bs,jqueryMEX/* ,ztree */) {
+		require(['rt/pageContext' ,'jquery','app','rt/core' , 'rt/jquery-mex','bootstrap'/* ,'ztree' */ ], function(pc,$, app, core,jqueryMEX ,bs/* ,ztree */) {
 			window.pageContext = pc;
 			var WeApp = window.WeApp = core || {};
 			// tag:前端涉及可以读取全局变量的组件，建议开放相关初始化方法，以便ajax可以设定

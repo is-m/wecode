@@ -1,4 +1,4 @@
-define([ "jquery", "popper","rt/request" ], function($, Popper,http) {
+define([ "jquery","rt/request" ], function($, http) {
 
 	// Tool
 	
