@@ -10,10 +10,53 @@
 			</div>
 		</div>
 		<div class="col-md-9 ">
+			<m-span>
+				<m-text>
+					<m-a href="1"></m-a>
+				</m-text>
+			</m-span>
+			<!-- https://www.zhangxinxu.com/wordpress/2018/03/htmlunknownelement-html5-custom-elements/ -->
+			<!-- 语义化标签，WebComponent，组件名称和组件属性不区分大小写 -->
+			<!-- mcard 是一个卡片 -->
+			<m-card title="基本属性">
+				<!-- mfrom 是一个表单，卡片里面有一个表单，在表单上有一个mex的属性表示扩展上个元素的子元素，参考xaml的设计 -->
+				<mform action="api/xxx" method="post" mex="card.body">
+					<form.item label="节点名称" type="text" name="name" rule="length[1,30],user" />
+					<form.item label="节点值" type="text" name="value" rule="length[1,30],user" />
+					<form.item label="父节点" type="treeSelect" name="value" dataset="xx" rule="required">
+						<attr name="treeOption">
+							{
+							
+							}
+						</attr>
+					</form.item>
+					<form.item label="是否有效" type="radio" name="enabled" dataset='[{text:"生效",value:1,text:"失效",value:0}]' >
+						<attr name="onChange">
+							function(newValue,oldValue){
+								console.log("值发生改变啦",newValue,oldValue);
+							}
+						</attr>
+						<!-- 为了方便编辑器变色提示，支持脚本型属性 -->
+						<script name="onChange">
+							function a(newValue,oldValue){
+								console.log("值发生改变啦",newValue,oldValue);
+							}
+						</script>
+					</form.item>
+					<form.item label="备注" type="textarea" name="remark" />
+					<div class="text-center">
+						<form.submit text="保存" />
+						<form.button value="新增" />
+						<form.button value="删除" />
+					</div>
+				</mform>
+			</m-card>
+			
 			<div class="card">
 			<div class="card-body">
 				<span>基本属性</span>
 				<hr />
+				<mform>
 				<form> 
 				  <div data-x-widget="form/input" data-x-widget-option=""></div>
 				  <div class="form-group row">
@@ -24,6 +67,12 @@
 				  </div>
 				  <div class="form-group row">
 				    <label for="inputPassword3" class="col-sm-2 col-form-label">节点值</label>
+				    <div class="col-sm-10">
+				      <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+				    </div>
+				  </div>
+				  <div class="form-group row">
+				    <label for="inputPassword3" class="col-sm-2 col-form-label">父节点</label>
 				    <div class="col-sm-10">
 				      <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
 				    </div>
@@ -42,11 +91,18 @@
 				    </div>
 				  </div>
 				   
+				   <div class="form-group row">
+				    <label for="inputPassword3" class="col-sm-2 col-form-label">备注</label>
+				    <div class="col-sm-10">
+				       <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+				    </div>
+				  </div>
+				  
 				 
 				  <div class="form-group row">
 				    <div class="col-sm-10">
 				      <button type="submit" class="btn btn-primary">保存</button>
-				      <button type="submit" class="btn btn-danger">删除</button>
+				      <button type="button" class="btn btn-danger">删除</button>
 				    </div>
 				  </div>
 				</form> 

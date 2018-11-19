@@ -1,0 +1,375 @@
+<!-- https://www.zhangxinxu.com/wordpress/2018/03/htmlunknownelement-html5-custom-elements/ -->
+<!-- 嵌套标签解析 -->
+<div class="container-fluid" id="webCompnentContainer">
+	<h3>嵌套标签解析</h3>
+	<div>
+		<m-span> <m-a href="1">
+		<m-text color="red" direction="dealline">123</m-text></m-a> 
+		</m-span>
+	</div>
+
+
+</div>
+
+<script type="text/javascript">
+  // 引入外部继承框架 https://www.oschina.net/translate/simple-javascript-inheritance?cmp
+  /* Simple JavaScript Inheritance
+   * By John Resig http://ejohn.org/
+   * MIT Licensed.
+   */ 
+  // Inspired by base2 and Prototype 
+  ( function ( ) { 
+	  var initializing = false, fnTest = /xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/;
+	  // The base Class implementation (does nothing)
+	  this.Class = function(){};
+	  
+	  // Create a new Class that inherits from this class
+	  Class.extend = function(prop) {
+	    var _super = this.prototype;
+	    
+	    // Instantiate a base class (but only create the instance,
+	    // don't run the init constructor)
+	    initializing = true;
+	    var prototype = new this();
+	    initializing = false;
+	    
+	    // Copy the properties over onto the new prototype
+	    for (var name in prop) {
+	      // Check if we're overwriting an existing function
+	      prototype[name] = typeof prop[name] == "function" && 
+	        typeof _super[name] == "function" && fnTest.test(prop[name]) ?
+	        (function(name, fn){
+	          return function() {
+	            var tmp = this._super;
+	            
+	            // Add a new ._super() method that is the same method
+	            // but on the super-class
+	            this._super = _super[name];
+	            
+	            // The method only need to be bound temporarily, so we
+	            // remove it when we're done executing
+	            var ret = fn.apply(this, arguments);        
+	            this._super = tmp;
+	            
+	            return ret;
+	          };
+	        })(name, prop[name]) :
+	        prop[name];
+	    }
+	    
+	    // The dummy class constructor
+	    function Class() {
+	      // All construction is actually done in the init method
+	      if ( !initializing && this.init )
+	        this.init.apply(this, arguments);
+	    }
+	    
+	    // Populate our constructed prototype object
+	    Class.prototype = prototype;
+	    
+	    // Enforce the constructor to be what we expect
+	    Class.prototype.constructor = Class;
+	    // And make this class extendable
+	    Class.extend = arguments.callee;
+	    
+	    return Class;
+	  };
+	})();
+	
+
+  // 命名空间定义，namespace：命名空间,例如WeApp.xx.xx defineOption:累加选项，可以给命名空间累加属性和方法，ignoreConfict:忽略冲突，
+  var namespace = namespace || function(namespace,defineOption,ignoreConfict){
+    if(!namespace || typeof namespace != 'string') throw namespace;
+    var spaceArray = namespace.split(".");
+    var currentObj = this; // 在window下调用 this就表示Window ,否则需要用namespace.apply(window,namespace,defineOption);或者namespace.call(window,[namespace,defineOption])
+    for(var i=0;i<spaceArray.length;i++){
+      var temp = spaceArray[i];
+      currentObj[temp] = currentObj[temp] || {};
+      if(typeof currentObj[temp] != "object"){
+        throw 'namespace define error type is not object for name '+[].slice.apply(spaceArray,0,i).join(".");
+      }
+      currentObj = currentObj[temp];
+    }
+    
+    if(defineOption){
+    	for(var name in defineOption){
+    	  if(currentObj[name] && !ignoreConfict){
+    	    throw 'namespace append attribute error ';
+    	  }
+    	  currentObj[name] = defineOption[name];
+    	}
+    }
+    return currentObj;
+  }
+  
+  // JS流
+  var JSFlow = namespace("WeApp.JSFlow",{
+    // 执行上行文方法流，支持无限参数，参数可以是字符串类型或者字符串数组类型（例如 content,fooA,[fooB,fooC],fooD,...），前提是context上有则个参数
+    exec:function(obj,flows){
+      // 只支持对象类型
+      if(typeof obj != "object") throw 'cannot support non javascript native object flow exec';
+      var context = obj["flow"] || obj; 
+      // 难道要支持并行执行？虽然JS是单线程，但是不排除有的流是要等>=两个方法运行完成才执行的
+      var execMethodNameArray = [].slice.call(arguments,1);
+      debugger
+      // 内部使用 JS 异步流 Promise
+      var promiseContext = [];
+      for(var i=0;i<execMethodNameArray.length;i++){
+        var current = execMethodNameArray[i];
+        if(typeof current == "string"){
+          var cur = context[current] ;
+          if(typeof cur == "function"){
+            promiseContext.push(cur.bind(context));
+          }else{
+            var prototypeCur = context; 
+            while(prototypeCur){
+              prototypeCur = Object.getPrototypeOf(prototypeCur);
+              if(prototypeCur && prototypeCur[current]){
+                promiseContext.push(prototypeCur[current].bind(context));
+              }
+            }
+            if(!prototypeCur){
+            	throw 'exec js flow faild is not function of context '+obj.name+' by name ' + current;
+            }
+          }  
+        }else if(current && current.push && current.pop && current.length){ // 数组
+          var tempArray = [];
+          for(var j=0;j<current.length;j++){
+            var cur = context[current] ;
+            if(typeof cur == "function"){
+              tempArray.push(cur.bind(context));
+            }else{
+              throw 'exec js flow faild is not function of context by name ';
+            }   
+          }
+          promiseContext.push(function(){ 
+            return (($ && $.when) || (Promise && Promise.all))(tempArray); 
+          });
+        }else{
+          // 
+          throw 'arg at '+i+' cannot supported is not an array or string';
+        }
+      }
+      
+      // https://www.cnblogs.com/yelongsan/p/7644239.html jquery promise
+      // https://www.cnblogs.com/dengyulinBlog/p/6180223.html js promise
+      var startFunc = ($ && $.when) || (Promise && Promise.all); 
+      var currentFunc = startFunc;
+      for(var i=0;i<promiseContext.length;i++){
+        currentFunc = currentFunc(promiseContext[i]).then;
+      }
+      
+    }
+  });
+  
+  var extend = function(childClass,parentClass){
+    
+  }
+  
+  var apppendProps =function(context,props,condition){ 
+    for(var attr in props){
+      if(condition(attr,props[attr])){
+        context[attr] = props[attr];
+      }
+    } 
+  }
+  
+  var WebComponent = namespace("WeApp.WebComponent",{
+    // 组件定义，至少两个参数,当只传两个参数时 arg2 = componentOption,当传三个参数时 arg2=parentComponent ,arg3 = componentOption
+    define:function(name,arg2,arg3){ 
+      if(!name || !arg2) throw 'compenent define illeagl of Component '+name; 
+      name = name.charAt(0).toUpperCase() + name.substring(1);
+      // 将组件直接封装到 WeApp.WebComponent 下面，例如 WeApp.WebComponent.Tab, WeApp.WebComponent.DataGrid, WeApp.WebComponent.Tree
+      if(this[name]){
+        throw 'component is existed of name '+name;
+      }
+      
+      // 当前定义组件的参数是否大于2
+      var argGt2 = arguments.length > 2;
+      // 父组件，当参数大于2时，直接设置父组件，否则检查名字是否为基础组件，不为的话则直接指定为基础组件
+      var parent = argGt2 ? arg2 :(name == "Component" ? null : this["Component"]);
+      // 组件参数，当
+      var option = argGt2 ? arg3 : arg2; 
+      
+      // https://www.cnblogs.com/humin/p/4556820.html 关于低版本 JS 继承实现，ES 6 有了class Child extend Super
+      // 关于继承的扩展阅读之原型链 https://www.jb51.net/article/100360.htm
+      // 构建一个闭包来隐藏不可见的属性
+      var comp = this[name] = (function(option){
+        // 内嵌闭包
+        return function(){
+	        // 内部私有属性   _
+	        debugger
+	        var _$super = parent && parent.call(this);
+	        var _$op = option;
+	        var _$dom = null; 
+	        
+	        // 构造函数
+	        return function(){
+	          // 附加私有属性
+	          this.name = name;
+	          
+	          this.flow = (function(flow){
+	            // 包装过的Flow,主要是先调用父，再调用自己
+	            var packagedFlow = {};
+	            for(var flowName in flow){
+	              packagedFlow[flowName] = (function(flowName,flowFunction){
+	                return function(){
+	                  debugger
+	                  _$super && _$super[flowName] && _$super[flowName]();
+	                  flowFunction && flowFunction();
+	                };
+	              }(flowName,flow[flowName]));
+	            }
+	            return packagedFlow;
+	          }(option.flow));
+	          
+	          // 附加公开属性
+	          apppendProps(this,option.props,function(name,value){  
+		        var start = name.charAt(0);
+		        return start != "_" && start != "$" && typeof value  != "function";
+		      }); 
+	          
+	        };
+        }
+      }(option));
+      
+      comp.OPTION = option;
+      
+      // 在组件原型上追加开放的函数，注意：构造函数需要具备执行父类的构造函数的能力
+      if(parent != null){        
+        comp.prototype = Object.create(parent.prototype);
+        comp.prototype.constructor = this[name];
+      }
+      
+      // 附加公开的方法
+      apppendProps(comp.prototype,option.props,function(name,value){  
+        var start = name.charAt(0);
+        return start != "_" && start != "$" && typeof value  == "function";
+      }); 
+      
+      return comp;
+    },
+    // 渲染组件，
+    render:function(dom){
+      // 从本身出发看看自己是否是否是为Web组件，如果是直接加载组件渲染
+      if(!dom) return;
+      if(dom instanceof HTMLUnknownElement || dom.constructor === HTMLElement){
+        var tagName = dom.tagName;
+        var tempName = tagName.substring(tagName.indexOf("-")+1).toLowerCase();
+        var componentName = tempName.charAt(0).toUpperCase() + tempName.substring(1);
+        // debugger
+        if(WebComponent[componentName]){
+         var widget = (new (new WebComponent[componentName]())());
+         //for
+         debugger
+         JSFlow.exec(widget,"render","ready");
+        }else{
+          console.log("Web Component `"+componentName+"` is not defined of html element tag name "+tagName.toLowerCase())
+        }
+      } else if(dom.children) {
+        for(var i=0;i<dom.children.length;i++){
+          WebComponent.render(dom.children[i]);
+        }
+      } else{
+        // 已知的HTML元素，非自定义组件
+      }
+    }
+  }); 
+  
+  // 自定义组件
+  // 所有的自定义组件默认是m-开头，所以可以不用写m-
+  // 只有容器组件才能包含其他组件，例如Panel,Table Card,Layout
+  // 组件的初始化流程，init(第一次加载时执行),render:(渲染时执行),ready:(准备好时执行，父组件的ready取决于所有子组件都ready后，并且自己也ready后才算ready),destory:(销毁时执行)
+  // 所有的方法都要支持异步返回
+  // 所有的组件必须由一个元素包裹产生，
+  var componetDefine = WeApp.WebComponent.define("Component", {
+    flow:{
+	    // 组件定义FLOW：第一次加载时执行，只执行一次
+	    init:function(){
+	      // 1.加载模版
+	    },
+	    // 组件定义FLOW：渲染时执行
+	    render:function(){ 
+	      console.log("render "+this);
+	      // 0. 检查是否容器组件，如果是容器组件，则先渲染自己，然后再解析容器内容部分加载子组件进行渲染
+	      
+	      // 1.获取所须的数据
+	      
+	      // 2.
+	    },
+	    // 组件定义FLOW：渲染完成后执行
+	    ready:function(){ 
+	      console.log("ready "+this.name);
+	    },
+	 	// 组件定义FLOW：销毁时执行
+	    destory:function(){ }, 
+    },
+    // 组件属性，属性包含 属性，方法，访问级别包含私有访问（_xx 下划线开头），继承可访问($xx 美元符开通)，公开(xx)
+    props:{
+      
+      // 私有属性：父组件，
+      _parentComponent:null,
+      
+   	  // 属性，组件ID，全局唯一
+      ID:null, 
+      
+    },
+    events:{
+      // 事件定义，所有
+      onReady:1,
+    }
+  });
+  
+  // 第二个参数是继承的组件
+  var textComponetDefine = WeApp.WebComponent.define("text",componetDefine,{
+    init:function(){
+      // 第一次加载时执行，只执行一次
+    },
+    render:function(){
+      console.log("render "+this);
+    },
+    ready:function(){
+      
+    },
+    destory:function(){
+      
+    } 
+  });
+  
+  var aComponetDefine = WeApp.WebComponent.define("a", function() {
+    // 实际上这个是构造函数 
+
+  });
+  
+  var spanComponetDefine = WeApp.WebComponent.define("span",{
+    // 实际上这个是构造函数 
+	flow:{
+	    // 组件定义FLOW：第一次加载时执行，只执行一次
+	    init:function(){
+	      debugger
+	      // 1.加载模版
+	      console.log("init "+this.name);
+	    },
+	    // 组件定义FLOW：渲染时执行
+	    render:function(){ 
+	      debugger
+	      console.log("render "+this.name);
+	      // 0. 检查是否容器组件，如果是容器组件，则先渲染自己，然后再解析容器内容部分加载子组件进行渲染
+	      
+	      // 1.获取所须的数据
+	      
+	      // 2.
+	    },
+	    // 组件定义FLOW：渲染完成后执行
+	    ready:function(){ 
+	      console.log("ready "+this.name);
+	    },
+	 	// 组件定义FLOW：销毁时执行
+	    destory:function(){ }, 
+    }
+  });
+  // 解析步骤
+  // 1.查找
+
+  WebComponent.render(document.getElementById("webCompnentContainer"));
+</script>
