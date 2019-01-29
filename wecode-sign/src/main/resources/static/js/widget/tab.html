@@ -1,4 +1,4 @@
-<div class="tab-wrapper">
+<div class="tab-wrapper <%=$widget.containerStyle || $win.ui.config.containerStyle || 'shadow' %>">
 	<ul class="nav nav-tabs tab-header <%=$widget.style || 'ui-tabs'%>">
 	  <% var pages = $widget.pages;$win.console.log(pages); %>
 	  <% for(var i=0;i <pages.length;i++) { var page = pages[i]; page.id = page.id || "tab-item-"+i; %>

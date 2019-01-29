@@ -42,39 +42,178 @@
 	filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=10,
 		MakeShadow=false);
 }
+
+
+.wrapper {
+  background: #2aabde;
+  opacity: 0.8;
+  position: absolute;
+  top: 0;
+  left:0;
+  bottom:0;
+  width: 100%;
+  margin-top: -200px;
+  overflow: hidden;
+
+}
+
+.bg-bubbles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+.bg-bubbles li {
+  position: absolute;
+  list-style: none;
+  display: block;
+  width: 40px;
+  height: 40px;
+  background-color: rgba(255, 255, 255, 0.15);
+  bottom: -160px;
+  -webkit-animation: square 25s infinite;
+  animation: square 25s infinite;
+  -webkit-transition-timing-function: linear;
+  transition-timing-function: linear;
+}
+.bg-bubbles li:nth-child(1) {
+  left: 10%;
+}
+.bg-bubbles li:nth-child(2) {
+  left: 20%;
+  width: 80px;
+  height: 80px;
+  -webkit-animation-delay: 2s;
+          animation-delay: 2s;
+  -webkit-animation-duration: 17s;
+          animation-duration: 17s;
+}
+.bg-bubbles li:nth-child(3) {
+  left: 25%;
+  -webkit-animation-delay: 4s;
+          animation-delay: 4s;
+}
+.bg-bubbles li:nth-child(4) {
+  left: 40%;
+  width: 60px;
+  height: 60px;
+  -webkit-animation-duration: 22s;
+          animation-duration: 22s;
+  background-color: rgba(255, 255, 255, 0.25);
+}
+.bg-bubbles li:nth-child(5) {
+  left: 70%;
+}
+.bg-bubbles li:nth-child(6) {
+  left: 80%;
+  width: 120px;
+  height: 120px;
+  -webkit-animation-delay: 3s;
+          animation-delay: 3s;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+.bg-bubbles li:nth-child(7) {
+  left: 32%;
+  width: 160px;
+  height: 160px;
+  -webkit-animation-delay: 7s;
+          animation-delay: 7s;
+}
+.bg-bubbles li:nth-child(8) {
+  left: 55%;
+  width: 20px;
+  height: 20px;
+  -webkit-animation-delay: 15s;
+          animation-delay: 15s;
+  -webkit-animation-duration: 40s;
+          animation-duration: 40s;
+}
+.bg-bubbles li:nth-child(9) {
+  left: 25%;
+  width: 10px;
+  height: 10px;
+  -webkit-animation-delay: 2s;
+          animation-delay: 2s;
+  -webkit-animation-duration: 40s;
+          animation-duration: 40s;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.bg-bubbles li:nth-child(10) {
+  left: 90%;
+  width: 160px;
+  height: 160px;
+  -webkit-animation-delay: 11s;
+          animation-delay: 11s;
+}
+@-webkit-keyframes square {
+  0% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+  100% {
+    -webkit-transform: translateY(-700px) rotate(600deg);
+            transform: translateY(-700px) rotate(600deg);
+  }
+}
+@keyframes square {
+  0% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+  100% {
+    -webkit-transform: translateY(-700px) rotate(600deg);
+            transform: translateY(-700px) rotate(600deg);
+  }
+}
 </style>
 </head>
 
 <body>
-	<div class="row screen-center login">
-		<div class="login-header clearfix">
-			<h3 class="pull-left">系统登录</h3>
-			<span class="pull-right"><small>还没有帐号，<a href="#">现在注册?</a></small></span>
-		</div>
-		<div class="login-form">
-			<form id="formLogin" class="form" action="../../login" method="post" enctype="application/json">
-				<div class="input-group">
-					<div class="input-group-prepend">
-						<span class="input-group-text"><i class="iconfont icon-account"></i></span>
+	<div class="wrapper">
+		<div class="row screen-center login">
+			<div class="login-header clearfix">
+				<h3 class="pull-left">系统登录</h3>
+				<span class="pull-right"><small>还没有帐号，<a href="#">现在注册?</a></small></span>
+			</div>
+			<div class="login-form">
+				<form id="formLogin" class="form" action="../../login" method="post" enctype="application/json">
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="iconfont icon-account"></i></span>
+						</div>
+						<input class="form-control" name="username" placeholder="用户名/手机号码/邮箱" value="admin">
 					</div>
-					<input class="form-control" name="username" placeholder="用户名/手机号码/邮箱" value="admin">
-				</div>
-				<div class="input-group">
-					<div class="input-group-prepend">
-						<span class="input-group-text"><i class="iconfont icon-password"></i></span>
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="iconfont icon-password"></i></span>
+						</div>
+						<input class="form-control" name="passwd" placeholder="密码" type="password" value="881111">
 					</div>
-					<input class="form-control" name="passwd" placeholder="密码" type="password" value="881111">
-				</div>
-
-				<div class="form-check">
-					<label class="form-check-label"> <input class="form-check-input" type="checkbox"> 下次自动登录
-					</label> <a href="#" class="pull-right">忘记密码</a>
-				</div>
-			</form>
+	
+					<div class="form-check">
+						<label class="form-check-label"> <input class="form-check-input" type="checkbox"> 下次自动登录
+						</label> <a href="#" class="pull-right">忘记密码</a>
+					</div>
+				</form>
+			</div>
+			<div class="login-btns">
+				<button class="btn btn-primary" style="width: 100%" onclick="document.getElementById('formLogin').submit(); /* window.location='../index.html'; */">登录</button>
+			</div>
 		</div>
-		<div class="login-btns">
-			<button class="btn btn-primary" style="width: 100%" onclick="document.getElementById('formLogin').submit(); /* window.location='../index.html'; */">登录</button>
-		</div>
+		<ul class="bg-bubbles">
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+		</ul>
 	</div>
 </body>
 </html>

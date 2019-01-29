@@ -43,6 +43,7 @@
 		<module>wecode-security-authentication</module>
 		<module>wecode-security-core</module>
 		<module>wecode-web-support</module>
+		<module>template-mybatis</module>
 	</modules>
 
 	<dependencyManagement>

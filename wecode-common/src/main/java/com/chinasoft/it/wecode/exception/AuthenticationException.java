@@ -18,7 +18,7 @@ public class AuthenticationException extends BaseException implements HttpCodePr
   }
 
   public AuthenticationException() {
-    super("no found accessor authentication");
+    super("no authentication");
   }
 
   public AuthenticationException(String messageOrKey, Throwable cause) {

@@ -63,7 +63,11 @@ define(["jquery","rt/validation","rt/store"],function($,v,store){
       return dtd;
     } ,
     logout:function(){
-      store.remove("$USER_TOKEN$");
+      try{
+        store.remove("$USER_TOKEN$");
+      }finally{
+        
+      }
     }
   }  
   

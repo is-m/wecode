@@ -48,7 +48,7 @@ pageContext.define("admin.sitemap.list",["widget/data/datatable","widget/tab","w
 					width:120
 				},{
 					field:"remark",
-					header:"备注",
+					header:"角色说明",
 					width:120
 				},{
 					field:"status",

@@ -806,3 +806,35 @@ h1 {
 /* alert https://github.com/sweetalert2/sweetalert2 */
 /* bootstrap-notify */
 /* bootstrap plugins  http://ju.outofmemory.cn/entry/145667 */
+
+/* begin */
+
+/* 基于阴影的显示风格 */
+.shadow.x {
+	box-shadow: 0 0 35px 0 rgba(154,161,171,.15) !important;
+}
+
+ .shadow>.nav-tabs
+,.shadow>.ui-tabs.tab-body
+,.shadow>.nav-tabs .nav-item.show .nav-link {
+	border:none;
+}
+
+.shadow>.nav-tabs .nav-link.active {
+	border-color:transparent;
+}
+
+/* 基于细边框的显示风格 */
+.bordered {
+
+}
+
+
+
+/* end */
+.nav-tabs.nav-bordered {
+	border-bottom: 1px solid #eee;
+}
+.nav-tabs.nav-bordered>.nav-item>.active {
+	border-bottom: 3px solid #2d89ef;
+}

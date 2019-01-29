@@ -1,7 +1,6 @@
 package com.chinasoft.it.wecode.security.api;
 
-import javax.annotation.PostConstruct;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,12 +20,8 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/services/security/permission")
 public class PermissionApi extends CrudApi<PermissionDto, PermissionResultDto, PermissionQueryDto> {
 
+  @Autowired
   private PermissionService service;
-
-  @PostConstruct
-  public void init() {
-    service = (PermissionService) super.service;
-  }
 
   @ApiOperation(value = "权限同步", notes = "自动识别系统权限")
   @PostMapping("/sync")

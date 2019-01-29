@@ -12,70 +12,7 @@
 </div>
 
 <script type="text/javascript">
-  // 引入外部继承框架 https://www.oschina.net/translate/simple-javascript-inheritance?cmp
-  /* Simple JavaScript Inheritance
-   * By John Resig http://ejohn.org/
-   * MIT Licensed.
-   */ 
-  // Inspired by base2 and Prototype 
-  ( function ( ) { 
-	  var initializing = false, fnTest = /xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/;
-	  // The base Class implementation (does nothing)
-	  this.Class = function(){};
-	  
-	  // Create a new Class that inherits from this class
-	  Class.extend = function(prop) {
-	    var _super = this.prototype;
-	    
-	    // Instantiate a base class (but only create the instance,
-	    // don't run the init constructor)
-	    initializing = true;
-	    var prototype = new this();
-	    initializing = false;
-	    
-	    // Copy the properties over onto the new prototype
-	    for (var name in prop) {
-	      // Check if we're overwriting an existing function
-	      prototype[name] = typeof prop[name] == "function" && 
-	        typeof _super[name] == "function" && fnTest.test(prop[name]) ?
-	        (function(name, fn){
-	          return function() {
-	            var tmp = this._super;
-	            
-	            // Add a new ._super() method that is the same method
-	            // but on the super-class
-	            this._super = _super[name];
-	            
-	            // The method only need to be bound temporarily, so we
-	            // remove it when we're done executing
-	            var ret = fn.apply(this, arguments);        
-	            this._super = tmp;
-	            
-	            return ret;
-	          };
-	        })(name, prop[name]) :
-	        prop[name];
-	    }
-	    
-	    // The dummy class constructor
-	    function Class() {
-	      // All construction is actually done in the init method
-	      if ( !initializing && this.init )
-	        this.init.apply(this, arguments);
-	    }
-	    
-	    // Populate our constructed prototype object
-	    Class.prototype = prototype;
-	    
-	    // Enforce the constructor to be what we expect
-	    Class.prototype.constructor = Class;
-	    // And make this class extendable
-	    Class.extend = arguments.callee;
-	    
-	    return Class;
-	  };
-	})();
-	
+  // WebComponents 说明  http://www.cnblogs.com/pqjwyn/p/7401918.html 
 
   // 命名空间定义，namespace：命名空间,例如WeApp.xx.xx defineOption:累加选项，可以给命名空间累加属性和方法，ignoreConfict:忽略冲突，
   var namespace = namespace || function(namespace,defineOption,ignoreConfict){
@@ -162,17 +99,6 @@
     }
   });
   
-  var extend = function(childClass,parentClass){
-    
-  }
-  
-  var apppendProps =function(context,props,condition){ 
-    for(var attr in props){
-      if(condition(attr,props[attr])){
-        context[attr] = props[attr];
-      }
-    } 
-  }
   
   var WebComponent = namespace("WeApp.WebComponent",{
     // 组件定义，至少两个参数,当只传两个参数时 arg2 = componentOption,当传三个参数时 arg2=parentComponent ,arg3 = componentOption
@@ -194,58 +120,9 @@
       // https://www.cnblogs.com/humin/p/4556820.html 关于低版本 JS 继承实现，ES 6 有了class Child extend Super
       // 关于继承的扩展阅读之原型链 https://www.jb51.net/article/100360.htm
       // 构建一个闭包来隐藏不可见的属性
-      var comp = this[name] = (function(option){
-        // 内嵌闭包
-        return function(){
-	        // 内部私有属性   _
-	        debugger
-	        var _$super = parent && parent.call(this);
-	        var _$op = option;
-	        var _$dom = null; 
-	        
-	        // 构造函数
-	        return function(){
-	          // 附加私有属性
-	          this.name = name;
-	          
-	          this.flow = (function(flow){
-	            // 包装过的Flow,主要是先调用父，再调用自己
-	            var packagedFlow = {};
-	            for(var flowName in flow){
-	              packagedFlow[flowName] = (function(flowName,flowFunction){
-	                return function(){
-	                  debugger
-	                  _$super && _$super[flowName] && _$super[flowName]();
-	                  flowFunction && flowFunction();
-	                };
-	              }(flowName,flow[flowName]));
-	            }
-	            return packagedFlow;
-	          }(option.flow));
-	          
-	          // 附加公开属性
-	          apppendProps(this,option.props,function(name,value){  
-		        var start = name.charAt(0);
-		        return start != "_" && start != "$" && typeof value  != "function";
-		      }); 
-	          
-	        };
-        }
-      }(option));
-      
-      comp.OPTION = option;
-      
-      // 在组件原型上追加开放的函数，注意：构造函数需要具备执行父类的构造函数的能力
-      if(parent != null){        
-        comp.prototype = Object.create(parent.prototype);
-        comp.prototype.constructor = this[name];
-      }
-      
-      // 附加公开的方法
-      apppendProps(comp.prototype,option.props,function(name,value){  
-        var start = name.charAt(0);
-        return start != "_" && start != "$" && typeof value  == "function";
-      }); 
+      var comp = (this[name] = Object.create(parent ? parent.prototype : null,{
+        
+      }));
       
       return comp;
     },
@@ -258,11 +135,9 @@
         var tempName = tagName.substring(tagName.indexOf("-")+1).toLowerCase();
         var componentName = tempName.charAt(0).toUpperCase() + tempName.substring(1);
         // debugger
-        if(WebComponent[componentName]){
-         var widget = (new (new WebComponent[componentName]())());
-         //for
-         debugger
-         JSFlow.exec(widget,"render","ready");
+        var component = WebComponent[componentName];
+        if(component){
+          debugger
         }else{
           console.log("Web Component `"+componentName+"` is not defined of html element tag name "+tagName.toLowerCase())
         }
@@ -319,6 +194,12 @@
       onReady:1,
     }
   });
+  
+  // 组件分为
+  // 容器组件:具备渲染本身以及子组件的能力，也能现在子组件范围，
+  // 数据组件:具备加载数据和数据处理的能力，
+  // 表单组件:具备设值，取值，校验的能力，
+  // 普通组件
   
   // 第二个参数是继承的组件
   var textComponetDefine = WeApp.WebComponent.define("text",componetDefine,{

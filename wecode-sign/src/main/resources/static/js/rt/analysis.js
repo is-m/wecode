@@ -21,8 +21,26 @@ define(["rt/request","pako","rt/store"],function(http,pako,store){
   	      tempData.push(item);
   	    }
   	    
+  	    // 预提交数据
+  	    var user = "";
+  	    try{
+  	      user = (store.get("$USER_TOKEN$") || {})["identifier"] || "unlogin";
+        }catch(e){
+          console.log("Analysis user setting faild " ,e);
+          user = "error:"+e;
+        }
+        
+  	    // 将公共数据进行封装，例如agent,user
+  	    var prePostData = {
+  	        info:{
+  	          "agent" : navigator.userAgent,
+  	          "user"  : user
+  	        },
+  	        data:tempData
+  	    };
+  	    
   	    // 对 JSON 字符串进行压缩
-  	    var waitPostData = encodeURIComponent(JSON.stringify(tempData));
+  	    var waitPostData = encodeURIComponent(JSON.stringify(prePostData));
   	    // pako.gzip(params) 默认返回一个 Uint8Array 对象,如果此时使用 Ajax 进行请求,参数会以数组的形式进行发送,为了解决该问题,添加 {to: "string"} 参数,返回一个二进制的字符串
   	    http.doPost(dataUrl,pako.gzip(waitPostData, { to: "string" }));
   	  }
@@ -43,15 +61,6 @@ define(["rt/request","pako","rt/store"],function(http,pako,store){
 	        } 
 	        
 	        item["t"] = WeApp.getServerTime(); // timestamp
-	        item["a"] = navigator.userAgent;    // agent info
-	        
-	        try{
-  	        var user = store.get("$USER_TOKEN$");
-  	        item["u"] = user ? user["identifier"] : "unlogin";
-	        }catch(e){
-	          console.log("Analysis user setting faild " ,e);
-	          item["u"] = 'error:'+e;
-	        }
 	       
           data.push(item);
 	      }else{

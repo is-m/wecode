@@ -50,9 +50,11 @@ public class TestApi {
       // 因为前台对参数进行了 url 编码,在此进行解码
       params = URLDecoder.decode(params, "utf-8");
       // 将解码后的参数转换为 json 对象
-      List<?> obj = JSONUtils.getObj(params, List.class);
-      // TODO 放入分析队列
-      log.info("data analysis size：{} , content {}", obj.size(), obj);
+      @SuppressWarnings("unchecked")
+      Map<String,Object> map = JSONUtils.getObj(params, Map.class);
+      List<?> obj = (List<?>)map.get("data");
+      // TODO 待放入异步消息队列
+      log.info("data analysis size：{} , content {}", obj.size(), map);
     } else {
       log.warn("data analysis empty");
     }

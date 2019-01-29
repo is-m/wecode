@@ -1,0 +1,37 @@
+<div id="c">
+<my-tab id="mytab"></my-tab>
+</div>
+<button onclick="delT();">删除mytab</button>
+<script>
+  function delT(){
+    document.getElementById("c").innerHTML = "";
+  }
+
+  document.registerElement("my-tab", {
+    prototype: Object.create(HTMLElement.prototype, {
+      // 创建回调
+      createdCallback: {
+        value: function() {
+          var div = document.createElement("div");
+          div.textContent = "web compontents";
+          this.appendChild(div);
+        }
+      },
+      enteredDocumentCallback:{
+        value: function() {
+          console.log('向文档插入实例');
+        }
+      },
+      leftDocumentCallback:{
+        value: function() {
+          console.log('从文档中移除实例');
+        }
+      },
+      attributeChangedCallback:{
+        value: function(attrName, oldVal, newVal) {
+          console.log('添加，移除，或修改一个属性');
+        }
+      }
+    })
+  });
+</script>
