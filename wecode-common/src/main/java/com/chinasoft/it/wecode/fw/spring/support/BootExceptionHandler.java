@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.chinasoft.it.wecode.bean.ApiResponse;
+import com.chinasoft.it.wecode.common.dto.ApiResponse;
 import com.chinasoft.it.wecode.exception.HttpCodeProvider;
 
 @ControllerAdvice

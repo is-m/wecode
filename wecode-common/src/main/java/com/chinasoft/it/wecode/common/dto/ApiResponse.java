@@ -1,4 +1,4 @@
-package com.chinasoft.it.wecode.bean;
+package com.chinasoft.it.wecode.common.dto;
 
 /**
  * API 结果

@@ -1,6 +1,0 @@
-com\chinasoft\it\wecode\asset\service\AssetService.class
-com\chinasoft\it\wecode\asset\api\AssetApi.class
-com\chinasoft\it\wecode\asset\repository\AssetRepository.class
-com\chinasoft\it\wecode\asset\domain\Asset.class
-com\chinasoft\it\wecode\asset\config\SwaggerConfig.class
-com\chinasoft\it\wecode\App.class
