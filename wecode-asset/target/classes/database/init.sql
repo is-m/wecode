@@ -1,6 +1,0 @@
-DROP TABLE IF EXISTS as_asset;
-CREATE TABLE as_asset (
-    id VARCHAR(36) COMMENT 'ID',
-    NAME VARCHAR(256) COMMENT '资产名称',
-    PRIMARY KEY(id)
-);
