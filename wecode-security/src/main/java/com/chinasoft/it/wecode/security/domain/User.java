@@ -52,10 +52,11 @@ public class User extends BaseEntity {
    * 状态，0：失效，1：生效
    */
   private Integer status;
-/*
-  @ManyToMany(targetEntity = Role.class, fetch = FetchType.EAGER)
-  @JoinTable(name = "sys_user_role", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "role_id")})
-  private Set<Role> roles = new HashSet<>();*/
+
+  /**
+   * 激活的角色ID
+   */
+  private String activeRoleId;
 
   public String getName() {
     return name;
@@ -103,6 +104,14 @@ public class User extends BaseEntity {
 
   public void setStatus(Integer status) {
     this.status = status;
+  }
+
+  public String getActiveRoleId() {
+    return activeRoleId;
+  }
+
+  public void setActiveRoleId(String activeRoleId) {
+    this.activeRoleId = activeRoleId;
   }
 
   public User() {}

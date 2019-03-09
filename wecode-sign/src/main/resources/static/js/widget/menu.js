@@ -1,6 +1,6 @@
 define(["widget/factory","jquery","jquery.slimscroll"],function(widget,$,scroll){
 	
-	widget.define("menu",{
+	var menu = widget.define("menu",{
 		template:"<h1>Hello this navbar Widget</h1>", 
 		templateUri:"js/widget/menu.html",
 		resources:{
@@ -50,5 +50,6 @@ define(["widget/factory","jquery","jquery.slimscroll"],function(widget,$,scroll)
 		}
 	
 	});
-	
+
+	return menu;
 });

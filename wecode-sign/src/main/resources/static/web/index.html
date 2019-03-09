@@ -137,8 +137,8 @@
 </head>
 
 <body>
-	<div class="wapper">
-		<div data-x-widget="menu"></div> 
+	<div class="wrapper">
+		<m-menu dataset="workspaceObj.menus"></m-menu>
 		<div class="content">
 			<div class="topbar">
 				<a class="topbar-swich topbar-item" id="menuSwitch">
@@ -342,7 +342,8 @@
 			window.pageContext = pc;
 			var WeApp = window.WeApp = core || {};
 			// tag:前端涉及可以读取全局变量的组件，建议开放相关初始化方法，以便ajax可以设定
-			WeApp.initGlobalConfig(appConfig); 
+			WeApp.initGlobalConfig(appConfig);
+			// $.
 			$(app.init); 
 		}); 
 			

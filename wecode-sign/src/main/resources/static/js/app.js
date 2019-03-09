@@ -163,7 +163,6 @@ define(["rt/store"],function(store){
 				// 如果存在全局事件失效的属性，则不触发全局事件
 				if($trigger.is(".e-disable")) return;
 				
-				
 				// 如果是重置按钮，则清空
 				if($trigger.is(".f-reset")){
 					var $fReset = $trigger.closest("form");
@@ -236,56 +235,55 @@ define(["rt/store"],function(store){
                 "</ul>");            
         
         return  data;  
-    }  
-    //模拟悬浮框里面的按钮点击操作  
-    function  test()  {      
-        alert('关注成功');  
     }
 	};
 	
-	var getAllChildrens = function(dom,collector){
+	var getUserElements = function(dom,collector){
+		collector = collector || [];
 		var domArray = typeof dom.length == 'undifined' ? [dom] : dom; 
 		for(var i=0;i<domArray.length;i++){
 			var currentDom = domArray[i];
-			if(currentDom.children.length > 0){
-				getAllChildrens(currentDom.children,collector);
-			}else{
-				collector.push(currentDom);
+			var tagName = currentDom.tagName;
+			// 如果标签存在-中划线说明是自定义组件，或则标签是html不能识别的标签也说明可能是自定义标签
+			if(currentDom.toString() == "[object HTMLUnknownElement]" || (tagName.indexOf("-") > 0)){
+                collector.push(currentDom);
+			}else if(currentDom.children.length > 0){
+                getUserElements(currentDom.children,collector);
 			}
 		}
+		return collector;
 	}
 	
 	var initWidget = function(){
-		// 读取界面内容
-		var allEls = [];
-		getAllChildrens(document.body.children,allEls);
-		var pageElements = allEls;
-		for(var i=0;i<pageElements.length;i++){
-			var el = pageElements[i];
-			console.log("load js widget -- "+el + "    "+ el.toString() );
-			//var tagName = el.tagName;
-			if(el.toString() == "[object HTMLUnknownElement]"){
+		require(["widget/mapper"],function (mapper) {
+            // 读取界面内容
+            var pageElements = getUserElements(document.body.children);
+            for(var i=0;i<pageElements.length;i++){
+                var el = pageElements[i];
+                console.log("load js widget -- "+el.tagName + "    "+ el.toString() );
+
+                //var tagName = el.tagName;
 				var widgetName = el.tagName.toLowerCase();
-				if(widgetName.indexOf(":")){
-					widgetName = widgetName.substring(widgetName.indexOf(":")+1);
-				}
 				console.log("load js widget -- "+widgetName);
-				require(["widget/"+widgetName],$.proxy(function(widget){
-					// 加载完组件则初始化组件的基本内容
-					$(this.el).xWidget(this.widgetName);
-				},{ el:el, widgetName:widgetName })); 
-			}
-		}
-		
-		$("body").find("[data-x-widget]").each(function(){
-			var $this = $(this);
-			var widgetName =  $this.data("xWidget");
-			require(["widget/"+widgetName],$.proxy(function(widget){
-				// 加载完组件则初始化组件的基本内容
-				var options = $this.data("xWidgetOption");
-				$this.xWidget(this.widgetName,JSON.parse(options || "{}"));
-			},{ el:el, widgetName:widgetName })); 
-		});
+				var componentMapper = mapper[widgetName];
+				var wPath =  componentMapper ? componentMapper.comp : ("widget/"+widgetName);
+
+				require([wPath],$.proxy(function(widget){
+                    widget.render(el); // 加载完组件则初始化组件的基本内容
+				},{ el:el }));
+            }
+
+            $("body").find("[data-x-widget]").each(function(){
+                var $this = $(this);
+                var widgetName =  $this.data("xWidget");
+                require(["widget/"+widgetName],$.proxy(function(widget){
+                    // 加载完组件则初始化组件的基本内容
+                    var options = $this.data("xWidgetOption");
+                    $this.xWidget(this.widgetName,JSON.parse(options || "{}"));
+                },{ el:el, widgetName:widgetName }));
+            });
+        })
+
 		
 		$(document).click(function(){  
 			console.log("document click hidden register auto process document click listener handler");

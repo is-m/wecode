@@ -10,6 +10,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import com.chinasoft.it.wecode.security.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.data.domain.Page;
@@ -30,10 +31,6 @@ import com.chinasoft.it.wecode.exception.AuthenticationException;
 import com.chinasoft.it.wecode.security.Role;
 import com.chinasoft.it.wecode.security.UserPrincipal;
 import com.chinasoft.it.wecode.security.domain.User;
-import com.chinasoft.it.wecode.security.dto.UserDto;
-import com.chinasoft.it.wecode.security.dto.UserExportDto;
-import com.chinasoft.it.wecode.security.dto.UserQueryDto;
-import com.chinasoft.it.wecode.security.dto.UserResultDto;
 import com.chinasoft.it.wecode.security.repository.UserRepository;
 import com.chinasoft.it.wecode.security.spi.UserDetailService;
 
@@ -111,7 +108,7 @@ public class UserService extends BaseService<User, UserDto, UserResultDto> imple
    */
   @Override
   public UserPrincipal userDetails(String identifier, String password) throws AuthenticationException {
-    User user = null;
+    User user;
     try {
       user = userRepository.findOneByNameOrMailOrMobilePhone(identifier);
     } catch (IncorrectResultSizeDataAccessException e) {
@@ -155,4 +152,7 @@ public class UserService extends BaseService<User, UserDto, UserResultDto> imple
     };
   }
 
+  public WorkspaceUserDto findWorkspaceUser(String uid) {
+    return null;
+  }
 }
