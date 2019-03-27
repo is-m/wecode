@@ -17,6 +17,11 @@ public class ApiResponse {
    */
   private String msg;
 
+  /**
+   * 数据
+   */
+  private Object data;
+
   public String getCode() {
     return code;
   }
@@ -33,11 +38,33 @@ public class ApiResponse {
     this.msg = msg;
   }
 
+  public Object getData() {
+    return data;
+  }
+
+  public void setData(Object data) {
+    this.data = data;
+  }
+
+  public ApiResponse() {}
+
   public ApiResponse(String code, String msg) {
     this.code = code;
     this.msg = msg;
   }
 
-  public ApiResponse() {}
+  public ApiResponse(String code, String msg, Object data) {
+    this.code = code;
+    this.msg = msg;
+    this.data = data;
+  }
+
+  public static ApiResponse of(Object code, String msg) {
+    return new ApiResponse(String.valueOf(code), msg);
+  }
+
+  public static ApiResponse of(Object code, String msg, Object data) {
+    return new ApiResponse(String.valueOf(code), msg, data);
+  }
 
 }

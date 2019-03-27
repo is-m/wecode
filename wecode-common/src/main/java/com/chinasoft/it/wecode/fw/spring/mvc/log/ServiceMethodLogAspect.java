@@ -2,8 +2,6 @@ package com.chinasoft.it.wecode.fw.spring.mvc.log;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -22,7 +20,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.chinasoft.it.wecode.common.util.JSONUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.ApiOperation;
 

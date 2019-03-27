@@ -11,6 +11,7 @@ import org.springframework.util.ReflectionUtils;
 
 import com.chinasoft.it.wecode.common.exception.NoImplementedException;
 import com.chinasoft.it.wecode.common.util.PageConstants;
+import com.google.common.base.Objects;
 
 /**
  * 转换基础接口
@@ -77,7 +78,7 @@ public interface BaseMapper<E, D, R> {
   default Page<R> toResultDto(Page<E> entities) {
     Page<R> allocate = entities.map(e -> from(e));
     // 如果系统设置的参数配置的起始页为1，则需要修改page的起始页
-    if (PageConstants.START_PAGE == 1) {
+    if (Objects.equal(PageConstants.START_PAGE, 1)) {
       int curPage = allocate.getNumber() + 1;
       if (allocate instanceof PageImpl) {
         Field pageableField = ReflectionUtils.findField(PageImpl.class, "pageable");

@@ -34,6 +34,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class TestApi {
 
   private static final Logger log = LogUtils.getLogger();
+  
   @Autowired
   private CatelogService catelogService;
 
@@ -51,8 +52,8 @@ public class TestApi {
       params = URLDecoder.decode(params, "utf-8");
       // 将解码后的参数转换为 json 对象
       @SuppressWarnings("unchecked")
-      Map<String,Object> map = JSONUtils.getObj(params, Map.class);
-      List<?> obj = (List<?>)map.get("data");
+      Map<String, Object> map = JSONUtils.getObj(params, Map.class);
+      List<?> obj = (List<?>) map.get("data");
       // TODO 待放入异步消息队列
       log.info("data analysis size：{} , content {}", obj.size(), map);
     } else {

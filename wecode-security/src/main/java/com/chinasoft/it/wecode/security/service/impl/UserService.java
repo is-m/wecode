@@ -149,6 +149,11 @@ public class UserService extends BaseService<User, UserDto, UserResultDto> imple
       public Role getActivedRole() {
         return null;
       }
+      
+      @Override
+      public String getLanguage() {
+        return "zh_CN";
+      }
     };
   }
 

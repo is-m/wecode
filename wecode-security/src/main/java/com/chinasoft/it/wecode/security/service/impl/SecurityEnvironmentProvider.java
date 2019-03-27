@@ -1,7 +1,6 @@
 package com.chinasoft.it.wecode.security.service.impl;
 
 import com.chinasoft.it.wecode.common.service.impl.EnvironmentProvider;
-import com.chinasoft.it.wecode.security.dto.UserResultDto;
 import com.chinasoft.it.wecode.security.dto.WorkspaceUserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

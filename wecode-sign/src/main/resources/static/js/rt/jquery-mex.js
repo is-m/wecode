@@ -1,5 +1,12 @@
-define([ "jquery","rt/request" ], function($, http) {
-
+define([ "jquery","rt/request","ui/ui-confirm"], function($, http,m) {
+  var _conf = {
+      ajax:{
+        
+      },
+      validator:{
+        serverFaildCode:"40"
+      }
+  }
 	// Tool
 	
 	// 填充或者获取选中区域的表单数据
@@ -51,28 +58,26 @@ define([ "jquery","rt/request" ], function($, http) {
 		return jsonResult;
 	}
 	
-	var globalConfig = {
-		ajax:{
-			
-		},
-		validator:{
-			serverFaildCode:"412"
-		}
-	}
-	
 	// 元素提交，自带校验和校验回填功能
 	$.fn.formSubmit = function(type,url,sCallback,fCallback){ 
 		return this.each(function(){
 			var $form = $(this);
-			http.ajax(url,$form.jsonData(),sCallback,function(resp){
+			http.ajax(url,$form.jsonData(),sCallback,function(response){
+			  var resp = response.responseJSON;
+			  debugger
 				// 如果是校验失败，则回填校验内容
-				if(resp.code == globalConfig.validator.serverFaildCode){
-					for(var errorField in resp.data){
-						var errMsg = resp.data[errorField][0];
-						var $el = $form.find(":input[name="+errorField+"]");
+				if(resp.code == _conf.validator.serverFaildCode){
+				  var unTrackErrors = [];
+				  // key = create.arg0.password   value = 不能为空
+					for(var errorKey in resp.data){ 
+					  var errorField = errorKey.substring(errorKey.lastIndexOf(".")); 
+						var errMsg = resp.data[errorKey];
+						//FIXME:这里因为字段被标记为错误后会出现无法提交的情况，可能需要考虑使用新样式来区分是后台报错，来解决存在.is-invalid时，会触发表单校验的情况
+						// 当前前提是考虑清楚是否有必要
+						var $el = null;//$form.find(":input[name="+errorField+"]");
 						
-						if($el.length == 0 || $el.is(":hidden")){
-							alert(errorField + " "+errMsg);
+						if(!$el || $el.length == 0 || $el.is(":hidden")){ 
+						  unTrackErrors.push(errMsg + "\r\n"); 
 							continue;
 						}
 						//var $msgEl = $("<div class='alert alert-danger'>"+errMsg+"</div>");
@@ -82,9 +87,17 @@ define([ "jquery","rt/request" ], function($, http) {
 						$el.attr("data-placement","bottom");
 						$el.attr("title",errMsg); 
 						$el.tooltip();
+						
 					} 
+					
+					if(unTrackErrors.length > 0){
+					  m.alert(unTrackErrors.join(''));
+					}
+					
+					m.errTip("校验失败"); 
+				}else{
+				  fCallback(resp);
 				}
-				fCallback(resp);
 			},type);
 		});
 	}

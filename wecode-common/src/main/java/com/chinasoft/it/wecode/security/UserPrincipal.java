@@ -26,5 +26,11 @@ public interface UserPrincipal {
    * @return
    */
   List<Role> getRoles();
+  
+  /**
+   * 当前用户语言
+   * @return
+   */
+  String getLanguage();
 
 }

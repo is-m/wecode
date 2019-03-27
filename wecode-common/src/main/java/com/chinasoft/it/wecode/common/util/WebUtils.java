@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
 
 import com.chinasoft.it.wecode.common.exception.NoImplementedException;
+import com.google.common.base.Objects;
 
 public class WebUtils {
 
@@ -33,7 +34,7 @@ public class WebUtils {
         String size = request.getParameter(PageConstants.PARAM_SIZE);
         int pageSize = NumberUtils.tryParse(size, PageConstants.DEFAULT_SIZE);
 
-        if (PageConstants.START_PAGE == 1 && curPage > 0) {
+        if (Objects.equal(PageConstants.START_PAGE, 1) && curPage > 0) {
           curPage--;
         }
 

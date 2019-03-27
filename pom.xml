@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.chinasoft.it.wecode</groupId>
@@ -22,6 +23,8 @@
 		<java.version>1.8</java.version>
 		<swagger.version>2.9.2</swagger.version>
 		<mapstruct.version>1.2.0.CR1</mapstruct.version>
+		<project.groupId>com.chinasoft.it.wecode</project.groupId>
+		<project.version>0.0.1-SNAPSHOT</project.version>
 	</properties>
 
 	<modules>
@@ -56,7 +59,7 @@
 				<version>1.16.20</version>
 				<scope>provided</scope>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
@@ -82,19 +85,21 @@
 				<artifactId>springfox-swagger-ui</artifactId>
 				<version>${swagger.version}</version>
 			</dependency>
-			
-			<!-- @Import({ ... springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration.class, ...}) -->
+
+			<!-- @Import({ ... springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration.class, 
+				...}) -->
 			<dependency>
-			    <groupId>io.springfox</groupId>
-			    <artifactId>springfox-data-rest</artifactId>
-			    <version>${swagger.version}</version>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-data-rest</artifactId>
+				<version>${swagger.version}</version>
 			</dependency>
-			
-			<!-- @Import({ ... springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration.class, ...}) -->
+
+			<!-- @Import({ ... springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration.class, 
+				...}) -->
 			<dependency>
-			    <groupId>io.springfox</groupId>
-			    <artifactId>springfox-bean-validators</artifactId>
-			    <version>${swagger.version}</version>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-bean-validators</artifactId>
+				<version>${swagger.version}</version>
 			</dependency>
 
 			<!--mapStruct依赖 -->
@@ -140,6 +145,14 @@
 				<groupId>commons-codec</groupId>
 				<artifactId>commons-codec</artifactId>
 				<version>1.11</version>
+			</dependency>
+
+			<!-- 号称最快的单机缓存  -->
+			<!-- https://mvnrepository.com/artifact/com.github.ben-manes.caffeine/caffeine -->
+			<dependency>
+			    <groupId>com.github.ben-manes.caffeine</groupId>
+			    <artifactId>caffeine</artifactId>
+			    <version>2.7.0</version>
 			</dependency>
 
 		</dependencies>
