@@ -1,4 +1,4 @@
-define([ "jquery","rt/request","ui/ui-confirm"], function($, http,m) {
+define([ "jquery","rt/request","ui/ui-confirm","rt/logger"], function($, http,m,log) {
   var _conf = {
       ajax:{
         
@@ -64,7 +64,6 @@ define([ "jquery","rt/request","ui/ui-confirm"], function($, http,m) {
 			var $form = $(this);
 			http.ajax(url,$form.jsonData(),sCallback,function(response){
 			  var resp = response.responseJSON;
-			  debugger
 				// 如果是校验失败，则回填校验内容
 				if(resp.code == _conf.validator.serverFaildCode){
 				  var unTrackErrors = [];
@@ -112,10 +111,14 @@ define([ "jquery","rt/request","ui/ui-confirm"], function($, http,m) {
 		});
 	};
 	
+	$.fn.getInput = function(name){
+	  // 这里只是简单实现，这种实现可能无法识别自定义输入控件，每次增加输入类型控件时需要在这里新增
+	  return $(this).find(":input[name='"+name+"']");
+	}
+	
 	function _fillForm($dom,data){
 		console.log("fillForm",$dom,data);
 		$dom.find(":input").each(function(i,n){
-			console.log(i,n,this,$(this));
 			var _this = $(this);
 			_this.val(data[_this.attr("name")]);
 		});
@@ -133,6 +136,56 @@ define([ "jquery","rt/request","ui/ui-confirm"], function($, http,m) {
 			_fillForm($dom,data);
 		}
 	}  
+	
+  // 校验绑定
+	var hanldeValidation = function($form,data){
+	  // 将后台校验规则绑定设置到表单上
+	  console.log("formValidation",$form,data);
+	  if(!data || !data.length) log.warn('form validation data is empty');
+	  var ruleContext = [];
+	  for(var i=0;i<data.length;i++){
+      var fieldValidation = data[i];
+      
+      var field = fieldValidation.field;
+      var validations = fieldValidation.validations;
+      
+      if(!field) continue;
+      if(!validations || !validations.length){
+        log.warn('form validation {0} validations is empty'.format(field));
+        continue;
+      }
+      
+      var $input = $form.getInput(field);
+      // TODO:待处理特殊控件，如单选，下拉，等文本框控件
+      var len = $input.length; 
+      if($input && $input.length){
+        var fieldRuleObj = { $dom:$input , rules:validations };
+        $input.data("ruleCtrl",fieldRuleObj);
+        ruleContext.push(fieldRuleObj);
+      }
+    }
+	  
+	  $form.data("ruleContext",ruleContext);
+	  log.info("form validation inited");
+	}
+	
+	var validationCache = {};
+	// 绑定后台校验
+	$.fn.formValidation = function(target,group){
+	  var $form = $(this);
+	  var cacheName = (group|| "") + target;
+	  if(validationCache[cacheName]){
+	    hanldeValidation($form,validationCache[cacheName]);
+	    return;
+	  }
+	  
+	  http.doGet(window.$$path+"/services/validation/front/{0}?group={1}".format(target,group)).success(function(res){
+	    validationCache[cacheName] = res;
+	    hanldeValidation($form,res);
+    }).error(function(){
+      alert("form validation error");
+    });
+	}
 
 	$.fn.nameEl = function(name){
 	  return this.find("[name="+name+"]");

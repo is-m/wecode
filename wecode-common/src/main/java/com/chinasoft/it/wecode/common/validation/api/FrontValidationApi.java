@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.chinasoft.it.wecode.common.dto.ApiResponse;
 import com.chinasoft.it.wecode.common.validation.service.impl.FieldValidationBean;
 import com.chinasoft.it.wecode.common.validation.service.impl.ValidationService;
 
@@ -17,7 +18,7 @@ import io.swagger.annotations.ApiOperation;
 
 @Api(tags = {"validation"})
 @RestController
-@RequestMapping("/validation/front")
+@RequestMapping("/services/validation/front")
 public class FrontValidationApi {
 
   @Autowired
@@ -25,8 +26,7 @@ public class FrontValidationApi {
 
   @ApiOperation("获取对象属性校验集合")
   @GetMapping("/{target}")
-  public List<FieldValidationBean> getFieldValidations(@PathVariable String target,
-      @RequestParam(name = "group", defaultValue = "", required = false) String group) {
+  public List<FieldValidationBean> getFieldValidations(@PathVariable String target, @RequestParam(name = "group", required = false) String group) {
     return validationService.getFrontValidationMapper(target, group);
   }
 }

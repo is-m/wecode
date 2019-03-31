@@ -29,7 +29,7 @@ define(["rt/core"],function(core){
 	var printLog = function(level,msg,params){ 
 		// 如果正在打印日志消息的内容小于系统日志级别的优先级，说明不需要打印日志
 		var levelConfig = levelMap[level];
-		if(levelConfig["priority"] >= currentConfig["priority"]){
+		if(levelConfig["priority"] >= currentConfig["priority"]){ 
 			var args = arguments , argLen = args.length;
 			//console.log(levelConfig["prefix"] + (argLen > 2 ? msg.format(Array.prototype.splice.call(args,2,argLen)) : msg));
 			console.log(levelConfig["prefix"] + (argLen > 2 ? msg.format(Array.prototype.splice.call(args,2,argLen)) : msg));

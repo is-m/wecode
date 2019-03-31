@@ -50,6 +50,10 @@ define([],function(){
 		}
 	};
 	
+	String.prototype.firstCharUpperCase = function(){
+	  return this.replace(/^[a-z]/,function(v){ return v.toUpperCase()});
+	}
+	
 	// 字符串格式化，可以是{0},{1}这种占位符，也可以是:fieldName或者{fieldName}这种占位符，但是同一时间只支持一种
 	String.prototype.format = function(){
 	    var args = arguments;
@@ -185,10 +189,12 @@ define([],function(){
 		if(val) this.push(val);
 	}
 	
-	Array.prototype.eachReturn = function(callback){
+	// 遍历返回
+	Array.prototype._map = function(_func){
+	  if(typeof _func !== 'function') throw 'arg is not a function';
 		var result = [];
 		for(var i=0;i<this.length;i++){
-			result.pushNonEmpty(callback(this[i])); 
+			result.pushNonEmpty(_func(this[i])); 
 		}
 		return result;
 	}

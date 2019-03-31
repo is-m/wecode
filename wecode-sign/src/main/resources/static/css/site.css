@@ -257,12 +257,12 @@ h1 {
 
 .mu-grid .table th,.mu-grid .table td {
     padding: 0.5rem;
-    vertical-align: top;
+    vertical-align: middle;
     border-top: none; 
 }
 
 .mu-grid .table th:nth-child(n+2),.mu-grid .table td:nth-child(n+2) {
-	border-left: 1px solid #EEE; 
+	/* border-left: 1px solid #EEE;  */
 }
 
 .mu-grid .table .table-th-fixed {
@@ -337,6 +337,10 @@ h1 {
 	float: left;
 }  
 
+.mu-grid .table-scroll-header table tr {
+	height:50px;
+}
+
 .mu-grid .table-scroll-body {
 	overflow-y: scroll;
 	overflow-x: scroll;
@@ -345,6 +349,10 @@ h1 {
 
 .mu-grid .table-scroll-body table {
 	margin-bottom: 0;
+}
+
+.mu-grid .table-scroll-body table tr {
+	height: 45px;
 }
 
 .mu-grid .table thead th * {
@@ -396,12 +404,13 @@ h1 {
 }
 
 .table-scroll-header {
-	border: 1px solid #EEE;
+	/* border: 1px solid #EEE; */
+	border-top: 1px solid #EEE;
 	border-bottom: none;
 }
 
 .table-scroll-body {
-	border: 1px solid #EEE;
+	/* border: 1px solid #EEE; */
 	border-top: none;
 }
 
@@ -838,3 +847,42 @@ h1 {
 .nav-tabs.nav-bordered>.nav-item>.active {
 	border-bottom: 3px solid #2d89ef;
 }
+
+/* ant-d begin */
+.status-dot {
+	background-color: #ccc;
+    position: relative;
+    top: -1px;
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    vertical-align: middle;
+    border-radius: 50%;
+}
+
+.status-dot.processing {
+	background-color: #1890ff;
+}
+
+.status-dot.success {
+	background-color:#52c41a;
+}
+
+.status-dot.processing:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #1890ff;
+    border-radius: 50%;
+    animation: statusAnimation 2.2s ease-in-out infinite;
+    content: "";
+}
+
+@keyframes statusAnimation /*antStatusProcessing*/{
+	0%{transform:scale(.8);opacity:.5}
+	to{transform:scale(2.4);opacity:0}
+} 
+
+/*ant-d end*/

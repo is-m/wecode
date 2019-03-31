@@ -23,7 +23,7 @@ public class ValidationBean implements Serializable {
   /**
    * 校验参数，例如如果限制属性最大长度时，该对象可能存在一个 max = xx 的参数
    */
-  private Map<String, Object> args;
+  private Map<String, Object> arg;
 
   /**
    * 错误消息
@@ -43,12 +43,12 @@ public class ValidationBean implements Serializable {
     this.type = type;
   }
 
-  public Map<String, Object> getArgs() {
-    return args;
+  public Map<String, Object> getArg() {
+    return arg;
   }
 
-  public void setArgs(Map<String, Object> args) {
-    this.args = args;
+  public void setArg(Map<String, Object> args) {
+    this.arg = args;
   }
 
   public String getMsg() {
@@ -69,22 +69,22 @@ public class ValidationBean implements Serializable {
 
   public ValidationBean() {}
 
-  public ValidationBean(String type, Map<String, Object> args, String msg, int priority) {
+  public ValidationBean(String type, Map<String, Object> arg, String msg, int priority) {
     this.type = type;
-    this.args = args;
+    this.arg = arg;
     this.msg = msg;
     this.priority = priority;
   }
 
-  public static ValidationBean of(String type, Map<String, Object> args, String msg) {
-    return new ValidationBean(type, args, msg, 9);
+  public static ValidationBean of(String type, Map<String, Object> arg, String msg) {
+    return new ValidationBean(type, arg, msg, 9);
   }
 
   public static ValidationBean of(String type, String msg) {
     return new ValidationBean(type, null, msg, 9);
   }
 
-  public static ValidationBean of(String type, Map<String, Object> args, String msg, int priority) {
-    return new ValidationBean(type, args, msg, priority);
+  public static ValidationBean of(String type, Map<String, Object> arg, String msg, int priority) {
+    return new ValidationBean(type, arg, msg, priority);
   }
 }

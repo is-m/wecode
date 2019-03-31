@@ -126,8 +126,14 @@ define(["widget/factory","jquery","rt/pageContext"],function(widget,$,pageContex
 			$tabBody.append($bodyEl); 
 			$headerEl.find(".nav-link").trigger("click"); 
 			// 待页面加载完成后在触发事件
-			op.afterLoad && pageContext.listenReady($bodyEl,function(){
-				op.afterLoad($tabBody);
+			op.afterLoad && pageContext.listenReady($bodyEl,function(){ 
+			  if(op.module){
+			    pageContext.module(op.module).done(function(pageModule){
+	          op.afterLoad(pageModule,$tabBody);
+	        });
+			  }else{
+			    op.afterLoad(null,$tabBody);
+			  }
 			});
 			return this;
 		}

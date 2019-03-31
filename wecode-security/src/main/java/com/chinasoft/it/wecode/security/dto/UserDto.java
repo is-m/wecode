@@ -4,6 +4,7 @@ import javax.validation.GroupSequence;
 import javax.validation.constraints.NotBlank;
 
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 
 import com.chinasoft.it.wecode.common.dto.BaseDto;
 import com.chinasoft.it.wecode.common.validation.groups.Create;
@@ -23,6 +24,7 @@ public class UserDto extends BaseDto {
    * 姓名
    */
   @ApiModelProperty(name = "name", notes = "姓名/username", example = "liaoxianmu")
+  @NotBlank
   @Length(max = 100)
   private String name;
 
@@ -59,6 +61,7 @@ public class UserDto extends BaseDto {
    * 状态，0：失效，1：生效
    */
   @ApiModelProperty(name = "status", notes = "状态，0：失效，1生效", example = "1")
+  @Range(min=0,max=1)
   private Integer status;
 
   public String getName() {

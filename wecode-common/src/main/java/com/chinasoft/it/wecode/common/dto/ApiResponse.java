@@ -66,5 +66,12 @@ public class ApiResponse {
   public static ApiResponse of(Object code, String msg, Object data) {
     return new ApiResponse(String.valueOf(code), msg, data);
   }
+  
+  public static ApiResponse ok(Object data) {
+    return new ApiResponse("1", "", data);
+  }
 
+  public static ApiResponse error(Object data) {
+    return new ApiResponse("0", "", data);
+  }
 }

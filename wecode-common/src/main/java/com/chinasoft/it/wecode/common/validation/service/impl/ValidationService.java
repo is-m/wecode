@@ -3,12 +3,10 @@ package com.chinasoft.it.wecode.common.validation.service.impl;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.validation.Constraint;
 import javax.validation.constraints.NotBlank;
@@ -16,6 +14,7 @@ import javax.validation.groups.Default;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 import org.slf4j.Logger;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -34,6 +33,8 @@ public class ValidationService {
 
   private static final String GROUP_DEFAULT = "Default";
 
+  private static final Map<String, Object> TARGET_MAP = MapUtils.newMap("userDto", "com.chinasoft.it.wecode.security.dto.UserDto");
+
   /**
    * 获取前台验证映射
    * @param target 校验对象，可以是短名（需要进行映射配置），也可以是完整类路径
@@ -44,6 +45,10 @@ public class ValidationService {
     List<FieldValidationBean> result = new ArrayList<>();
     // TODO 查找是否存在短命映射
     String fullName = target;
+    if(TARGET_MAP.containsKey(target)) {
+      fullName = String.valueOf(TARGET_MAP.get(target));
+    }
+    
     // 检查是否存在类以及校验注解
     Class<?> clz = ClassUtil.forName(fullName);
     Assert.notNull(clz, "Front Validation Mapper not found by target " + target);
@@ -86,6 +91,11 @@ public class ValidationService {
         Length length = (Length) item;
         if (hasGroup(length.groups(), group)) {
           result.validation("length", MapUtils.newMap("min", length.min(), "max", length.max()), length.message(), 5);
+        }
+      }else if(item instanceof Range) {
+        Range range = (Range)item;
+        if (hasGroup(range.groups(), group)) {
+          result.validation("length", MapUtils.newMap("min", range.min(), "max", range.max()), range.message(), 5);
         }
       }
     }

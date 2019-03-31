@@ -1,0 +1,42 @@
+<html>
+<head>
+<title>CSS 3 animation</title>
+
+<style type="text/css">
+	 @keyframes myfirst
+	,@-moz-keyframes myfirst  /* Firefox */
+	,@-webkit-keyframes myfirst /* Safari 和 Chrome */
+	,@-o-keyframes myfirst /* Opera */ {
+		from {background: red;}
+		to {background: yellow;}
+	}
+	
+	@-webkit-keyframes myfirst {
+		/* from {background: red;}
+		to {background: yellow;} */
+		0%   {background: red;}
+		25%  {background: yellow;}
+		50%  {background: blue;}
+		100% {background: green;}
+	}
+	div#cssContainer
+	{
+	width:100px;
+	height:100px;
+	background: red;
+	animation: myfirst 5s;
+	-moz-animation: myfirst 5s;	/* Firefox */
+	-webkit-animation: myfirst 5s;	/* Safari 和 Chrome */
+	-o-animation: myfirst 5s;	/* Opera */
+	}
+</style>
+</head>
+<body>
+	<p>http://www.w3school.com.cn/css3/css3_animation.asp</p>
+	<p>https://www.cnblogs.com/jingwhale/p/4639541.html</p>
+	<div id="cssContainer">123</div>
+	<div>
+		@-webkit-keyframes ， @keyframes  只能各自写自己的，否则可能会无效 (规定动画)
+	</div>
+</body>
+</html>

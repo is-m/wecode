@@ -1,5 +1,5 @@
 // 校验器，提供校验相关接口，并能提供外部扩展
-define(["jquery"],function($){
+define(["jquery","rt/logger"],function($,log){
 	
 	/**
 	 * key:{ args:[obj] getValue:[func] expr:[string] field:[string:字段] msg:[string] onValid:[func],onError:[func], priority:[int] }
@@ -13,6 +13,20 @@ define(["jquery"],function($){
 			expr:/^\S+$/,
 			msg:"不能为空",
 			priority:1
+		}, 
+		"length":{
+		  onArgInit:function(arg){ 
+		    // min:{>=0} , max: {>0} 
+		    this.arg = { min: arg.min || 0, max: arg.max };
+		  },
+		  onValid:function(value){  
+		    var len = value.length;
+        return len >= this.arg.min && len <= this.arg.max;
+      },
+      onMsg:function(value){
+        return "内容长度不能超过 "+this.arg+" 个字符";
+      },
+      priority:9
 		},
 		"maxLength":{
 			onArgInit:function(arg){
@@ -20,11 +34,11 @@ define(["jquery"],function($){
 				if(+arg < 1) throw  'validator "maxLength" arg must greate zero';
 				this.arg = +arg;
 			},
-			onValid:function(value,ruleContext){
-				return value.length < ruleContext.arg;
+			onValid:function(value){
+				return value.length < this.arg;
 			},
-			onMsg:function(value,ruleContext){
-				return "内容长度不能超过 "+ruleContext.arg+" 个字符";
+			onMsg:function(value){
+				return "长度不能小于{min}以及大于{max}".format(this.arg);
 			},
 			priority:9
 		},
@@ -38,7 +52,8 @@ define(["jquery"],function($){
 			msg:"必须为整数",
 			priority:9
 		}
-	}
+	};
+	defaultRuleMap["notBlank"] = defaultRuleMap["required"];
 	 
 	/**
 	 * 全局添加校验器（注册校验器）
@@ -53,29 +68,44 @@ define(["jquery"],function($){
 		customRuleMap[name] = config;
 	}
 	
-	var _getRule = function(rule){
+	var _getRule = function(rule,$el){
 		var ruleSetting = rule.split(":");
 		var ruleName = ruleSetting[0];
-		var ruleArg = ruleSetting.length > 1 ? ruleSetting[1] : null;
+		// 如果元素上存在data-rule-required
+		var ruleArg = $el.data("rule"+ruleName.firstCharUpperCase()) || (ruleSetting.length > 1 ? ruleSetting[1] : null); 
 
 		var rule = customRuleMap[ruleName] ||  defaultRuleMap[ruleName];
 		if(rule) return $.extend(true,rule,{arg:ruleArg});
 		console.log('WARN:no defined rule of name -> '+ ruleName);
 	} 
 	
+	var resolveRule = function(rule){
+	  // 如果存在type参数，则可能是后台返回的校验
+	  if(rule.type){
+	    var mapper = defaultRuleMap[rule.type];
+	    if(mapper){
+	      rule.expr = mapper.expr;
+	      rule.onValid = mapper.onValid;
+	    }else{
+	      log.warn("cann't support rule by type "+rule.type)
+	    }
+	  }
+	  return rule;
+	}
+	
 	var _validRuleContextItem = function(ruleObj){ 
-		var val = ruleObj.$dom.val();
+	  var $el = ruleObj.$dom;
+		var val = $el.val();
 		for(var j=0;j<ruleObj.rules.length;j++){
-			var rule = ruleObj.rules[j],context = {arg:rule.arg , $dom:ruleObj.$dom , $rule:rule};
-			if(rule.expr && _showError(!rule.expr.test(val),val,context)) break;
-			if(rule.onValid && _showError(!rule.onValid(val,context),val,context)) break;
+			var rule = resolveRule(ruleObj.rules[j]);
+			if(rule.expr && _showError(!rule.expr.test(val),val,rule,$el)) break;
+			if(rule.onValid && _showError(!rule.onValid(val),val,rule,$el)) break;
 		} 
 	}
 	
-	var _showError = function(hasError,val,context){
-		var $ctrl = context.$dom;
-		if(hasError){  
-			var message = context.$rule.msg || context.$rule.onMsg(val,context);
+	var _showError = function(hasError,val,rule,$ctrl){  
+		if(hasError){   
+			var message = rule.msg ? rule.msg.format(rule.arg) : rule.onMsg(val);
 			$ctrl.addClass("is-invalid").attr("data-original-title",message).attr("data-placement","bottom").tooltip(); 
 			// 显示校验失败的消息时，添加blur事件
 			if(!$ctrl.data("validTriggerInited")){
@@ -84,7 +114,7 @@ define(["jquery"],function($){
 					_validRuleContextItem($(this).data("ruleCtrl"));
 				});
 			}
-		}else if(context.$dom.is(".is-invalid")){
+		}else if($ctrl.is(".is-invalid")){
 			$ctrl.removeClass("is-invalid").tooltip('dispose'); 
 		}
 		return hasError;
@@ -96,17 +126,17 @@ define(["jquery"],function($){
 		
 		var ruleContext = $this.data("ruleContext");
 		if(!ruleContext){
-			if($this.data("rule")){
-				
-			}else{
+			if(!$this.data("rule")){ 
 				var rules = [];
 				var items = $this.find("[data-rule]");
 				items.each(function(){ 
-					var _rules = $(this).data("rule").split(/\s+/)
-					.eachReturn(function(item){ return _getRule(item); })
+				  var $el = $(this);
+					var _rules = $el.data("rule").split(/\s+/)
+					._map(function(rule){ return _getRule(rule,$el); })
 					.sort(function(a,b){ return (a.priority || 99) - (b.priority || 99)  }); 
-					$(this).data("ruleCtrl",{ $dom:$(this) , rules: _rules});
-					rules.push({ $dom:$(this) ,rules : _rules });
+					var fieldRuleObj = { $dom: $el , rules: _rules};
+					$el.data("ruleCtrl",fieldRuleObj);
+					rules.push(fieldRuleObj);
 				});
 				
 				$this.data("ruleContext",rules);
@@ -118,6 +148,7 @@ define(["jquery"],function($){
 		}
 		return $this.find(".is-invalid").length == 0;
 	}
+	
 	
 	return { 
 		addMethod:addMethod

@@ -8,7 +8,7 @@ pageContext.define("admin.sitemap.list",["widget/data/datatable","widget/tab"],f
 		
 		var gridOption = {
 			selectMode:'mutli', /* 多选：mutli,单选：single,默认：normal */
-			height:425, 
+			height:455, 
 			pageOp:{
 				// el:"#pageDemo",
 				pageSize:10,
@@ -61,7 +61,8 @@ pageContext.define("admin.sitemap.list",["widget/data/datatable","widget/tab"],f
 					field:"status",
 					header:"状态",
 					renderer:function(val){
-						return "状态  "+val;
+					  var isEnabled = val == 1;
+						return "<i class='status-dot " + ( isEnabled ? "success" : "" ) + "'></i> "+(isEnabled ? "有效" : "无效");
 					}
 				}
 			]
@@ -155,15 +156,11 @@ pageContext.define("admin.sitemap.list",["widget/data/datatable","widget/tab"],f
 		var tab =  $("#demoTab").xWidget(); 
 		tab.addPage({
 			title: (isCreate ? "添加" : "编辑" ) + "用户",
+			module:"admin.security.user.edit",
 			url:"/web/admin/security/user/edit.html",
 			allowClose:true,
-			afterLoad:function(page){
-				console.log("open Tab page isCreate {0}".format(isCreate));
-				if(!isCreate){
-					pageContext.module("admin.security.user.edit").done(function(userEditPage){
-						userEditPage.init(record);
-					});
-				}
+			afterLoad:function(page,$body){ 
+			  page.init(isCreate,record);
 			}
 		});  
 	}

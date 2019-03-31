@@ -152,7 +152,6 @@ define(function (require) {
     }
 
     $.fn.xWidget = function (name, op, data) {
-        debugger
         // 定义一个异步对象
         if (!arguments.length) {
             var managers = [];
