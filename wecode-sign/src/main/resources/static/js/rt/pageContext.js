@@ -1,4 +1,4 @@
-define(["require","jquery","rt/logger"],function(require,$,log){
+define(["require","jquery","rt/logger","rt/request"],function(require,$,log,http){
 	
 	var Page = function(id,$dom){
 		this._id = id; 
@@ -72,18 +72,21 @@ define(["require","jquery","rt/logger"],function(require,$,log){
 		}
 	}
 	
+	var _controllerMap = {};
+	
 	var _loadPage = function(el,url,callback){
 		var $el = el.jquery ? el : $(el); 
 		if(!url.indexOf(appConfig.contextPath) == 0){
 			url = appConfig.contextPath + url;
 		}
 		
-		return $.get(url).success(function(resp){ 
+		return http.doGet(url).success(function(resp){ 
 			var html = resp.replace(/@\{\s*(\S+)\s*\}/g,function(m,i,o,n){
-		       return appConfig.contextPath+i;
-		    });
+		     return appConfig.contextPath+i;
+		  });
 			
 			if(enableCache) pageCache[url] = html; 
+			
 			$el.html(html);
 			
 			// 检查需要自动初始化的控件并完成渲染
@@ -96,6 +99,38 @@ define(["require","jquery","rt/logger"],function(require,$,log){
 					var ops = $this.data("xWidgetOption");
 					$this.xWidget(this.widgetName,ops ? ($.isPlainObject(ops) ? ops : ops.toJSON()) : {});
 				},{ el:el, widgetName:widgetName})); 
+			});
+			
+			// 绑定控制器
+			$el.find('[v-ctrl]').each(function(){
+			   var $ctrlEl = $(this);
+			   var ctrlValue = $ctrlEl.attr("v-ctrl");
+			   if(ctrlValue){
+			     if(_controllerMap[ctrlValue]){
+			       var clonedCtrl = $.extend(true,{ $s:$ctrlEl, $page:clonedCtrl },_controllerMap[ctrl]);
+			       $ctrlEl.data("controller",clonedCtrl);
+			       clonedCtrl.ready && clonedCtrl.ready();
+			     }else{
+  			     require([ctrlValue],function(ctrlObj){
+  			       _controllerMap[ctrlValue] = ctrlObj;
+  			       var clonedCtrl = $.extend(true,{ $s:$ctrlEl, $page:clonedCtrl },ctrlObj);
+  			       $ctrlEl.data("controller",clonedCtrl);
+  			       clonedCtrl.ready && clonedCtrl.ready();
+  			     });
+			     }
+			   }else{
+			     var ctrlValue = url.replace(/\.html$/i,function(v){
+			       return ".js";
+			     });
+			     
+			     require([ctrlValue],function(ctrlObj){
+			       $ctrlEl.attr("v-ctrl",ctrlObj.name);
+             _controllerMap[ctrlValue] = ctrlObj;
+             var clonedCtrl = $.extend(true,{ $s:$ctrlEl, $page:clonedCtrl },ctrlObj);
+             $ctrlEl.data("controller",clonedCtrl);
+             clonedCtrl.ready && clonedCtrl.ready();
+           });
+			   }
 			});
 			
 			$el.data("inited",true);

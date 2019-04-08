@@ -8,6 +8,22 @@ define([],function(){
 		return typeof obj === 'function';
 	}
 	
+	/*var _log = console.log;
+	var _warn = console.warn;
+	var _error = console.error;
+	
+	console.log = function(){
+	  _log.apply(this,[].slice.call(arguments));
+	}
+	
+	console.warn = function(){
+	  _warn.apply(this,[].slice.call(arguments));
+  }
+	
+	console.error = function(){
+	  _error.apply(this,[].slice.call(arguments));
+  }*/
+	
 	var _addProto = function(target,funcName,func){
 		var _proto = null;
 		if(!isFunction(target)) throw 'arguments error';
@@ -179,10 +195,12 @@ define([],function(){
 	
 	Array.prototype.remove = function(val) {
 		var index = this.indexOf(val);
-		if (index > -1) {
-			this.splice(index, 1);
-		}
+		return index > -1 ? this.splice(index, 1) : null;
 	};
+	
+	Array.prototype.removeAll = function(){ 
+	  return this.length == 0 ? [] : this.splice(0,this.length);
+	}
 	
 	Array.prototype.pushNonEmpty = function(val){
 		// TODO:待修改empty逻辑

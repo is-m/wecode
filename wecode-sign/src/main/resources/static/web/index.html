@@ -265,7 +265,7 @@
 		};
 		
 		window.$$path = appConfig.contextPath;
-		
+		// requirejs.undef("global") 取消模块注册
 		requirejs.config({
 			urlArgs : 'v=' + appConfig.version,
 			baseUrl : appConfig.contextPath + '/js/',

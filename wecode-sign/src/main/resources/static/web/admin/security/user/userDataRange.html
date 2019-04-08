@@ -1,5 +1,16 @@
-<div class="container-fuild">
-	<div class="row p-3" data-x-widget="data/repeat" data-collection='[{ "name":"全部" ,"desc":"拥有所有数据的读/写权限" }]'>
+<div class="container">
+	<div class="text-center mt-2">
+		<div class="custom-control custom-radio custom-control-inline">
+		  <input type="radio" value="1" id="status1" name="status" class="custom-control-input" checked="checked">
+		  <label class="custom-control-label" for="status1">快捷设置</label>
+		</div>
+		<div class="custom-control custom-radio custom-control-inline">
+		  <input type="radio" value="0" id="status0" name="status" class="custom-control-input">
+		  <label class="custom-control-label" for="status0">自定义</label>
+		</div> 
+	</div>
+
+	<div class="row pt-3" data-x-widget="data/repeat" data-collection='[{ "name":"全部" ,"desc":"拥有所有数据的读/写权限" }]'>
 		<div class="col-xl-3 col-md-4 col-xs-6 mb-3">
 		<div  class="card text-center p-3 selected">
 		    <blockquote class="blockquote mb-0">

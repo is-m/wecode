@@ -1,5 +1,5 @@
 // ajax 请求封装
-define(["jquery"],function($){ 
+define(["jquery"],function($){  
 	// TODO:检查并重置URL的函数提取公共方法
 	var resolveUrl = function(urlOrObj){
 		var isObj =  $.isPlainObject(urlOrObj);
@@ -14,6 +14,7 @@ define(["jquery"],function($){
 				url =  appConfig.contextPath + url;
 			}
 		}
+		
 		if(isObj){
 			urlOrObj.url = url;
 		}

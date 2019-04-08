@@ -1,38 +1,39 @@
-<script type="text/javascript"
-	src="@{/web/admin/security/user/verifyAuthority.js}"></script>
+<!-- <script type="text/javascript"
+	src="@{/web/admin/security/user/verifyAuthority.js}"></script> -->
 
-<!-- <h2>这个是编辑页面</h2> -->
-<div class="container">
-	<form class="mu-form" id="formAuthority" style="padding-top: 30px;">
-		<input name="id" type="hidden" />
-		<div class="form-group row">
-			<label class="col-sm-2 col-form-label ">用户名</label>
-			<div class="col-sm-4">
-				<input name="name" type="text" class="form-control"
-					disabled="disabled">
+<!-- v-ctrl 未指定时，默认为当前页面位置同名js文件，否则为指定js文件 -->
+<!-- 也可以用App.View.bindControl('controlPath'); 来实现js端的绑定 -->
+<div v-ctrl > 
+	<div class="container" >
+		<form class="mu-form" id="formAuthority" style="padding-top: 30px;">
+			<input name="id" type="hidden" />
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label ">用户名</label>
+				<div class="col-sm-4">
+					<input name="name" type="text" class="form-control"
+						disabled="disabled">
+				</div>
 			</div>
-		</div>
-
-		<div class="form-group row">
-			<label class="col-sm-2 col-form-label">备注</label>
-			<div class="col-sm-10">
-				<textarea class="form-control" name="remark" rows="3"
-					disabled="disabled"></textarea>
-			</div>
-		</div>
-	</form>
-</div>
-
-<div id="roleTabs" class="ui-tabs">
-</div>
-
-<div id="dataRangeTabs" class="ui-tabs">
 	
-</div> 
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">备注</label>
+				<div class="col-sm-10">
+					<textarea class="form-control" name="remark" rows="3"
+						disabled="disabled"></textarea>
+				</div>
+			</div>
+		</form>
+	</div>
+	
+	<div id="roleTabs" class="ui-tabs"></div> 
+</div>
+<script>
+	//App.view.bindControl
+</script>
 
-
+<!-- 
 <m-tabs id="tabsUserPermission">
-	<m-tab id="tiRoles" title="{{我的角色}}">
+	<m-tab id="tiRoles" title="{{角色}}">
 		<div class="container-fuild">
 			<div class="row p-3" data-x-widget="data/repeat" data-collection='[{ "name":"系统管理员" ,"desc":"拥有系统所有权限" },{ "name":"业务管理员" ,"desc":"业务处理" },{ "name":"运维管理员" ,"desc":"系统配置，日志查看" },{ "name":"系统运营" ,"desc":"活动策划，业务数据分析" },{ "name":"系统运营1" ,"desc":"活动策划，业务数据分析1" }]'>
 				<div class="col-xl-3 col-md-4 col-xs-6 mb-1">
@@ -48,7 +49,8 @@
 			</div>
 		</div>
 	</m-tab>
-	<m-tab id="tiDataRanges" title="{{我的数据范围}}">
+	<m-tab id="tiDataRanges" title="{{数据范围}}">
 		
 	</m-tab>
 </m-tabs>
+ -->

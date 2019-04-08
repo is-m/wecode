@@ -33,13 +33,31 @@ define(["rt/store"],function(store){
 	 * 可以在此处添加公共的ajax预处理
 	 */
 	var ajaxSetup = function(){
+	  $.xhrPool = [];
+    $.abortAllPenddingAjax = function() {
+        $.each($.xhrPool,function(idx, jqXHR) {
+            jqXHR.abort();
+        });
+        return $.xhrPool.removeAll(); 
+    };
+    
 	  $.ajaxSetup({  
 	    // 超时
 	    //timeout:5000,
 	    // 
-	    cache: false,
+	    //cache: true,
 	    // 发送前执行的函数
-      beforeSend: function (xhr) {
+      beforeSend: function (xhr,prm) {
+        $.xhrPool.push(xhr);
+        // 添加缓存参数
+        var url=prm.url,method = (prm.method || "get").toLowerCase();
+        if(method == "get"){
+          var lowerCaseUrl = url.toLowerCase();
+          if(lowerCaseUrl.endsWith(".html") || lowerCaseUrl.endsWith(".js")){
+            prm.url += (url.indexOf("?")>0 ? "&v=" : "?v=") + appConfig.version;
+          }  
+        }
+        
         // 在请求前可以对数据进行加密
         // 设置CSXF Token，用户认证的TOKEN
         // 以及其他的透传参数
@@ -105,7 +123,10 @@ define(["rt/store"],function(store){
       },
       success: function(data) {
         //console.log(data);
-      } 
+      },
+      complete: function(jqXHR) {
+        $.xhrPool.remove(jqXHR); 
+      }
 
   });
 	  

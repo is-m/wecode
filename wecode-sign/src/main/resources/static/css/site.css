@@ -259,6 +259,7 @@ h1 {
     padding: 0.5rem;
     vertical-align: middle;
     border-top: none; 
+    text-align: center;
 }
 
 .mu-grid .table th:nth-child(n+2),.mu-grid .table td:nth-child(n+2) {

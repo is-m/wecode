@@ -2,3 +2,6 @@
 
 更多内容可参考下面博客
 https://blog.csdn.net/lwphk/article/details/43983669
+
+
+http://docs.jboss.org/hibernate/validator/4.3/reference/en-US/html/validator-usingvalidator.html#validator-usingvalidator-annotate
