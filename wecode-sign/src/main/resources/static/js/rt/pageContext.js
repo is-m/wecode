@@ -1,5 +1,5 @@
 define(["require","jquery","rt/logger","rt/request"],function(require,$,log,http){
-	
+	// https://github.com/snabbdom/snabbdom 虚拟dom
 	var Page = function(id,$dom){
 		this._id = id; 
 		this.$dom = $dom;
@@ -30,7 +30,6 @@ define(["require","jquery","rt/logger","rt/request"],function(require,$,log,http
 			pageContextStack.push(page);
 			pageContextMap[id]=page;
 			// pageContext.define 主要是加载内容到核心上下文，而非核心上下文的加载需要通过选中元素后$("xx").loadPage(url); 
-			// 或者手动绑定模块 $("xx").boundModel("modelId") 未开发
 			var $pc = pageContextElStack[pageContextElStack.length-1];
 			//debugger
 			page.$dom = $pc;
@@ -41,6 +40,51 @@ define(["require","jquery","rt/logger","rt/request"],function(require,$,log,http
 			// TODO:等页面自动渲染部分完成后触发ready函数 
 			page.ready && setTimeout(page.ready,0);
 		});
+	}
+	
+	var defineController = function(controllerName,componentArray,callback){
+	  debugger
+	 var name, components = [], defineFunction , args = [].slice.call(arguments,0);
+	  var argLength = args.length;  
+	  var p1 = args[0], p2 = args[1],p3 = args[2];
+	  
+	  switch(argLength){
+	    case 1:
+	      var p1IsFunction = $.isFunction(p1);
+	      if(!p1IsFunction || !$.isPlainObject(p1)){
+	        throw '控制器只有一个参数时，必须是函数或对象类型类型';
+	      } 
+	      if(p1IsFunction){
+	        defineFunction = args[0];
+	      }else{
+	        defineFunction =  (function(obj){ 
+	            return function(){ 
+	              return obj; 
+	            }
+	          }(p1));
+	      }
+	      break;
+	    case 2:
+	      components = p1;
+	      defineFunction = p2;
+	      break;
+	    case 3:
+	      name = p1;
+	      components = p2;
+        defineFunction = p3;
+	      break;
+	    default:
+	      throw '定义控制器时，不支持当前参数个数 ' + argLength;
+	  } 
+	  var defineFunction = function(){
+      debugger
+      var page = {};
+      callback && callback.apply(window,[page,$].concat([].slice.call(arguments,0)))
+      return page;
+    };
+    // FIXME:下面应该只注册一次，需要优化
+	  define(controllerName, componentArray || [],defineFunction);
+	  define(componentArray || [],defineFunction);
 	}
 	
 	var _get = function(id){
@@ -114,6 +158,7 @@ define(["require","jquery","rt/logger","rt/request"],function(require,$,log,http
   			     require([ctrlValue],function(ctrlObj){
   			       _controllerMap[ctrlValue] = ctrlObj;
   			       var clonedCtrl = $.extend(true,{ $s:$ctrlEl, $page:clonedCtrl },ctrlObj);
+  			       debugger
   			       $ctrlEl.data("controller",clonedCtrl);
   			       clonedCtrl.ready && clonedCtrl.ready();
   			     });
@@ -122,13 +167,13 @@ define(["require","jquery","rt/logger","rt/request"],function(require,$,log,http
 			     var ctrlValue = url.replace(/\.html$/i,function(v){
 			       return ".js";
 			     });
-			     
+			     var ctrlName = ctrlValue.replace(/(^(\/|\\)|\.js$)/ig,'').replace(/(\/|\\)/g,".");
 			     require([ctrlValue],function(ctrlObj){
-			       $ctrlEl.attr("v-ctrl",ctrlObj.name);
-             _controllerMap[ctrlValue] = ctrlObj;
-             var clonedCtrl = $.extend(true,{ $s:$ctrlEl, $page:clonedCtrl },ctrlObj);
-             $ctrlEl.data("controller",clonedCtrl);
-             clonedCtrl.ready && clonedCtrl.ready();
+			       debugger
+			       $ctrlEl.attr("v-ctrl",ctrlName);
+             var thisCtrl = $.extend(true,{ $s:$ctrlEl, $page:thisCtrl },ctrlObj);
+             $ctrlEl.data("controller",thisCtrl);
+             thisCtrl.ready && thisCtrl.ready();
            });
 			   }
 			});
@@ -236,7 +281,8 @@ define(["require","jquery","rt/logger","rt/request"],function(require,$,log,http
 		get:_get,
 		$do:doAction,
 		listenReady:listenReady,
-		module:module
+		module:module,
+		controller:defineController
 	}
 	
 });

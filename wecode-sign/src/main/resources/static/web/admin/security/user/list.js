@@ -169,12 +169,11 @@ pageContext.define("admin.sitemap.list",["widget/data/datatable","widget/tab"],f
 		var tab =  $("#demoTab").xWidget(); 
 		tab.addPage({
 			title: "用户授权",
-			url:"/web/admin/security/user/verifyAuthority.html",
+			url:"/web/admin/security/user/verifyAuthority3.html",
 			allowClose:true,
-			afterLoad:function(){
-				pageContext.module("admin.security.user.verifyAuthority").done(function(m){
-					m.init(record);
-				});
+			afterLoad:function(){ 
+			  debugger
+				m.init(record); 
 			}
 		});  
 	}

@@ -13,7 +13,7 @@ public final class LogUtils {
    */
   public static Logger getLogger() {
     try {
-      StackTraceElement[] stackTrace = new Throwable().getStackTrace();
+      StackTraceElement[] stackTrace = (new Throwable()).getStackTrace();
       String className = stackTrace[1].getClassName();
       return LoggerFactory.getLogger(Class.forName(className));
     } catch (Exception e) {

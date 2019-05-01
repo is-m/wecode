@@ -9,7 +9,6 @@ import javax.validation.ConstraintViolationException;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.chinasoft.it.wecode.common.dto.ApiResponse;
+import com.chinasoft.it.wecode.common.util.LogUtils;
 import com.chinasoft.it.wecode.exception.HttpCodeProvider;
 
 /**
@@ -30,9 +30,9 @@ import com.chinasoft.it.wecode.exception.HttpCodeProvider;
 @ResponseBody
 public class BootExceptionHandler {
 
-  private static final Logger log = LoggerFactory.getLogger(BootExceptionHandler.class);
+  private static final Logger log = LogUtils.getLogger();
 
-  // FIXME:生成环境时，这里尽量配置false
+  // FIXME:生成环境时，这里尽量配置false ，不然会将堆栈返回给前台
   @Value("${app.exception.responseStackTrace:true}")
   private boolean responseStackTrace;
 
@@ -43,7 +43,12 @@ public class BootExceptionHandler {
     if (e instanceof HttpCodeProvider) {
       status = ((HttpCodeProvider) e).getCode();
     }
-    log.error(e.getMessage(), e);
+    
+    if(status < 500) {
+      log.warn(e.getMessage());
+    }else {
+      log.error(e.getMessage(), e);
+    }
     return ResponseEntity.status(HttpStatus.valueOf(status))
         .body(ApiResponse.of(status, e.getMessage(), responseStackTrace ? null : ExceptionUtils.getStackTrace(e)));
   }

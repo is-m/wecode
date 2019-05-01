@@ -18,7 +18,7 @@ define(function (require) {
             var Widget = this.constructMap[name];
             if (Widget) {
                 if (!config.allowRewrite) {
-                    throw 'confict widget by name ' + name;
+                    throw 'conflict widget by name ' + name;
                 }
                 console.log('override widget by name ' + name);
             }
