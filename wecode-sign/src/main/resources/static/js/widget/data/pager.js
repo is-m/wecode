@@ -18,7 +18,7 @@ define(["widget/factory","jquery"],function(widget,$){
 			// 计算总页数
 			var pageSize = this.op.pageSize || 10;
 			var totalRecords = 0;
-			
+			this.op.totalPage = this.op.totalPage < 1 ? 1 : this.op.totalPage;
 		},
 		loadData:function(){
 			

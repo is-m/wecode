@@ -15,7 +15,7 @@ define([ "widget/factory", "jquery","template","rt/util" ], function(widget, $, 
 		valueField:"value",
 		selectionTemplate:"<ul class='list-unstyled'><% ;var tf=$widget.textField || 'text',vf=$widget.valueField || 'value' ;for(var i=0;i<data.length;i++) { %> <li class='ui-select-data-item' data-index='<%=i%>'><%= data[i][tf] %></li>  <%}%> </ul>"
 	};
-		
+
 	widget.define("form.combo", {
 		templateUri : "js/widget/form/combo.html",
 		init : function() {
@@ -45,7 +45,12 @@ define([ "widget/factory", "jquery","template","rt/util" ], function(widget, $, 
 				} 
 				self._collapse();
 			});
-			
+
+			// 绑定点击任意位置关闭弹出框
+			var hideSelection = function(){
+
+			};
+			$(document).off("click",hideSelection).on("click",hideSelection);
 		},
 		ready : function() {
 
@@ -82,7 +87,6 @@ define([ "widget/factory", "jquery","template","rt/util" ], function(widget, $, 
 				
 				$comboBody.data("inited",true);
 			}
-			//pageContext.loadPage()
 		},
 		_collapse:function(){
 			this.$dom.removeClass("expanded").addClass("collapsed");

@@ -171,9 +171,10 @@ pageContext.define("admin.sitemap.list",["widget/data/datatable","widget/tab"],f
 			title: "用户授权",
 			url:"/web/admin/security/user/verifyAuthority3.html",
 			allowClose:true,
-			afterLoad:function(){ 
-			  debugger
-				m.init(record); 
+			afterLoad:function(page,$el){
+				debugger;
+				console.log("demoTab loading ",page);
+				page.init(record);
 			}
 		});  
 	}

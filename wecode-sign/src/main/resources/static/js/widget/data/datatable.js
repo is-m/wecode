@@ -359,7 +359,7 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 					$tableDataRows.html("");
 					return;
 				}
-				 
+
 				data = adpt.translate("datatable",data);
 				
 				if(data && data.page && data.result){

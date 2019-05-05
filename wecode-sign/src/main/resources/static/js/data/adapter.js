@@ -61,8 +61,9 @@ define(["jquery","rt/logger"],function($,log){
 		try{
 			var currentValueAttr = src;
 			for(var i=0;i<valueArr.length;i++){
-				if(currentValueAttr[valueArr[i]]){
-					currentValueAttr = currentValueAttr[valueArr[i]];
+				var tempValue = currentValueAttr[valueArr[i]];
+				if(typeof tempValue != 'undefined'){
+					currentValueAttr = tempValue;
 				}
 			} 
 			currentDistAttr[keyArr[keyArr.length-1]] = currentValueAttr;

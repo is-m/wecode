@@ -7,7 +7,8 @@
     `remark` VARCHAR(1000) COMMENT '备注',
     `mail` VARCHAR(100) COMMENT '电子邮件',
     `mobile_phone` VARCHAR(20) COMMENT '移动号码', 
-    `status` INT COMMENT '状态，0：失效，1：生效', 
+    `status` INT COMMENT '状态，0：失效，1：生效',
+    `active_role_id` VARCHAR(36) COMMENT '当前正在使用的角色ID',
     PRIMARY KEY(id)
 );
  

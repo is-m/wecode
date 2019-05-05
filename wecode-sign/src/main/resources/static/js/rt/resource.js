@@ -4,6 +4,9 @@ define(["jquery"],function($){
 	var loadCSS = function(href,callback) {
 		var head = document.getElementsByTagName('head')[0];
 		var link = document.createElement('link');
+		if(href.indexOf("v=") < 1){
+			href += (href.indexOf("?") > 0 ? "&v=" : "?v=") + window.appConfig.version;
+		}
 		link.href = href;
 		link.rel = 'stylesheet';
 		link.type = 'text/css';
