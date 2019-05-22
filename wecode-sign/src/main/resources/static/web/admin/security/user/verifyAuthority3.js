@@ -3,9 +3,15 @@ pageContext.controller("admin.security.user.verifyAuthority3",[],function(page){
 	var _record;
 	page.ready = function(){
 
+
+	};
+	
+	page.init = function(record){ 
+		$("#formAuthority").jsonData(_record = record);
+
 		var gridOption = {
 			selectMode:'mutli', /* 多选：mutli,单选：single,默认：normal */
-			height:300, 
+			height:300,
 			editable:true,
 			pageOp:{
 				// el:"#pageDemo",
@@ -24,7 +30,9 @@ pageContext.controller("admin.security.user.verifyAuthority3",[],function(page){
 					header:"角色",
 					editor:{
 						type:"combobox",
-						dataset:"services/xx"
+						dataset:"services/xx",
+						valueField:"id",
+						textField:"name"
 					},
 					width:220
 				},{
@@ -40,33 +48,35 @@ pageContext.controller("admin.security.user.verifyAuthority3",[],function(page){
 					}
 				}
 			]
-			,dataset:[]
+			,dataset: "/services/security/user/{0}/permissions".format(record.id)// [] or getUrl or {} ajaxOption
 			,operation:{
 				search:{
 					btn:"#btnSearch",
 					panel:"#formSearch"
 				},
-				
+
 				add:{
 					btn:"#btnAddAuthority",
 					data:{
 						dataRange:"No Control"
 					}
 				},
+				del:{
+					btn:"#btnDelAuthority"
+				},
 				save:{
-					btm:"#btnSaveAuthority"
+					btn:"#btnSaveAuthority",
+					ajax:{
+						url:"/services/security/user/{0}/permissions/rewrite".format(record.id) // 默认PUT
+					}
 				}
 				// TODO:这里可以添加更多选项，例如批量删除，等选中后批量操作的内容，比如批量更新某个属性（状态）
 				// batch {  del : { btn:"#btnBatchDelete" }, enable:{ btn:"#btnEnableStatus" , ajax:{ url:xxx ,data:data, method:"post"}}
 			}
 		};
-		
-		// 绑定表格 
-		$("#gridVerifyAuthority").xWidget("datatable",gridOption);   
-	}
-	
-	page.init = function(record){ 
-		$("#formAuthority").jsonData(_record = record);
+
+		// 绑定表格
+		$("#gridVerifyAuthority").xWidget("datatable",gridOption);
 	}
 	
 });

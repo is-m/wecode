@@ -88,5 +88,9 @@ define([ "rt/core", "jquery", "rt/request" ], function(core, $, http) {
 
 	};
 
+	u.doAjax = function(ajaxOption){
+		return http.ajax(ajaxOption);
+	};
+
 	return u;
 });

@@ -35,7 +35,10 @@ define([ "widget/factory", "jquery","template","rt/util" ], function(widget, $, 
 			$btn.find("i").css({"line-height":$btn.outerHeight()})
 			$btn.click(function(){
 				self._toggle();
-			}); 
+				return false;
+			});
+
+
 			var $comboBody = this.$dom.find(".ui-select-content-body");
 			$comboBody.click(function(e){
 				var $trigger = $(e.target);
@@ -44,13 +47,9 @@ define([ "widget/factory", "jquery","template","rt/util" ], function(widget, $, 
 					self.setValue(self.op._data[+dataIndex]);
 				} 
 				self._collapse();
+				return false;
 			});
 
-			// 绑定点击任意位置关闭弹出框
-			var hideSelection = function(){
-
-			};
-			$(document).off("click",hideSelection).on("click",hideSelection);
 		},
 		ready : function() {
 
@@ -58,15 +57,12 @@ define([ "widget/factory", "jquery","template","rt/util" ], function(widget, $, 
 		destory : function() {
 
 		},
-		_toggle:function(){ 
-			if(this.$dom.is(".expanded")){
-				this._collapse();
-			}else{
-				this._expand();
-			}
+		_toggle:function(){
+			this.$dom.is(".expanded") ? this._collapse() : this._expand();
 		},
 		_expand:function(){
-			var _op = this.op;
+			var _ = this , _op = _.op;
+
 			this.$dom.removeClass("collapsed").addClass("expanded");
 			this.$dom.find(".ui-select-icon").removeClass("fa-angle-down").addClass("fa-angle-up");
 			
@@ -87,13 +83,24 @@ define([ "widget/factory", "jquery","template","rt/util" ], function(widget, $, 
 				
 				$comboBody.data("inited",true);
 			}
+
+			// 绑定文档文档一次性点击事件，隐藏弹出选项
+			// 这里设置delay 是因为当前函数通常在点击下拉图标中触发，而点击图标中属于事件未完成的状态，
+			$(document).delayOne("click",function(){
+				_._collapse();
+			});
 		},
 		_collapse:function(){
-			this.$dom.removeClass("expanded").addClass("collapsed");
-			this.$dom.find(".ui-select-icon").removeClass("fa-angle-up").addClass("fa-angle-down");
+			var _ = this,_d = _.$dom;
+			if(_d.is(".collapsed")){
+				return;
+			}
+
+			_d.removeClass("expanded").addClass("collapsed");
+			_d.find(".ui-select-icon").removeClass("fa-angle-up").addClass("fa-angle-down");
 			
 			// 隐藏显示域
-			this.$dom.find(".ui-select-content").hide();
+			_d.find(".ui-select-content").hide();
 			
 		},
 		setValue:function(val){

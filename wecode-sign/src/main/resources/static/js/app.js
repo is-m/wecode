@@ -306,8 +306,8 @@ define(["rt/store"],function(store){
         })
 
 		
-		$(document).click(function(){  
-			console.log("document click hidden register auto process document click listener handler");
+		$(document).click(function(e){
+			console.log("document click hidden register auto process document click listener handler",e.target);
 			//$(".tooltip").tooltip("hide");
 		});
 	}

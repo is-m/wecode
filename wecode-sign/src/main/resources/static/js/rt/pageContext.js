@@ -31,7 +31,6 @@ define(["require", "jquery", "rt/logger", "rt/request"], function (require, $, l
             pageContextMap[id] = page;
             // pageContext.define 主要是加载内容到核心上下文，而非核心上下文的加载需要通过选中元素后$("xx").loadPage(url);
             var $pc = pageContextElStack[pageContextElStack.length - 1];
-            //debugger
             page.$dom = $pc;
             var context = $pc.data("context") || {};
 
@@ -43,7 +42,6 @@ define(["require", "jquery", "rt/logger", "rt/request"], function (require, $, l
     }
 
     var defineController = function (controllerName, componentArray, callback) {
-        debugger
         var name, components = [], defineFunction, args = [].slice.call(arguments, 0);
         var argLength = args.length;
         var p1 = args[0], p2 = args[1], p3 = args[2];
@@ -77,7 +75,6 @@ define(["require", "jquery", "rt/logger", "rt/request"], function (require, $, l
                 throw '定义控制器时，不支持当前参数个数 ' + argLength;
         }
         var defineFunction = function () {
-            debugger
             var page = {};
             callback && callback.apply(window, [page, $].concat([].slice.call(arguments, 0)))
             return page;
@@ -162,7 +159,6 @@ define(["require", "jquery", "rt/logger", "rt/request"], function (require, $, l
                         require([ctrlValue], function (ctrlObj) {
                             _controllerMap[ctrlValue] = ctrlObj;
                             var clonedCtrl = $.extend(true, {$s: $ctrlEl, $page: clonedCtrl}, ctrlObj);
-                            debugger
                             $ctrlEl.data("controller", clonedCtrl);
                             clonedCtrl.ready && clonedCtrl.ready();
                             callback && callback(true);
@@ -172,7 +168,6 @@ define(["require", "jquery", "rt/logger", "rt/request"], function (require, $, l
                     var ctrlValue = url.replace(/\.html$/i, function (v) { return ".js"; });
                     var ctrlName = ctrlValue.replace(/(^(\/|\\)|\.js$)/ig, '').replace(/(\/|\\)/g, ".");
                     require([ctrlValue], function (ctrlObj) {
-                        debugger
                         $ctrlEl.attr("v-ctrl", ctrlName);
                         var thisCtrl = $.extend(true, {$s: $ctrlEl, $page: thisCtrl}, ctrlObj);
                         $ctrlEl.data("controller", thisCtrl);
@@ -221,7 +216,6 @@ define(["require", "jquery", "rt/logger", "rt/request"], function (require, $, l
     }
 
     var doAction = function (action) {
-        //debugger
         if (!action) {
             log.warn("非法调用页面动作");
             return;

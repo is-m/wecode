@@ -135,7 +135,7 @@ define([ "jquery","rt/request","ui/ui-confirm","rt/logger"], function($, http,m,
 		}else{
 			_fillForm($dom,data);
 		}
-	}  
+	};
 	
   // 校验绑定
 	var hanldeValidation = function($form,data){
@@ -167,7 +167,7 @@ define([ "jquery","rt/request","ui/ui-confirm","rt/logger"], function($, http,m,
 	  
 	  $form.data("ruleContext",ruleContext);
 	  log.info("form validation inited");
-	}
+	};
 	
 	var validationCache = {};
 	// 绑定后台校验
@@ -179,15 +179,28 @@ define([ "jquery","rt/request","ui/ui-confirm","rt/logger"], function($, http,m,
 	    return;
 	  }
 	  
-	  http.doGet(window.$$path+"/services/validation/front/{0}?group={1}".format(target,group)).success(function(res){
-	    validationCache[cacheName] = res;
-	    hanldeValidation($form,res);
-    }).error(function(){
-      alert("form validation error");
-    });
-	}
+		http.doGet(window.$$path+"/services/validation/front/{0}?group={1}".format(target,group)).success(function(res){
+			validationCache[cacheName] = res;
+			hanldeValidation($form,res);
+		}).error(function(){
+		  alert("form validation error");
+		});
+	};
 
 	$.fn.nameEl = function(name){
 	  return this.find("[name="+name+"]");
-	}
+	};
+
+
+	// 延迟绑定事件 on，one
+	$.fn.delayOn = function(eventName,eventHandler){
+		return this.each(function (e) {
+			$(e).on(eventName,eventHandler);
+		});
+	};
+	$.fn.delayOne = function(eventName,eventHandler){
+		return this.each(function (e) {
+			$(e).one(eventName,eventHandler);
+		});
+	};
 });

@@ -2,40 +2,87 @@ package com.chinasoft.it.wecode.security.dto;
 
 import java.util.List;
 
+import com.chinasoft.it.wecode.common.dto.BaseDto;
 import com.chinasoft.it.wecode.security.domain.DataRange;
 import com.chinasoft.it.wecode.security.domain.Role;
 
-public class UserPermissionDto {
+/**
+ * 用户授权Dto
+ */
+public class UserPermissionDto extends BaseDto {
 
-	private String userId;
+    /**
+     * 用户ID
+     */
+    private String userId;
 
-	private List<Role> roles;
+    /**
+     * 角色ID
+     */
+    private String roleId;
 
-	private List<DataRange> ranges;
+    /**
+     * 角色名称
+     */
+    private String roleName;
 
-	public String getUserId() {
-		return userId;
-	}
+    /**
+     * 数据范围ID
+     */
+    private String dataRangeId;
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+    /**
+     * 数据范围名称
+     */
+    private String dataRangeName;
 
-	public List<Role> getRoles() {
-		return roles;
-	}
+    public String getUserId() {
+        return userId;
+    }
 
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
-	}
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
-	public List<DataRange> getRanges() {
-		return ranges;
-	}
+    public String getRoleId() {
+        return roleId;
+    }
 
-	public void setRanges(List<DataRange> ranges) {
-		this.ranges = ranges;
-	}
-	
-	
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public String getDataRangeId() {
+        return dataRangeId;
+    }
+
+    public void setDataRangeId(String dataRangeId) {
+        this.dataRangeId = dataRangeId;
+    }
+
+    public String getDataRangeName() {
+        return dataRangeName;
+    }
+
+    public void setDataRangeName(String dataRangeName) {
+        this.dataRangeName = dataRangeName;
+    }
+
+    public static UserPermissionDto of(String userId, String roleId, String roleName, String dataRangeId, String dataRangeName) {
+        UserPermissionDto result = new UserPermissionDto();
+        result.setUserId(userId);
+        result.setRoleId(roleId);
+        result.setRoleName(roleName);
+        result.setDataRangeId(dataRangeId);
+        result.setDataRangeName(dataRangeName);
+        return result;
+    }
 }

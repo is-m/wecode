@@ -172,7 +172,6 @@ pageContext.define("admin.sitemap.list",["widget/data/datatable","widget/tab"],f
 			url:"/web/admin/security/user/verifyAuthority3.html",
 			allowClose:true,
 			afterLoad:function(page,$el){
-				debugger;
 				console.log("demoTab loading ",page);
 				page.init(record);
 			}

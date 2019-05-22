@@ -53,7 +53,6 @@ define(["widget/factory", "jquery", "rt/pageContext"], function (widget, $, page
 
                     // 未初始化过才需要初始化
                     if (!$curPage.data("init")) {
-                        debugger
                         if (pageUrl) {
                             pageContext.loadPage($curPage, pageUrl,pageUrl.replace(".html",".js"), function () {
                                 self.trigger("afterLoad", $curPage);
@@ -122,7 +121,6 @@ define(["widget/factory", "jquery", "rt/pageContext"], function (widget, $, page
             headHtml.push("</ul>");
 
             var $headerEl = $(headHtml.join(''));
-            debugger
             $headerEl.children("a").data("pageOp",pageOp);
             $tabHeader.append($headerEl)
             var $tabBody = this.$dom.find(".tab-body:eq(0)");

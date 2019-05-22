@@ -2,6 +2,7 @@ package com.chinasoft.it.wecode.security.domain;
 
 import javax.persistence.Table;
 
+import com.chinasoft.it.wecode.base.BaseAuditableEntity;
 import com.chinasoft.it.wecode.base.BaseEntity;
 
 import javax.persistence.Entity;
@@ -16,7 +17,7 @@ import javax.persistence.Entity;
  */
 @Entity
 @Table(name = "sys_data_range")
-public class DataRange extends BaseEntity {
+public class DataRange extends BaseAuditableEntity {
 
 
   /**

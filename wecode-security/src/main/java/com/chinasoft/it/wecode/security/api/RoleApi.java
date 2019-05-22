@@ -27,7 +27,6 @@ public class RoleApi extends CrudApi<RoleDto, RoleResultDto, RoleQueryDto> {
   @Autowired
   private RoleService service;
 
-
   /**
    * 角色授权
    * 
@@ -42,7 +41,7 @@ public class RoleApi extends CrudApi<RoleDto, RoleResultDto, RoleQueryDto> {
   /**
    * 角色授权
    * 
-   * @param promissions
+   * @param roleId
    */
   @ApiOperation(value = "查询角色功能权限ID列表", notes = "查询角色功能权限ID列表")
   @GetMapping("/{roleId}/permissionIds")

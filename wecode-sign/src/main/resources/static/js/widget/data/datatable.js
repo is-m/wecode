@@ -73,14 +73,10 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 			if(this.op.editable === true){
 				$tableBody.on("click",function(e){
 					var $el = $(e.target);
-					
 					console.log(e);
-					if($el.is(".table-td-text")){
-						$el = $el.closest("td");
-					}
 					if($el.is("td")){  
 						var editorRender = tableEditorRenderMap["default"]; 
-						var field = $el.data("field");;
+						var field = $el.data("field");
 						var colOp = self._getColumnOp($el.data("field"));
 						var ctrlId = "editor_"+field;
 						var $editContainer = self.$dom.find("#"+ctrlId);
@@ -97,12 +93,45 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 							
 							editorRender.render($editContainer).done(function($ctrl){
 								$ctrl.xWidget() && $ctrl.xWidget().setValue("okay");
+								// 绑定下拉框点击文本输入区域时不触发文档click事件，防止编辑状态的框进入写入表格值的状态
+								$editContainer.find("input").click(function () { return false; });
 							}); 
 							
 						    self.$dom.append($editContainer);
-						    $editContainer.find("input").val("123");
-						}  
+						    $editContainer.find("input").click(function () { return false; }).val("123");
+
+						    console.log('click bind editor rewrite');
+						    // 绑定文档点击时，将编辑器还原成正常表格内容
+						    $(document).one("click",function(e){
+								if($editContainer.length && $editContainer.is(":visible")){
+									var source = $el.html();
+									var target  = $editContainer.find("input").val();
+									var isOldRow = !$el.closest("tr").is(".datatable-row-added");
+									if(source != target){
+										$el.html(target);
+										// 不是新行时才添加修改标识
+										if(isOldRow){
+											$el.addClass("table-cell-value-changed");
+											$el.closest("tr").addClass("datatable-row-edited");
+										}
+									}else{
+										if(isOldRow){
+											$el.removeClass("table-cell-value-changed");
+											if(!$el.closest("tr").find(".table-cell-value-changed").length){
+												$el.closest("tr").removeClass("datatable-row-edited");
+											}
+										}
+
+									}
+									$editContainer.empty().remove();
+									console.log("cancel editor of old '{0}' to new '{1}' value".format(source,target));
+								}
+							});
+						}
+						// 阻止浏览器默认事件行为
+						return false;
 					}
+
 				});
 			}
 			
@@ -173,6 +202,38 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 				if(_oper.add && _oper.add.btn){
 					util.el(_oper.add.btn).on("click",function(){
 						self._renderEditableRow();
+					});
+				}
+				if(_oper.del && _oper.del.btn){
+					util.el(_oper.del.btn).on("click",function (e) {
+						// 获取选中的数据
+						self.$dom.find(".row-selection :checked").each(function(i,el){
+							$(el).closest("tr").removeClass("datatable-row-edited").removeClass("datatable-row-added").addClass("datatable-row-deleted");
+							$(el).attr("checked",false);
+						});
+					});
+				}
+				if(_oper.save && _oper.save.btn && _oper.save.ajax){
+					util.el(_oper.save.btn).click(function () {
+						// TODO:检查并回归表格为未编辑状态，有改动的值需要按新值保存
+						// self.saveEditable();
+						// 获取变化的数据
+						var modifiedData = { adds:[],upds:[],dels:[] };
+						self.$dom.find("")
+						var ajaxOption = {};
+						if(typeof _oper.save.ajax == 'string'){
+							ajaxOption = {
+								url:_oper.save.ajax,
+								type:"put"
+							}
+						}else if($.isPlainObject(_oper.save.ajax)){
+							ajaxOption = _oper.save.ajax;
+						}
+						ajaxOption.data = modifiedData;
+						util.doAjax(ajaxOption).success(function (resp) {
+							alert('table save success');
+							console.log('table save success',resp);
+						});
 					});
 				}
 			}
@@ -288,6 +349,7 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 			var tempData = $.extend({},this.op,{ "_data" : [{}] });
 			var rowHtml = tmpl('datatable-datarows',{ $win:window,$widget:tempData });
 			var $row = $(rowHtml);
+			$row.addClass("datatable-row-added");
 			this._bindCellData($row,this.op.operation.add.data || {});
 			// 加载数据
 			var $tableDataRows = this.$dom.find(".datatable-rows:eq(0)");
@@ -423,8 +485,7 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 	
 	var tableEditorRenderMap = {
 		"default":{
-			render:function($td){ 
-				debugger
+			render:function($td){
 				var dtd = $.Deferred();
 				var $ctrl = $('<input class="form-control" style="width:100%;height:100%" />');
 				$td.html($ctrl);

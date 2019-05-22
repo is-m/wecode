@@ -648,7 +648,7 @@ h1 {
 }
 .ui-select .ui-select-arrow {
 	display:block; 
-	background:rgba(F,F,F,.1); 
+	background:rgba(255,255,255,.1);
 	position: absolute; 
 	right:0; 
 	top:50%;  
@@ -742,6 +742,7 @@ h1 {
 	overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+	position:relative;
 }
 
 /* fixed居中*/
@@ -887,3 +888,21 @@ h1 {
 } 
 
 /*ant-d end*/
+
+
+
+/* ex */
+.table-cell-value-changed::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 0;
+	width: 0;
+	border-top: 8px solid #ff7575;
+	border-left: 8px solid transparent;
+}
+
+.datatable-row-deleted {
+	display: none;
+}

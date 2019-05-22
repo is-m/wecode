@@ -7,13 +7,13 @@ USE test;
 -- DROP TABLE IF EXISTS s_user
 CREATE TABLE s_user
 (
-    `id`           VARCHAR(36) COMMENT 'ID',
-    `name`         VARCHAR(100) COMMENT '用户名称',
-    `password`     VARCHAR(100) COMMENT '用户密码',
-    `remark`       VARCHAR(1000) COMMENT '备注',
-    `mail`         VARCHAR(100) COMMENT '电子邮件',
-    `mobile_phone` VARCHAR(20) COMMENT '移动号码',
-    `status`       INT COMMENT '状态，0：失效，1：生效',
+    `id`             VARCHAR(36) COMMENT 'ID',
+    `name`           VARCHAR(100) COMMENT '用户名称',
+    `password`       VARCHAR(100) COMMENT '用户密码',
+    `remark`         VARCHAR(1000) COMMENT '备注',
+    `mail`           VARCHAR(100) COMMENT '电子邮件',
+    `mobile_phone`   VARCHAR(20) COMMENT '移动号码',
+    `status`         INT COMMENT '状态，0：失效，1：生效',
     `active_role_id` VARCHAR(36) COMMENT '当前正在使用的角色ID',
     PRIMARY KEY (id)
 );
@@ -93,6 +93,19 @@ CREATE TABLE sys_property
     `STATUS`   INT,
     PRIMARY KEY (id)
 );
+
+-- 角色权限表
+DROP TABLE IF EXISTS sys_user_permission;
+CREATE TABLE sys_user_permission
+(
+    `id`            VARCHAR(36) PRIMARY KEY COMMENT 'id',
+    `user_id`       VARCHAR(36) NOT NULL COMMENT '用户ID，关联 sys_user.id',
+    `role_id`       VARCHAR(36) NOT NULL COMMENT '角色ID，关联 sys_role.id',
+    `data_range_id` VARCHAR(36) COMMENT '数据范围ID，关联sys_data_range.id',
+    `expire_date`   TIMESTAMP COMMENT '过期时间',
+    `status`        INT COMMENT '状态，0 无效，1 有效',
+    UNIQUE(`user_id`,`role_id`)
+) COMMENT '用户权限表';
 
 
 

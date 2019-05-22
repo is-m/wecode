@@ -1,0 +1,25 @@
+<div class="container-fluid" id="navPage">
+
+    <h3>设计类</h3>
+    <ul>
+        <a href="http://www.uisdc.com/tag/%E7%BD%91%E9%A1%B5%E9%85%8D%E8%89%B2">优设网</a>
+
+    </ul>
+
+    <h3>博客类</h3>
+    <ul>
+        <a href="http://www.uisdc.com/tag/%E7%BD%91%E9%A1%B5%E9%85%8D%E8%89%B2">优设网</a>
+
+    </ul>
+
+    <iframe id="frmNav" style="border: none; width: 100%; height: 500px;">
+
+    </iframe>
+
+</div>
+<script>
+    $("#navPage").find("a").click(function () {
+        $("#frmNav").attr("src",$(this).attr("href"));
+        return false;
+    });
+</script>
