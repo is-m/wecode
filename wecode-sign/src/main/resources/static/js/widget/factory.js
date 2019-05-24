@@ -88,6 +88,10 @@ define(function (require) {
                 },
                 refresh: function (op, data) {
                     return this;
+                },
+                remove:function () {
+                    this.destory && this.destory();
+                    this.$dom.remove();
                 }
             }, defineContext);
 

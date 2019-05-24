@@ -74,7 +74,21 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 				$tableBody.on("click",function(e){
 					var $el = $(e.target);
 					console.log(e);
-					if($el.is("td")){  
+					if($el.is("td") && $el.is(".cell-editable")){
+						// 如果单元格属于编辑状态，则不进行处理
+						if($el.is("editing")){
+							return;
+						}
+
+						// 取消表格中正在编辑的单元格（同时只能有一个编辑状态的值），注意取消前要保证数据是通过校验的，如果未通过该单元格无法激活编辑状态
+						var $editableCells = $el.closest("tbody").find("td.cell-editable.editing");
+						if($editableCells.length){
+							self._cancelAllEditingCells();
+						}
+
+						// 标记单元格为编辑
+						$el.addClass("editing");
+
 						var editorRender = tableEditorRenderMap["default"]; 
 						var field = $el.data("field");
 						var colOp = self._getColumnOp($el.data("field"));
@@ -85,7 +99,7 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 							$editContainer.css({ top:top ,display:"block" });
 						}else{  
 							var h = $el.outerHeight(),w=$el.outerWidth(), left = $el.position().left;
-							$editContainer = $('<div id="'+ctrlId+'" style="display:block; position:absolute; top:{0}px; left:{1}px; height:{2}px; width:{3}px;"></div>'.format(top,left,h,w))
+							$editContainer = $('<div id="{0}" style="display:block; position:absolute; top:{1}px; left:{2}px; height:{3}px; width:{4}px;"></div>'.format(ctrlId,top,left,h,w))
 							
 							if(colOp.editor && colOp.editor.type){
 								editorRender = tableEditorRenderMap[colOp.editor.type]; 
@@ -124,6 +138,7 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 
 									}
 									$editContainer.empty().remove();
+									$el.removeClass("editing");
 									console.log("cancel editor of old '{0}' to new '{1}' value".format(source,target));
 								}
 							});
@@ -219,7 +234,19 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 						// self.saveEditable();
 						// 获取变化的数据
 						var modifiedData = { adds:[],upds:[],dels:[] };
-						self.$dom.find("")
+						self.$dom.find("tbody>tr").each(function(){
+							var $tr = $(this);
+							var record = $tr.data("record");
+							if($tr.is(".datatable-row-added")){ // 新增行
+								modifiedData.adds.push(record);
+							}else if($tr.is(".datatable-row-edited")){
+								modifiedData.upds.push(record);
+							}else if($tr.is(".datatable-row-deleted")){
+								modifiedData.dels.push(record);
+							}else{
+								// unchanged data
+							}
+						});
 						var ajaxOption = {};
 						if(typeof _oper.save.ajax == 'string'){
 							ajaxOption = {
@@ -350,11 +377,67 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 			var rowHtml = tmpl('datatable-datarows',{ $win:window,$widget:tempData });
 			var $row = $(rowHtml);
 			$row.addClass("datatable-row-added");
-			this._bindCellData($row,this.op.operation.add.data || {});
+			var rowData = this.op.operation.add.data || {};
+			$row.data("record",rowData);
+			this._bindCellData($row,rowData);
 			// 加载数据
 			var $tableDataRows = this.$dom.find(".datatable-rows:eq(0)");
 			$tableDataRows.append($row);
 			this.hideMessage(); 
+		},
+		/**
+		 * 设置单元格的值
+		 * @param value 设置的值，必填
+		 * @param cellOrCellIndexOrFieldName 单元格元素或者单元格索引，或者字段名，必填
+		 * @param rowIndex 行索引，选填，当cellOrCellIndexOrFieldName 为index或者fieldName时必填
+		 */
+		setCellValue:function(value,cellOrCellIndexOrFieldName,rowIndex){
+			if(!cellOrCellIndexOrFieldName && cellOrCellIndexOrFieldName !== 0) throw 'setCellValue cellOrCellIndexOrFieldName cannot be null or empty';
+			var _=this;
+			// 获取Cell
+			var $cell;
+			if($.isNumeric(cellOrCellIndexOrFieldName)){ // 列索引
+				$cell = _.$dom.find("[data-row-index="+rowIndex+"]").find( "[data-feild='" + _.op.columns[cellOrCellIndexOrFieldName].field+"']");
+			}else if(typeof cellOrCellIndexOrFieldName == "string"){ // fieldName
+				$cell =_.$dom.find("[data-row-index="+rowIndex+"]").find( "[data-feild='" + cellOrCellIndexOrFieldName + "']");
+			}else if(cellOrCellIndexOrFieldName.jquery){
+				$cell = cellOrCellIndexOrFieldName;
+			}else{
+				throw 'not support cellOrCellIndexOrFieldName argument with value '+cellOrCellIndexOrFieldName;
+			}
+
+			var colOp = _._getColumnOp($cell.data("field"));
+			var record = $cell.closest("tr").data("record") || {};
+			if(colOp.renderer){
+				// 渲染数据
+				var renderValue = colOp.renderer(value,record,colOp,$cell);
+				// 如果返回值不为 undefined 则进行渲染，控件设置方也可以使用$cell自己来社会资单元格内容,如果人为渲染了内容又返回了内容则会用返回的内容替换手动渲染的内容
+				$cell.html(typeof renderValue !== 'undefined'? renderValue : "");
+			}else{
+				$cell.html(value);
+			}
+		},
+		// 取消并保存全部编辑状态的单元格
+		_cancelAllEditingCells:function(){
+			var _ = this;
+
+			// 找到所有编辑的单元格
+			_.$dom.find(".cell-editable.editing").each(function(i,e){
+				var $cell=$(this),$editor = $cell.children().xWidget();
+				// 编辑器校验
+				if($editor.valid && !$editor.valid()){
+					return false;
+				}
+				if($editor.getValue){
+					var value = $editor.getValue();
+					$editor.remove();
+					_.setCellValue(value,$cell);
+				}else{
+					throw 'cannot support get value for cell editor of field is '+$(this).data("field");
+				}
+
+			});
+
 		},
 		getRowData:function(rowIndex){
 			return this.op._data[rowIndex];
@@ -369,26 +452,13 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 		// 绑定单元格数据
 		_bindCellData:function($row,record){
 			var _self=this;
+			// 渲染列值
 			$row.find("[data-field]").each(function(){ 
 				var $cell = $(this);
 				var field = $cell.data("field");  
 				// 字段属性为空值时不进行初始化
 				if(field == '') return;
-				
-				if(typeof record[field] !== 'undifined'){
-					var colOp = _self._getColumnOp(field);
-					var value = record[field];
-					if(colOp.renderer){
-						// 渲染数据
-						var renderValue = colOp.renderer(value,record,colOp,$cell);
-						// 如果返回值不为 undefined 则进行渲染，控件设置方也可以使用$cell自己来社会资单元格内容,如果人为渲染了内容又返回了内容则会用返回的内容替换手动渲染的内容
-						if(typeof renderValue !== 'undefined'){
-							$cell.html(colOp.renderer(value,record,colOp,$cell));
-						}
-					}else{
-						$cell.html(value);
-					} 
-				}
+				_self.setCellValue(record[field],$cell);
 			});
 		},
 		reload:function(){
