@@ -1,48 +1,48 @@
-define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"],function(widget,$,$ui,tmpl,util,adpt){
+define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter","ui/ui-confirm"],function(widget,$,$ui,tmpl,util,adpt,msg){
 	// 预处理数据行渲染模版
 	/*
-	 	'<%if(colOp.renderer){ %>' + 
-					'<%=# colOp.renderer(fieldValue,dataItem,colOp) %>' + 
+	 	'<%if(colOp.renderer){ %>' +
+					'<%=# colOp.renderer(fieldValue,dataItem,colOp) %>' +
 				'<%}else{%>' +
-					'<%= fieldValue %>' + 
-				'<%}%>' + 
+					'<%= fieldValue %>' +
+				'<%}%>' +
 	 */
-	var _dataRowTemplate = 
+	var _dataRowTemplate =
 		'<%  for(var j=0;j<$widget._data.length;j++){ var dataItem = $widget._data[j]; %>' +
 		'<tr data-row-index="<%=j%>"> ' +
 			'<% if($widget.showSeq !== false){%>' +
 			'	<th><span><%=(j+1)%></span></th>' +
-			'<%}%>' + 
-			'<% if($widget.selectMode == "mutli"){%>' + 
-			'<td class="table-cell-checkbox row-selection"><span><input type="checkbox" /></span></td>' + 
-		'<%}%> ' + 
-		
-		'<% ' + 
-			'for(var i=0;i<$widget.columns.length;i++){ ' + 
+			'<%}%>' +
+			'<% if($widget.selectMode == "mutli"){%>' +
+			'<td class="table-cell-checkbox row-selection"><span><input type="checkbox" /></span></td>' +
+		'<%}%> ' +
+
+		'<% ' +
+			'for(var i=0;i<$widget.columns.length;i++){ ' +
 				'var colOp = $widget.columns[i];' +
 				'var field = colOp.field;' +
-				'var fieldValue = field ? dataItem[field] : null;' + 
-		'%>' + 
-			'<td data-field="<%=field%>" class="table-cell <%= colOp.editable !== false ? \'cell-editable\' : \'cell-read\' %>"></td>' + 
-		'<%}%>   ' + 
-		'</tr>' + 
+				'var fieldValue = field ? dataItem[field] : null;' +
+		'%>' +
+			'<td data-field="<%=field%>" class="table-cell <%= colOp.editable !== false ? \'cell-editable\' : \'cell-read\' %>"></td>' +
+		'<%}%>   ' +
+		'</tr>' +
 		'<%}%> ';
 	tmpl('datatable-datarows',_dataRowTemplate);
-	
-	
+
+
 	var defaultTreeOp = {
-			
+
 	}
-	
+
 	widget.define("datatable",{
-		template:"<h1>Hello this navbar Widget</h1>", 
+		template:"<h1>Hello this navbar Widget</h1>",
 		templateUri:"js/widget/data/datatable.html",
 		init:function(){
 			// 初始化表格，列部分参数
 			// 计算表格总宽度
 			var _op = this.op;
 			console.log("init datatable",_op);
-			
+
 			var tableWidth = 0;
 			for(var i=0;i<_op.columns.length;i++){
 				var colOp = _op.columns[i];
@@ -52,15 +52,15 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 					colOp.field="__operate"+i;
 				}
 			}
-			
+
 			_op["_tableWidth"] = tableWidth;
 			// 初始化树选项
-			if(this.op.treeOp){ 
-				this.op._treeColumn = $.extend(this._getColumnOp(this.op.treeOp.field),{ treeField:true });  
-			} 
+			if(this.op.treeOp){
+				this.op._treeColumn = $.extend(this._getColumnOp(this.op.treeOp.field),{ treeField:true });
+			}
 		},
 		loadData:function(){
-			
+
 		},
 		beforeRender:function(html){
 			return html;
@@ -69,7 +69,7 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 			var self = this;
 			var $tableHead = this.$dom.find(".table-scroll-header:eq(0)");
 			var $tableBody = this.$dom.find(".table-scroll-body:eq(0)");
-			
+
 			if(this.op.editable === true){
 				$tableBody.on("click",function(e){
 					var $el = $(e.target);
@@ -89,7 +89,7 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 						// 标记单元格为编辑
 						$el.addClass("editing");
 
-						var editorRender = tableEditorRenderMap["default"]; 
+						var editorRender = tableEditorRenderMap["default"];
 						var field = $el.data("field");
 						var colOp = self._getColumnOp($el.data("field"));
 						var ctrlId = "editor_"+field;
@@ -97,20 +97,20 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 						var top = $el.position().top;
 						if($editContainer.length){
 							$editContainer.css({ top:top ,display:"block" });
-						}else{  
+						}else{
 							var h = $el.outerHeight(),w=$el.outerWidth(), left = $el.position().left;
-							$editContainer = $('<div id="{0}" style="display:block; position:absolute; top:{1}px; left:{2}px; height:{3}px; width:{4}px;"></div>'.format(ctrlId,top,left,h,w))
-							
+							$editContainer = $('<div id="{0}" style="display:block; position:absolute; top:{1}px; left:{2}px; height:{3}px; width:{4}px;" class="datatable-edit-area" data-field="{5}"></div>'.format(ctrlId,top,left,h,w,field))
+
 							if(colOp.editor && colOp.editor.type){
-								editorRender = tableEditorRenderMap[colOp.editor.type]; 
+								editorRender = tableEditorRenderMap[colOp.editor.type];
 							}
-							
+
 							editorRender.render($editContainer).done(function($ctrl){
 								$ctrl.xWidget() && $ctrl.xWidget().setValue("okay");
 								// 绑定下拉框点击文本输入区域时不触发文档click事件，防止编辑状态的框进入写入表格值的状态
 								$editContainer.find("input").click(function () { return false; });
-							}); 
-							
+							});
+
 						    self.$dom.append($editContainer);
 						    $editContainer.find("input").click(function () { return false; }).val("123");
 
@@ -149,63 +149,63 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 
 				});
 			}
-			
-			
+
+
 			// TODO:检查是否存在需要绑定事件或操作的行
 			//$tableDataRows.html(rowHtml);
-			
+
 			//this.$dom.find("th").resizable();
-			/*this.$dom.find(".table-th-resize").on("mousedown",function(e){ 
+			/*this.$dom.find(".table-th-resize").on("mousedown",function(e){
 				console.log("mouse down",e);
 				var $this = $(this);
 				var $th = $this.closest("th");
-				
+
 				// 清理，重新绑定事件
 				$this.off("mousemove mouseup");
-				
+
 				$this.data("srcPageX",e.pageX);
-				$this.on("mousemove",function(e){ 
+				$this.on("mousemove",function(e){
 					var pageX = e.pageX;
 					var srcPageX = $(this).data("srcPageX");
 					var $th = $(this).closest("th");
 					var width = $th.width();
-					console.log("move",pageX ,srcPageX, width,e); 
+					console.log("move",pageX ,srcPageX, width,e);
 					$th.width(pageX - srcPageX + width);
 				});
-				
+
 				$this.on("mouseup",function(e){
 					console.log("mouse up",e);
-					$(this).un("mousemove").un("mouseup"); 
+					$(this).un("mousemove").un("mouseup");
 				})
-				
+
 			})*/
-			
-			// 绑定滚动条事件 
-			$tableBody.on("scroll",function(){ 
-				var bodyScrollLeft = $(this).scrollLeft(); 
+
+			// 绑定滚动条事件
+			$tableBody.on("scroll",function(){
+				var bodyScrollLeft = $(this).scrollLeft();
 				$tableHead.scrollLeft(bodyScrollLeft);
-			}); 
-			
+			});
+
 			// 绑定全选事件
 			if(this.op.selectMode == "mutli"){
 				$tableHead.find(".table-th-selection :input").on("click",function(){
 					if($(this).is(":checked")){
 						$tableBody.find(".row-selection :input").each(function(i,el){
-							if(!$(el).is(".disabled") && !$(el).is("[disable]")){								
+							if(!$(el).is(".disabled") && !$(el).is("[disable]")){
 								el.checked = true;
 							}
 						});
 					}else{
 						$tableBody.find(".row-selection :input").attr("checked",false);
 					}
-					
+
 				});
-			} 
-			
+			}
+
 			// 初始化提示框
 			//$tableBody.find("tr>td>span",function(){
-				
-			//});  
+
+			//});
 			if(this.op.operation){
 				var _oper = this.op.operation;
 				if(_oper.search && _oper.search.btn){
@@ -221,10 +221,21 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 				}
 				if(_oper.del && _oper.del.btn){
 					util.el(_oper.del.btn).on("click",function (e) {
+						var $selections = self.$dom.find(".row-selection :checked");
+						if(!$selections.length){
+							msg.errTip("没有数据被选中！");
+							return;
+						}
 						// 获取选中的数据
-						self.$dom.find(".row-selection :checked").each(function(i,el){
-							$(el).closest("tr").removeClass("datatable-row-edited").removeClass("datatable-row-added").addClass("datatable-row-deleted");
-							$(el).attr("checked",false);
+						$selections.each(function(i,el){
+							var $row = $(el).closest("tr");
+							// 如果是新行，则直接整行删除
+							if($row.is(".datatable-row-added")){
+								$row.empty().remove();
+							}else{
+								$row.removeClass("datatable-row-edited").addClass("datatable-row-deleted");
+								$(el).attr("checked",false);
+							}
 						});
 					});
 				}
@@ -242,37 +253,50 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 							}else if($tr.is(".datatable-row-edited")){
 								modifiedData.upds.push(record);
 							}else if($tr.is(".datatable-row-deleted")){
-								modifiedData.dels.push(record);
+								if(record.id){
+									modifiedData.dels.push(record.id);
+								}else{
+									// 默认是拿数据的ID作为删除的数据，如果数据ID为空，要么指定table的删除主键属性，要么不能删除
+									throw 'Not captured deleted record field with id';
+								}
 							}else{
 								// unchanged data
 							}
 						});
+
+						if(!(modifiedData.dels.length || modifiedData.adds.length || modifiedData.upds.length)){
+							msg.errTip("没有记录被改变！");
+							return;
+						}
+
 						var ajaxOption = {};
 						if(typeof _oper.save.ajax == 'string'){
 							ajaxOption = {
 								url:_oper.save.ajax,
-								type:"put"
+								method:"put"
 							}
 						}else if($.isPlainObject(_oper.save.ajax)){
 							ajaxOption = _oper.save.ajax;
+							if(!(ajaxOption.method || ajaxOption.type)){
+								ajaxOption.method = "put";
+							}
 						}
 						ajaxOption.data = modifiedData;
 						util.doAjax(ajaxOption).success(function (resp) {
-							alert('table save success');
-							console.log('table save success',resp);
+							msg.okTip("保存成功！");
 						});
 					});
 				}
 			}
-			
+
 			if(this.op.autoLoad !== false) {
 				self.reload();
 			}
 		},
-		ready:function(){ 
+		ready:function(){
 		},
 		destory:function(){
-			
+
 		},
 		_getColumnOp:function(field){
 			var _cols = this.op.columns;
@@ -291,61 +315,61 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 		showMessage:function(html){
 			var $messageBody = this.$dom.find(".table-message-body:eq(0)");
 			$messageBody.html(html);
-			this.$dom.find(".table-message:eq(0)").show(); 
+			this.$dom.find(".table-message:eq(0)").show();
 		},
 		hideMessage:function(){
 			this.$dom.find(".table-message:eq(0)").hide();
-		}, 
-		_treeRowsExpand:function($row,isExpand){ 
+		},
+		_treeRowsExpand:function($row,isExpand){
 			var self = this;
 			var _row = $row.is("tr") ? $row : $row.closest("tr");
 			var _rcd = _row.data("record");
 			var _treeOp = this.op.treeOp;
-			
+
 			var $childrenRows = this.$dom.find("tr[data-tree-parent={0}]".format(_rcd[_treeOp.idKey]));
 			$childrenRows.each(function(){
 				var $childTr = $(this);
-				if($childTr.is("[data-tree-expand=true]")){ 
+				if($childTr.is("[data-tree-expand=true]")){
 					self._treeRowsExpand($childTr,isExpand);
 				}
-				$childTr[isExpand ? "show" : "hide"](); 
-			});  
+				$childTr[isExpand ? "show" : "hide"]();
+			});
 		},
 		_renderTreeRows:function($rows,records){
 			var _self = this;
 			var _treeOp = this.op.treeOp;
 			// 初始化行
 			// 加载树字段内容
-			if(_treeOp){  
-				$rows.find("td[data-field={0}]".format(this.op._treeColumn.field)).each(function(n,i){ 
+			if(_treeOp){
+				$rows.find("td[data-field={0}]".format(this.op._treeColumn.field)).each(function(n,i){
 					var $td = $(this);
 					var $row = $td.closest("tr");
 					$td.css("text-align","left");
 					$td.css("padding-left",(+$row.data("treeLevel") * 20 + 10) + "px")
-					
-					var record = $row.data("record"); 
+
+					var record = $row.data("record");
 					record._isLeaf = typeof record._isLeaf !== "undefined" ? record._isLeaf : !(record.children && record.children.length);
 					var $folderIcon = $('<i class="fa {0}"></i>'.format(record._isLeaf ? "fa-file-o" : "fa-folder"));
 					if(!record._isLeaf){
 						$folderIcon.on("click",function(){
-							var $this = $(this); 
+							var $this = $(this);
 							$this.toggleClass2("fa-folder","fa-folder-open",function(curr,el){
 								//debugger
-								var record = el.closest("tr").data("record"); 
+								var record = el.closest("tr").data("record");
 								// 当前是打开文件命令
 								if("fa-folder-open" == curr){
-									$row.attr("data-tree-expand",true); 
+									$row.attr("data-tree-expand",true);
 									// 如果当前行是已经初始化过的，则直接展示或隐藏子项
-									if($row.is("[data-tree-init=true]")){ 
+									if($row.is("[data-tree-init=true]")){
 										_self._treeRowsExpand($row,true);
 										return;
 									}
 									var tempData = $.extend({},_self.op,{ "_data" : record.children });
 									var rowHtml = tmpl('datatable-datarows',{ $win:window,$widget:tempData });
-									var $tempRows = $(rowHtml);  
-									
-									// 在行上绑定数据 
-									$tempRows.each(function(i,n){  
+									var $tempRows = $(rowHtml);
+
+									// 在行上绑定数据
+									$tempRows.each(function(i,n){
 										var _rowData = tempData._data[i];
 										$(this).attr("data-tree-parent",_rowData[_treeOp.pIdKey || 'parentId'])
 										.attr("data-tree-level",+$row.data("treeLevel") + 1)
@@ -353,7 +377,7 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 										.data("record",_rowData);
 										_self._bindCellData($(this),_rowData);
 									});
-									_self._renderTreeRows($tempRows); 
+									_self._renderTreeRows($tempRows);
 									// 打开节点
 									$row.after($tempRows);
 									$row.attr("data-tree-init",true);
@@ -363,10 +387,10 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 									$row.attr("data-tree-expand",false);
 									_self._treeRowsExpand($row,false);
 								}
-							}) 
+							})
 						});
 					}
-					
+
 					$td.prepend($folderIcon);
 				});
 			}
@@ -383,7 +407,7 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 			// 加载数据
 			var $tableDataRows = this.$dom.find(".datatable-rows:eq(0)");
 			$tableDataRows.append($row);
-			this.hideMessage(); 
+			this.hideMessage();
 		},
 		/**
 		 * 设置单元格的值
@@ -453,9 +477,9 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 		_bindCellData:function($row,record){
 			var _self=this;
 			// 渲染列值
-			$row.find("[data-field]").each(function(){ 
+			$row.find("[data-field]").each(function(){
 				var $cell = $(this);
-				var field = $cell.data("field");  
+				var field = $cell.data("field");
 				// 字段属性为空值时不进行初始化
 				if(field == '') return;
 				_self.setCellValue(record[field],$cell);
@@ -464,44 +488,44 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 		reload:function(){
 			var _self = this;
 			_self.$dom.find(".table-th-selection :input").each(function(i,el){ el.checked = false; });
-			
+
 			// 加载数据
 			var $tableDataRows = this.$dom.find(".datatable-rows:eq(0)");
-			
+
 			// TODO:待后续替换成选中数据tbody区域，添加加载框
-			this.showMessage("<i class='fa fa-spinner fa-spin'></i><p>正在加载...</p>"); 
-			
+			this.showMessage("<i class='fa fa-spinner fa-spin'></i><p>正在加载...</p>");
+
 			var dataset = this.op.dataset;
 			// 如果当前有设置查询参数区域
 			var searchPanel = util.getObj(this,"op.operation.search.panel");
 			if(searchPanel != null && typeof dataset == 'string'){
 				var data = util.el(searchPanel).jsonData();
 				if(this.op.pageOp !== false){
-					dataset = { url:dataset.format(this.op.pageOp), data:data } 
+					dataset = { url:dataset.format(this.op.pageOp), data:data }
 				}else{
-					dataset = { url:dataset, data:data } 
+					dataset = { url:dataset, data:data }
 				}
 			}else if(!$.isArray(dataset)){ // 并且不是静态数据
 				throw '存在查询条件区域，但是数据集不是URL请求，暂时未实现其他数据集+查询条件的处理逻辑';
 			}
-			
-			util.getDataset(dataset).done($.proxy(function(data){  
-				if(!data || data.length == 0){ 
+
+			util.getDataset(dataset).done($.proxy(function(data){
+				if(!data || data.length == 0){
 					_self.showMessage('<i class="fa fa-info"></i> <p>没有匹配的记录</p>');
 					$tableDataRows.html("");
 					return;
 				}
 
 				data = adpt.translate("datatable",data);
-				
+
 				if(data && data.page && data.result){
 					this.op._page = data.page;
 					this.op._data = data.result;
 				}else{
-					this.op._data = $.isArray(data) ? data : (data.content || []) ; 
+					this.op._data = $.isArray(data) ? data : (data.content || []) ;
 				}
-				
-				
+
+
 				// 加载分页内容
 				if(this.op.pageOp !== false && this.op._page){
 					require(["widget/data/pager"],function(pager){
@@ -510,28 +534,28 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 						if(!$pageEl.length){
 							  $pageEl = $("<div class='pageContainer'></div>");
 							  $tableBody.after($pageEl);
-						} 
-						
+						}
+
 						var pagerWidget = $pageEl.xWidget("pager",$.extend(true,_self.op.pageOp,_self.op._page));
-						pagerWidget.on(["pager.prev","pager.go","pager.next"],function(e,page){ 
-							_self.op.pageOp.curPage = page; 
+						pagerWidget.on(["pager.prev","pager.go","pager.next"],function(e,page){
+							_self.op.pageOp.curPage = page;
 							_self.reload();
 						});
 					})
 				}
-				
-				
+
+
 				// 如果是树结构表格，则配置，同步树（默认），异步树，来格式化和显示节点信息，同步树表格不进行翻页
 				var _treeOp = this.op.treeOp;
-				if(_treeOp){ 
-					// 根据树表格参数，重写数据格式 <i class="fa fa-file-o"></i> 
+				if(_treeOp){
+					// 根据树表格参数，重写数据格式 <i class="fa fa-file-o"></i>
 					this.op._data = util.toTree(this.op._data,_treeOp.rootPId,_treeOp.idKey,_treeOp.pIdKey);
 				}
 				var rowHtml = tmpl('datatable-datarows',{ $win:window,$widget:this.op });
-				var $rows = $(rowHtml);  
-				
-				// 在行上绑定数据 
-				$rows.each(function(i,n){ 
+				var $rows = $(rowHtml);
+
+				// 在行上绑定数据
+				$rows.each(function(i,n){
 					var _rowData = _self.op._data[i];
 					$(this).data("record",_rowData);
 					_self._bindCellData($(this),_rowData);
@@ -540,19 +564,19 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 						$(this).attr("data-tree-level",0);
 					}
 				});
-				
+
 				_self._renderTreeRows($rows);
-				 
-				$tableDataRows.html($rows); 
-				_self.hideMessage(); 
+
+				$tableDataRows.html($rows);
+				_self.hideMessage();
 			},this)).fail(function(){
-				// TODO:清空数据 ，待优化显示效果 
+				// TODO:清空数据 ，待优化显示效果
 				_self.showMessage('<i class="fa fa-bolt"></i> <p>数据获取失败</p>');
-			}); 
+			});
 		}
-	
-	}); 
-	
+
+	});
+
 	var tableEditorRenderMap = {
 		"default":{
 			render:function($td){
@@ -563,13 +587,13 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 				return dtd;
 			},
 			setValue:function(v,record){
-				
+
 			},
 			getValue:function(){
-				
+
 			}
 		},
-		"combobox":{ 
+		"combobox":{
 			render:function($td){
 				var dtd = $.Deferred();
 				require(["widget/form/combo"],function(combo){
@@ -581,10 +605,10 @@ define(["widget/factory","jquery","jqueryui","template","rt/util","data/adapter"
 				return dtd;
 			},
 			setValue:function(v,record){
-				
+
 			},
 			getValue:function(){
-				
+
 			}
 		}
 	}

@@ -4,13 +4,14 @@ import com.chinasoft.it.wecode.security.domain.UserPermission;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface UserPermissionRepository extends JpaRepository<UserPermission,String> {
 
     /**
-     * 根据用户ID删除用户权限列表
-     * @param userId
-     * @return
+     * 根据ID删除
+     * @param dels
      */
-    int deleteByUserId(String userId);
+    int deleteByIdIn(List<String> dels);
 }

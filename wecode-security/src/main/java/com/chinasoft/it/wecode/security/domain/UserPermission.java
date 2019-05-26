@@ -75,14 +75,25 @@ public class UserPermission extends BaseEntity {
         this.expireDate = expireDate;
     }
 
-    public static UserPermission of(String userId) {
+    public static UserPermission of(String id) {
+        UserPermission result = new UserPermission();
+        result.setId(id);
+        return result;
+    }
+
+    public static UserPermission ofUserId(String userId) {
         UserPermission result = new UserPermission();
         result.setUserId(userId);
         return result;
     }
 
     public static UserPermission of(String userId,String roleId,String dataRangeId){
-        UserPermission result = of(userId);
+        return of(null,userId,roleId,dataRangeId);
+    }
+
+    public static UserPermission of(String id,String userId,String roleId,String dataRangeId){
+        UserPermission result = of(id);
+        result.setUserId(userId);
         result.setRoleId(roleId);
         result.setDataRangeId(dataRangeId);
         return result;

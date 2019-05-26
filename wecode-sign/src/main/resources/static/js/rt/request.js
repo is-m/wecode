@@ -19,22 +19,27 @@ define(["jquery"],function($){
 			urlOrObj.url = url;
 		}
 		return urlOrObj;
-	}
-	
-	
-	var ajax = function(url,data,sCallback,fCallback,method){  
-		var _ajaxOp = $.isPlainObject(url) ? url : {
-			url:url,
-			data:data,
-			method:method,
-			contentType:"application/json",
+	};
+
+	var ajaxDefaultOption = {
+		method: "get",
+		contentType: "application/json"
+	};
+
+	var ajax = function(url,data,sCallback,fCallback,method){
+		var op = $.isPlainObject(url) ? url: {
+			url: url,
+			data: data,
+			method: method || "get"
 		};
+
+		op = $.extend({},ajaxDefaultOption,op);
 		
-		if( _ajaxOp.method == "post" || _ajaxOp.method == "put" ){
-			_ajaxOp.data = typeof _ajaxOp.data === 'string' ? _ajaxOp.data : JSON.stringify(_ajaxOp.data);
+		if(op.contentType == "application/json" && (op.method == "post" || op.method == "put") && $.isPlainObject(op.data) ){
+			op.data = JSON.stringify(op.data);
 		}
 		
-		var _async = $.ajax(resolveUrl(_ajaxOp));
+		var _async = $.ajax(resolveUrl(op));
 		
 		_async.success(function(resp){
 			if(resp && resp.code && resp.msg && resp.code != '200'){

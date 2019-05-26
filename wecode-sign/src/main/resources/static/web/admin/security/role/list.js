@@ -1,8 +1,7 @@
 // TODO: 1.pageContext 需要预加载 ，2.widget/data/datable 需要在使用时加载 
-pageContext.define("admin.sitemap.list",["widget/data/datatable","widget/tab","widget/form/dateBox"],function(page,dt,tab,dateBox){
+pageContext.define("admin.security.role.list",["widget/data/datatable","widget/tab","widget/form/dateBox"],function(page,dt,tab,dateBox){
 	
-	page.ready = function(){    
-		
+	page.ready = function(){
 		var gridOption = {
 			selectMode:'mutli', /* 多选：mutli,单选：single,默认：normal */
 			height:425, 

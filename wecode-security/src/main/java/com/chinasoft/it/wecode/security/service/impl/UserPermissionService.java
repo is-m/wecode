@@ -1,18 +1,19 @@
 package com.chinasoft.it.wecode.security.service.impl;
 
+import com.chinasoft.it.wecode.common.dto.BatchDto;
 import com.chinasoft.it.wecode.security.domain.UserPermission;
 import com.chinasoft.it.wecode.security.dto.UserPermissionDto;
-import com.chinasoft.it.wecode.security.dto.UserPermissionRewriteDto;
 import com.chinasoft.it.wecode.security.repository.UserPermissionRepository;
 import com.google.common.collect.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -44,9 +45,9 @@ public class UserPermissionService {
      */
     @Validated
     public List<UserPermissionDto> findUserPermissions(@NotEmpty(message = "用户ID不能为空") String userId) {
-        List<UserPermission> userPermissions = repo.findAll(Example.of(UserPermission.of(userId)));
+        List<UserPermission> userPermissions = repo.findAll(Example.of(UserPermission.ofUserId(userId)));
 
-        if(userPermissions.isEmpty()){
+        if (userPermissions.isEmpty()) {
             return Collections.emptyList();
         }
 
@@ -55,8 +56,12 @@ public class UserPermissionService {
         Set<String> dataRangeIdSet = Sets.newConcurrentHashSet();
 
         userPermissions.parallelStream().forEach(entity -> {
-            roleIdSet.add(entity.getRoleId());
-            dataRangeIdSet.add(entity.getDataRangeId());
+            if(!StringUtils.isEmpty(entity.getRoleId())) {
+                roleIdSet.add(entity.getRoleId());
+            }
+            if(!StringUtils.isEmpty(entity.getDataRangeId())) {
+                dataRangeIdSet.add(entity.getDataRangeId());
+            }
         });
 
         // 获取ID名称映射关系
@@ -72,24 +77,30 @@ public class UserPermissionService {
     private UserPermissionDto toDto(UserPermission entity, Map<String, String> roleNameMap, Map<String, String> dataRangeNameMap) {
         String roleId = entity.getRoleId();
         String dataRangeId = entity.getDataRangeId();
-        return UserPermissionDto.of(entity.getUserId(), roleId, roleNameMap.get(roleId), dataRangeId, dataRangeNameMap.get(dataRangeId));
+        return UserPermissionDto.of(entity.getId(),entity.getUserId(), roleId, roleNameMap.get(roleId), dataRangeId, dataRangeNameMap.get(dataRangeId));
     }
 
     /**
      * 重写用户权限
      *
      * @param userId
-     * @param rewrites
+     * @param batchDto
      */
     @Validated
     @Transactional
-    public void rewriteUserPermissions(@NotEmpty String userId,List<UserPermissionRewriteDto> rewrites) {
-        // 先清空用户权限数据
-        repo.deleteByUserId(userId);
+    public void batchUserPermissions(@NotEmpty String userId, @NotNull BatchDto<UserPermissionDto> batchDto) {
+        if (batchDto != null) {
+            if (!batchDto.isEmptyDels()) { // 删除数据
+                repo.deleteByIdIn(batchDto.getDels());
+            }
 
-        // 当重写的用户权限不为空时，将 dto 转 entity 后保存
-        if(!CollectionUtils.isEmpty(rewrites)) {
-            repo.saveAll(rewrites.stream().map(dto -> UserPermission.of(userId, dto.getRoleId(), dto.getDataRangeId())).collect(Collectors.toList()));
+            if (!batchDto.isEmptyAdds()) { // 添加数据
+                repo.saveAll(batchDto.getAdds().stream().map(dto -> UserPermission.of(userId, dto.getRoleId(), dto.getDataRangeId())).collect(Collectors.toList()));
+            }
+
+            if (!batchDto.isEmptyUpds()) { // 修改数据
+                repo.saveAll(batchDto.getUpds().stream().map(dto -> UserPermission.of(dto.getId(), userId, dto.getRoleId(), dto.getDataRangeId())).collect(Collectors.toList()));
+            }
         }
     }
 }

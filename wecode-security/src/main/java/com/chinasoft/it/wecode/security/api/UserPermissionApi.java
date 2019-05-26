@@ -1,6 +1,8 @@
 package com.chinasoft.it.wecode.security.api;
 
+import com.chinasoft.it.wecode.common.dto.BatchDto;
 import com.chinasoft.it.wecode.common.dto.RewritableDto;
+import com.chinasoft.it.wecode.security.domain.UserPermission;
 import com.chinasoft.it.wecode.security.dto.UserPermissionDto;
 import com.chinasoft.it.wecode.security.dto.UserPermissionRewriteDto;
 import com.chinasoft.it.wecode.security.service.impl.UserPermissionService;
@@ -25,8 +27,8 @@ public class UserPermissionApi {
         return service.findUserPermissions(userId);
     }
 
-    @PutMapping("/user/{userId}/permissions/rewrite")
-    public void rewriteUserPermissions(@PathVariable("userId") String userId, List<UserPermissionRewriteDto> rewrites) {
-        service.rewriteUserPermissions(userId,rewrites);
+    @PutMapping("/user/{userId}/permissions/batch")
+    public void batchUserPermissions(@PathVariable("userId") String userId,@RequestBody BatchDto<UserPermissionDto> batchDto) {
+        service.batchUserPermissions(userId, batchDto);
     }
 }

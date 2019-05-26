@@ -12,6 +12,11 @@ import com.chinasoft.it.wecode.security.domain.Role;
 public class UserPermissionDto extends BaseDto {
 
     /**
+     * 用户权限ID
+     */
+    private String id;
+
+    /**
      * 用户ID
      */
     private String userId;
@@ -35,6 +40,14 @@ public class UserPermissionDto extends BaseDto {
      * 数据范围名称
      */
     private String dataRangeName;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getUserId() {
         return userId;
@@ -76,8 +89,9 @@ public class UserPermissionDto extends BaseDto {
         this.dataRangeName = dataRangeName;
     }
 
-    public static UserPermissionDto of(String userId, String roleId, String roleName, String dataRangeId, String dataRangeName) {
+    public static UserPermissionDto of(String id,String userId, String roleId, String roleName, String dataRangeId, String dataRangeName) {
         UserPermissionDto result = new UserPermissionDto();
+        result.setId(id);
         result.setUserId(userId);
         result.setRoleId(roleId);
         result.setRoleName(roleName);

@@ -13,12 +13,12 @@ pageContext.controller("admin.security.user.verifyAuthority3",[],function(page){
 			selectMode:'mutli', /* 多选：mutli,单选：single,默认：normal */
 			height:300,
 			editable:true,
-			pageOp:{
+			/*pageOp:{
 				// el:"#pageDemo",
 				pageSize:10,
 				curPage:1,
 				pageSizeRange:[10,20,50,100,200,500]
-			},
+			},*/
 			columns:[
 				{
 					field:"id",
@@ -26,8 +26,11 @@ pageContext.controller("admin.security.user.verifyAuthority3",[],function(page){
 					width:120,
 					editable:false
 				},{
-					field:"role",
+					field:"roleId",
 					header:"角色",
+					renderer:function(v,record){
+						return record.roleName || v;
+					},
 					editor:{
 						type:"combobox",
 						dataset:"services/xx",
@@ -36,7 +39,7 @@ pageContext.controller("admin.security.user.verifyAuthority3",[],function(page){
 					},
 					width:220
 				},{
-					field:"dataRange",
+					field:"dataRangeId",
 					header:"数据范围",
 					width:220,
 					editable:false
@@ -54,11 +57,11 @@ pageContext.controller("admin.security.user.verifyAuthority3",[],function(page){
 					btn:"#btnSearch",
 					panel:"#formSearch"
 				},
-
 				add:{
 					btn:"#btnAddAuthority",
 					data:{
-						dataRange:"No Control"
+						dataRange:"No Control",
+						roleId:"1"
 					}
 				},
 				del:{
@@ -67,7 +70,10 @@ pageContext.controller("admin.security.user.verifyAuthority3",[],function(page){
 				save:{
 					btn:"#btnSaveAuthority",
 					ajax:{
-						url:"/services/security/user/{0}/permissions/rewrite".format(record.id) // 默认PUT
+						url:"/services/security/user/{0}/permissions/batch".format(record.id) // 默认PUT
+						,success:function () {
+							$("#gridVerifyAuthority").xWidget().reload();
+						}
 					}
 				}
 				// TODO:这里可以添加更多选项，例如批量删除，等选中后批量操作的内容，比如批量更新某个属性（状态）

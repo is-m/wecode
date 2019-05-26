@@ -19,6 +19,22 @@ public class CollectionUtils {
     return list == null || list.isEmpty();
   }
 
+  /**
+   * 判断集合是否全部为空
+   * @param collections
+   * @return
+   */
+  public static boolean isAllEmpty(Collection<?>... collections){
+    if(collections != null){
+      for(Collection<?> item : collections){
+        if(item != null && !item.isEmpty()){
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
   public static <E, K> Map<K, E> list2Map(Collection<E> list, Function<E, K> keyProvider) {
     return isEmpty(list) ? new HashMap<>() : list.stream().collect(Collectors.toMap(keyProvider, el -> el));
   }
