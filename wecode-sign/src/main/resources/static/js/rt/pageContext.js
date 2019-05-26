@@ -75,6 +75,7 @@ define(["require", "jquery", "rt/logger", "rt/request"], function (require, $, l
                 throw '定义控制器时，不支持当前参数个数 ' + argLength;
         }
         var defineFunction = function () {
+            console.debug("call defineFunction");
             var page = {};
             callback && callback.apply(window, [page, $].concat([].slice.call(arguments, 0)))
             return page;
@@ -180,10 +181,12 @@ define(["require", "jquery", "rt/logger", "rt/request"], function (require, $, l
             $el.data("inited", true);
             $el.attr("data-module", url);
 
+
             if(controller && controller.indexOf(".js")>0){
                 controller = formatUrl(controller);
 
                 require([controller],function (ctrl) {
+                    console.log("load controller with "+controller,ctrl);
                     if(ctrl){
                         $el.data("controller",ctrl);
                         ctrl.ready && ctrl.ready();
@@ -213,7 +216,7 @@ define(["require", "jquery", "rt/logger", "rt/request"], function (require, $, l
             delete pageContextMap[page._id];
         }
         $("#__pageContext").data("context", null);
-    }
+    };
 
     var doAction = function (action) {
         if (!action) {
@@ -236,7 +239,7 @@ define(["require", "jquery", "rt/logger", "rt/request"], function (require, $, l
             pageAction = attr || pageAction;
         }
         pageAction ? pageAction() : log.error("执行指定页面动作时，未找到页面动作" + action);
-    }
+    };
 
     var listenReady = function (el, callback) {
         if (!el) throw 'el is illegal.';
@@ -253,14 +256,7 @@ define(["require", "jquery", "rt/logger", "rt/request"], function (require, $, l
         setTimeout(function () {
             listenReady(el, callback, retryCount + 1);
         }, 100);
-    }
-
-    /**
-     * 监听页面销毁
-     */
-    var listenPageDestory = function () {
-
-    }
+    };
 
     /**
      * 查找页面模块，并返回promiss对象
@@ -283,7 +279,7 @@ define(["require", "jquery", "rt/logger", "rt/request"], function (require, $, l
         }, {id: id}), 100);
 
         return dfd;
-    }
+    };
 
     return {
         define: _define,

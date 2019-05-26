@@ -300,7 +300,7 @@ define(["rt/store"],function(store){
                 require(["widget/"+widgetName],$.proxy(function(widget){
                     // 加载完组件则初始化组件的基本内容
                     var options = $this.data("xWidgetOption");
-                    $this.xWidget(this.widgetName,JSON.parse(options || "{}"));
+                    $this.xWidget(this.widgetName,$.isPlainObject(options) ? options : JSON.parse(options || "{}"));
                 },{ el:el, widgetName:widgetName }));
             });
         })

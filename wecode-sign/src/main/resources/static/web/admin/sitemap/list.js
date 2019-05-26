@@ -1,4 +1,4 @@
-pageContext.define("admin.sitemap.list",["widget/data/datatable","widget/tab"],function(page,dt,tab){
+pageContext.controller("admin.sitemap.list",["widget/data/datatable","widget/tab"],function(page,dt,tab){
 		
 	page.ready = function(){    
 		//debugger

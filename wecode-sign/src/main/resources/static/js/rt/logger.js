@@ -33,7 +33,7 @@ define(["rt/core"],function(core){
 			var args = arguments , argLen = args.length;
 			//console.log(levelConfig["prefix"] + (argLen > 2 ? msg.format(Array.prototype.splice.call(args,2,argLen)) : msg));
 			console.log(levelConfig["prefix"] + (argLen > 2 ? msg.format(Array.prototype.splice.call(args,2,argLen)) : msg));
-			if(level == "error" && enableErrorStack){   
+			if(["error","warn"].indexOf(level) >= 0 && enableErrorStack){
 				console.log("STACK",arguments.callee.caller.caller,arguments.callee.caller.caller.caller);
 			} 
 		} 
