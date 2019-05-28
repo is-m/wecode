@@ -1,4 +1,4 @@
-pageContext.define("admin.security.role.edit",["rt/validation"], function(page) {
+pageContext.controller("admin.security.role.edit",["rt/validation"], function(page) {
 
 	var isCreate = true;
 	

@@ -193,7 +193,7 @@ define(["rt/store"],function(store){
 				
 				if($trigger.is("[page-action]")){
 					var action = $trigger.attr("page-action");
-					action && pageContext.$do(action);
+					action && pageContext.$do(action,$trigger);
 				} 
 			});
 			

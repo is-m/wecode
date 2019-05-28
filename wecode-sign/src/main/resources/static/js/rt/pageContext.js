@@ -218,27 +218,23 @@ define(["require", "jquery", "rt/logger", "rt/request"], function (require, $, l
         $("#__pageContext").data("context", null);
     };
 
-    var doAction = function (action) {
+    var doAction = function (action,$trigger) {
         if (!action) {
             log.warn("非法调用页面动作");
             return;
         }
 
         var pageAction = null;
-        for (var i = 0; i < pageContextStack.length; i++) {
-            var page = pageContextStack[i];
-            var attr = page[action];
-            if (attr && !$.isFunction(attr)) {
-                log.warn("执行指定页面动作时，找到非Function类型属性" + action)
-                continue;
-            }
-            if (attr && pageAction) {
-                log.error("执行指定页面动作时，找到多个同名动作" + action);
+
+        var $currPage = $trigger.closest("[data-module]");
+        if($currPage.length){
+            var pageData = $currPage.data();
+            if(pageData && pageData.controller && pageData.controller[action]){
+                pageData.controller[action]();
                 return;
             }
-            pageAction = attr || pageAction;
         }
-        pageAction ? pageAction() : log.error("执行指定页面动作时，未找到页面动作" + action);
+        throw '未被识别的 pageAction '+ action;
     };
 
     var listenReady = function (el, callback) {
