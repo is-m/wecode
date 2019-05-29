@@ -10,8 +10,11 @@ define(["jquery","rt/logger"],function($,log){
 	// priority:起始为1,1表示最高优先级
 	var defaultRuleMap = {
 		"required":{
-			expr:/^\S+$/,
+			//expr:/^\S+$/ig,
 			msg:"不能为空",
+			onValid:function(value){
+				return value != null && value.trim().length > 0;
+			},
 			priority:1
 		}, 
 		"length":{

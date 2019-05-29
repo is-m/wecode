@@ -6,23 +6,7 @@ define([],function(){
 
 	var isFunction = function(obj){
 		return typeof obj === 'function';
-	}
-	
-	/*var _log = console.log;
-	var _warn = console.warn;
-	var _error = console.error;
-	
-	console.log = function(){
-	  _log.apply(this,[].slice.call(arguments));
-	}
-	
-	console.warn = function(){
-	  _warn.apply(this,[].slice.call(arguments));
-  }
-	
-	console.error = function(){
-	  _error.apply(this,[].slice.call(arguments));
-  }*/
+	};
 	
 	var _addProto = function(target,funcName,func){
 		var _proto = null;
@@ -38,18 +22,18 @@ define([],function(){
 	String.prototype.startsWith = function(start,igroneCase){ 
 		var ig = igroneCase || false ,_this = ig ?  this.toLowerCase() : this ,_start = ig ? start.toLowerCase() : start;
 		return oldStartsWith ?  oldStartsWith.call(_this,_start) : this.indexOf(_start) === 0; 
-	}
+	};
 	
 	// 以XX结尾
 	var oldEndsWith = String.prototype.endsWith;
 	String.prototype.endsWith = function(end,igroneCase){ 
 		var ig = igroneCase || false ,_this = ig ?  this.toLowerCase() : this ,_end = ig ? end.toLowerCase() : end;
 		return oldEndsWith ?  oldEndsWith.call(_this,_end) : (_this.lastIndexOf(_end) === (_this.length-_end.length));
-	}
+	};
 	
 	String.prototype.toJSON = function(){
 		var temp = this.trim(); 
-		if(temp.length == 0) return {}; 
+		if(temp.length === 0) return {};
 		
 		try{
 			var v = temp.startsWith("{") && temp.endsWith("}") ? eval("("+this+")") : eval("({"+this+"})"); 
@@ -68,20 +52,20 @@ define([],function(){
 	
 	String.prototype.firstCharUpperCase = function(){
 	  return this.replace(/^[a-z]/,function(v){ return v.toUpperCase()});
-	}
+	};
 	
 	// 字符串格式化，可以是{0},{1}这种占位符，也可以是:fieldName或者{fieldName}这种占位符，但是同一时间只支持一种
 	String.prototype.format = function(){
 	    var args = arguments;
 	    var obj,isObject = false;
-	    if(args.length == 1 && $.isPlainObject(args[0])){
+	    if(args.length === 1 && $.isPlainObject(args[0])){
 	    	obj = args[0];
 	    	isObject = true;
 	    }
 	    return this.replace(/\{\s*(\w+)\s*\}/g,function(m,i,o,n){
 	        return isObject ? obj[i] : args[i];
 	    });
-	} 
+	};
 	 
 	String.prototype.splitEx = function(spiltChar,removeEmpty){
 		var temp = this.split(spiltChar);
@@ -90,12 +74,12 @@ define([],function(){
 		
 		var result = [];
 		for(var i=0;i<temp.length;i++){
-			if(temp[i]!=''){
+			if(temp[i]!==''){
 				result.push(temp[i]);
 			}
 		}
 		return result;
-	}
+	};
 	
 	// 多字符分割
 	String.prototype.multiSplit = function(){
@@ -109,7 +93,7 @@ define([],function(){
 			tempArray = [];
 		}
 		return result;
-	}
+	};
 	
 	// 字符串转日期
 	String.prototype.toDate = function(){
@@ -119,12 +103,12 @@ define([],function(){
 			return new Date(da[0],da[1],da[2],da[3]||0,da[4]||0,da[5]||0);  
 		}
 		throw 'string to date invalid';
-	}
+	};
 	
 	// 数值转日期
 	Number.prototype.toDate = function(){
 		return new Date(this);
-	}
+	};
 	
 	// 日期转字符串
 	Date.prototype.format = function(fmt) { 
@@ -142,11 +126,11 @@ define([],function(){
 	    }
 	    for(var k in o) {
 	        if(new RegExp("("+ k +")").test(fmt)){
-	             fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+	             fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
 	        }
 	    }
 	    return fmt; 
-	}     
+	};
 	
 	Date.prototype.trunc = function(){
 		
@@ -154,7 +138,7 @@ define([],function(){
 	
 	Date.prototype.add = function(value,unit){
 		
-	}; 
+	};
 	
 	// 在指定位置插入元素
 	Array.prototype.insert = function (index, item) { 
@@ -169,7 +153,7 @@ define([],function(){
 			tempMap[this[i]] = 1; 
 		}
 		return Object.keys(tempMap);
-	}
+	};
 	
 	// 数组包含
 	Array.prototype.contains = function(){
@@ -184,14 +168,14 @@ define([],function(){
 			}
 		}
 		return Object.keys(tempObj).length === v;
-	}  
+	};
 	
-	Array.prototype.indexOf = function(val) {
+	/*Array.prototype.indexOf = function(val) {
 		for (var i = 0; i < this.length; i++) {
-			if (this[i] == val) return i;
+			if (this[i] === val) return i;
 		}
 		return -1;
-	};
+	};*/
 	
 	Array.prototype.remove = function(val) {
 		var index = this.indexOf(val);
@@ -199,13 +183,13 @@ define([],function(){
 	};
 	
 	Array.prototype.removeAll = function(){ 
-	  return this.length == 0 ? [] : this.splice(0,this.length);
-	}
+	  return this.length === 0 ? [] : this.splice(0,this.length);
+	};
 	
 	Array.prototype.pushNonEmpty = function(val){
 		// TODO:待修改empty逻辑
 		if(val) this.push(val);
-	}
+	};
 	
 	// 遍历返回
 	Array.prototype._map = function(_func){
@@ -215,7 +199,7 @@ define([],function(){
 			result.pushNonEmpty(_func(this[i])); 
 		}
 		return result;
-	}
+	};
 	
 	Array.prototype.joinProp = function(propString,splitString){
 		var result = [];
@@ -227,11 +211,11 @@ define([],function(){
 			result.pushNonEmpty(item[propString]); 
 		}
 		return result.join(splitString || ",");
-	}
+	};
 	
 	var getType = function(arg){
 		_toString(arg)
-	}
+	};
 	
 	var isJson = function(str){ 
 		try{
@@ -240,15 +224,15 @@ define([],function(){
 		}catch(e){
 			return false;
 		} 
-	}
+	};
 	
 	var isDate = function(obj){
 		return obj instanceof Date;
-	}
+	};
 	
 	var isNumeric = function(obj){
 		return !isNaN(parseFloat(obj)) && isFinite( obj );
-	}
+	};
 	
 	var trunc = function(obj,format){
 		if(isDate(obj)){
@@ -261,7 +245,7 @@ define([],function(){
 			return obj;
 		}
 		throw 'no support obj type by trunc';
-	}
+	};
 	
 	// 事件处理 
 	
@@ -270,7 +254,7 @@ define([],function(){
 		if(v){
 			
 		}
-	}
+	};
 	
 	// https://blog.csdn.net/kongjiea/article/details/17612899
 	var browser={
@@ -291,31 +275,26 @@ define([],function(){
               qq: u.match(/\sQQ/i) == " qq" //是否QQ
           };
        }(),
-      language:(navigator.browserLanguage || navigator.language).toLowerCase()
-	}
-
-	
-	var getObj = function(){
-		
-	} 
+      language:(navigator["browserLanguage"] || navigator.language).toLowerCase()
+	};
 	
 	// 服务端时间与本地事件差异，获取服务端时间为 浏览器当前时间 - 服务端时间差异
 	var _serverTimesDifference = null;
 	var getServerTime = function(){
 	  if(_serverTimesDifference == null) throw '请通过window.setServerTime初始化服务器时间后再进行访问'; 
 	  return +(new Date()) + _serverTimesDifference;
-	}
+	};
 	 
 	var setServerTime = function(times){
 	  var stimes = +times;
 	  if(!stimes || stimes < 1) throw '服务端时间设置错误 '+times; 
 	  _serverTimesDifference = +(new Date()) - stimes;
-	}
+	};
 
-	var initGlobalConfig = function(){
-	  _globalConfig = config || {};
-    setServerTime(_globalConfig.serverTimes);
-	}
+	var _initGlobalConfig =function(config){
+		_globalConfig = config || {};
+		setServerTime(_globalConfig.serverTimes);
+	};
 	
 	var idMap = {};
 	var idGenerator = function(prix){
@@ -326,15 +305,12 @@ define([],function(){
 	};
 	
 	return { 
-		getString:_toString(),
+		getString:_toString,
 		_slice:_slice, 
 		trunc:trunc,
 		getServerTime:getServerTime, 
 		browser:browser,
-		initGlobalConfig:function(config){
-		  _globalConfig = config || {};
-		  setServerTime(_globalConfig.serverTimes);
-		},
+		initGlobalConfig:_initGlobalConfig,
 		newId:idGenerator,
 		body:document.body
 	};

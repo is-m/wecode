@@ -73,16 +73,16 @@ pageContext.controller("admin.security.role.list",["widget/data/datatable","widg
 	}
 	
 	page.doDelete = function(){
-		var $grid = $("#gridUser").xWidget();
+		var $grid = $("#gridRole").xWidget();
 		var records = $grid.getSelectedAllRecords();
 		require(["ui/ui-confirm","rt/request"],function(c,http){
 			if(records && records.length > 0){ 
 				c.confirm("确定删除吗?",function(isOk){
 					if(isOk){
-						http.doDelete("/services/security/user?ids="+records.joinProp("id")).success(function(res){
+						http.doDelete("/services/security/role?ids="+records.joinProp("id")).success(function(res){
 							// TODO 显示删除成功 TiP
 							// 刷新表格
-							$("#gridUser").xWidget().reload();
+							$grid.reload();
 						});
 					}
 				}); 
