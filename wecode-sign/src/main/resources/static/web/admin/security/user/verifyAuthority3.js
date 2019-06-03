@@ -33,7 +33,7 @@ pageContext.controller("admin.security.user.verifyAuthority3",[],function(page){
 					},
 					editor:{
 						type:"combobox",
-						dataset:"services/xx",
+						dataset:"/services/security/role/s",
 						valueField:"id",
 						textField:"name"
 					},

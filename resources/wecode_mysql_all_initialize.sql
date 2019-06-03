@@ -103,8 +103,8 @@ CREATE TABLE sys_user_permission
     `role_id`       VARCHAR(36) NOT NULL COMMENT '角色ID，关联 sys_role.id',
     `data_range_id` VARCHAR(36) COMMENT '数据范围ID，关联sys_data_range.id',
     `expire_date`   TIMESTAMP COMMENT '过期时间',
-    `status`        INT COMMENT '状态，0 无效，1 有效',
-    UNIQUE(`user_id`,`role_id`)
+    `status`        INT COMMENT '状态，0 无效，1 有效'
+   /* ,UNIQUE(`user_id`,`role_id`)*/
 ) COMMENT '用户权限表';
 
 

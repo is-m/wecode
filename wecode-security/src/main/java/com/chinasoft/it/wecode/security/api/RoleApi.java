@@ -34,7 +34,7 @@ public class RoleApi extends CrudApi<RoleDto, RoleResultDto, RoleQueryDto> {
    */
   @ApiOperation(value = "角色授权", notes = "绑定角色权限")
   @PostMapping("/{roleId}/permissions")
-  public void boundPromissions(@PathVariable("roleId") String roleId, @RequestBody String[] promissions) {
+  public void boundPermissions(@PathVariable("roleId") String roleId, @RequestBody String[] promissions) {
     service.boundPermission(roleId, promissions);
   }
 
@@ -45,7 +45,9 @@ public class RoleApi extends CrudApi<RoleDto, RoleResultDto, RoleQueryDto> {
    */
   @ApiOperation(value = "查询角色功能权限ID列表", notes = "查询角色功能权限ID列表")
   @GetMapping("/{roleId}/permissionIds")
-  public Set<String> rolePromissions(@PathVariable("roleId") String roleId) {
+  public Set<String> rolePermissions(@PathVariable("roleId") String roleId) {
     return service.getPermissionIds(roleId);
   }
+
+
 }

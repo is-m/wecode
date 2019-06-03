@@ -29,7 +29,6 @@ define([ "widget/factory", "jquery","template","rt/util" ], function(widget, $, 
 			return html;
 		},
 		afterRender : function() { 
-			
 			var self = this;
 			var $btn = self.$dom.find(".ui-select-arrow"); 
 			$btn.find("i").css({"line-height":$btn.outerHeight()})
@@ -73,6 +72,7 @@ define([ "widget/factory", "jquery","template","rt/util" ], function(widget, $, 
 			if(!$comboBody.data("inited")){
 				$comboBody.html("loading...");
 				// 初始化选项
+				// TODO 这里需要添加缓存，在 Service Url 未改变的情况下应该走缓存
 				util.getDataset(_op.dataset).done(function(data){ 
 					_op._data = data;
 					var renderHtml = tmpl('combo-selection',{ $win:window,$widget:_op,data:data});

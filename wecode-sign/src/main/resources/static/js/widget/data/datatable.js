@@ -103,7 +103,7 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
                                 editorRender = tableEditorRenderMap[colOp.editor.type];
                             }
 
-                            editorRender.render($editContainer).done(function ($ctrl) {
+                            editorRender.render($editContainer,colOp.editor).done(function ($ctrl) {
                                 $ctrl.xWidget() && $ctrl.xWidget().setValue("okay");
                                 // 绑定下拉框点击文本输入区域时不触发文档click事件，防止编辑状态的框进入写入表格值的状态
                                 $editContainer.find("input").click(function () {
@@ -243,50 +243,10 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
                 }
                 if (_oper.save && _oper.save.btn && _oper.save.ajax) {
                     util.el(_oper.save.btn).click(function () {
-                        // TODO:检查并回归表格为未编辑状态，有改动的值需要按新值保存
-                        // self.saveEditable();
-                        // 获取变化的数据
-                        var modifiedData = {adds: [], upds: [], dels: []};
-                        self.$dom.find("tbody>tr").each(function () {
-                            var $tr = $(this);
-                            var record = $tr.data("record");
-                            if ($tr.is(".datatable-row-added")) { // 新增行
-                                modifiedData.adds.push(record);
-                            } else if ($tr.is(".datatable-row-edited")) {
-                                modifiedData.upds.push(record);
-                            } else if ($tr.is(".datatable-row-deleted")) {
-                                if (record.id) {
-                                    modifiedData.dels.push(record.id);
-                                } else {
-                                    // 默认是拿数据的ID作为删除的数据，如果数据ID为空，要么指定table的删除主键属性，要么不能删除
-                                    throw 'Not captured deleted record field with id';
-                                }
-                            } else {
-                                // unchanged data
-                            }
-                        });
-
-                        if (!(modifiedData.dels.length || modifiedData.adds.length || modifiedData.upds.length)) {
-                            msg.errTip("没有记录被改变！");
-                            return;
-                        }
-
-                        var ajaxOption = {};
-                        if (typeof _oper.save.ajax == 'string') {
-                            ajaxOption = {
-                                url: _oper.save.ajax,
-                                method: "put"
-                            }
-                        } else if ($.isPlainObject(_oper.save.ajax)) {
-                            ajaxOption = _oper.save.ajax;
-                            if (!(ajaxOption.method || ajaxOption.type)) {
-                                ajaxOption.method = "put";
-                            }
-                        }
-                        ajaxOption.data = modifiedData;
-                        util.doAjax(ajaxOption).success(function (resp) {
-                            msg.okTip("保存成功！");
-                        });
+                        // 推迟调用表格的保存,防止出现编辑控件未赋值给表格的情况
+                        setTimeout(function () {
+                            self.saveData();
+                        },9);
                     });
                 }
             }
@@ -299,6 +259,58 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
         },
         destory: function () {
 
+        },
+        /**
+         * 保存表格数据
+         * @param ajaxOption
+         */
+        saveData:function(ajaxOp){
+            var _ = this , modifiedData = { adds: [], upds: [], dels: [] };
+
+            _.$dom.find("tbody>tr").each(function () {
+                var $tr = $(this);
+                var record = $tr.data("record");
+                if ($tr.is(".datatable-row-added")) { // 新增行
+                    modifiedData.adds.push(record);
+                } else if ($tr.is(".datatable-row-edited")) {
+                    modifiedData.upds.push(record);
+                } else if ($tr.is(".datatable-row-deleted")) {
+                    if (record.id) {
+                        modifiedData.dels.push(record.id);
+                    } else {
+                        // 默认是拿数据的ID作为删除的数据，如果数据ID为空，要么指定table的删除主键属性，要么不能删除
+                        throw 'Not captured deleted record field with id';
+                    }
+                } else {
+                    // unchanged data
+                }
+            });
+
+            if (!(modifiedData.dels.length || modifiedData.adds.length || modifiedData.upds.length)) {
+                msg.errTip("没有记录被改变！");
+                return;
+            }
+
+            var ajaxOption = ajaxOp || {};
+            if($.isEmptyObject(ajaxOption)){
+                var saveOp = _.op.operation.save;
+
+                if (typeof saveOp.ajax == 'string') {
+                    ajaxOption = {
+                        url: saveOp.ajax,
+                        method: "put"
+                    }
+                } else if ($.isPlainObject(saveOp.ajax)) {
+                    ajaxOption = saveOp.ajax;
+                    if (!(ajaxOption.method || ajaxOption.type)) {
+                        ajaxOption.method = "put";
+                    }
+                }
+                ajaxOption.data = modifiedData;
+            }
+            util.doAjax(ajaxOption).success(function (resp) {
+                msg.okTip("保存成功！");
+            });
         },
         _getColumnOp: function (field) {
             var _cols = this.op.columns;
@@ -598,11 +610,14 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
             }
         },
         "combobox": {
-            render: function ($td) {
+            render: function ($td,editorOp) {
+                //dataset:"services/xx",
+                // 						valueField:"id",
+                // 						textField:"name"
                 var dtd = $.Deferred();
                 require(["widget/form/combo"], function (combo) {
                     var $combo = $("<div></div>");
-                    $combo.xWidget("form.combo", {});
+                    $combo.xWidget("form.combo", editorOp || {});
                     $td.html($combo);
                     dtd.resolve($combo);
                 });

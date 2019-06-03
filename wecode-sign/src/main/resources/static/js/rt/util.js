@@ -26,7 +26,6 @@ define([ "rt/core", "jquery", "rt/request" ], function(core, $, http) {
 				dfd.reject(d);
 			});
 		}else if($.isPlainObject(_d)){
-			var ajaxOption = $.extend({type:"get"},_d)
 			http.ajax(_d).done(function(ajaxResult) {
 				var data = _getAjaxData(ajaxResult);
 				dfd.resolve(data);
@@ -38,9 +37,6 @@ define([ "rt/core", "jquery", "rt/request" ], function(core, $, http) {
 				dfd.reject('未能识别的数据格式');
 			}, 0);
 		}
-		/*
-		 * if ($.isPlainObject(_d)) { return http.ajax(_d); }
-		 */ 
 		return dfd;
 	};
 	
