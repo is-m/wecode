@@ -45,7 +45,7 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
             for (var i = 0; i < _op.columns.length; i++) {
                 var colOp = _op.columns[i];
                 tableWidth += colOp.width || 150;
-                // TODO:如果是操作类型，暂且设置下字段，防止渲染单元格出问题，后续可能会进行优化, _bindCellData
+                // TODO:如果是操作类型，暂且设置下字段，防止渲染单元格出问题，后续可能会进行优化, setRowData
                 if (colOp.type == 'operate') {
                     colOp.field = "__operate" + i;
                 }
@@ -64,11 +64,11 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
             return html;
         },
         afterRender: function () {
-            var self = this;
-            var $tableHead = this.$dom.find(".table-scroll-header:eq(0)");
-            var $tableBody = this.$dom.find(".table-scroll-body:eq(0)");
+            var _ = this;
+            var $tableHead = _.$dom.find(".table-scroll-header:eq(0)");
+            var $tableBody = _.$dom.find(".table-scroll-body:eq(0)");
 
-            if (this.op.editable === true) {
+            if (_.op.editable === true) {
                 $tableBody.on("click", function (e) {
                     var $el = $(e.target);
                     console.log(e);
@@ -81,7 +81,7 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
                         // 取消表格中正在编辑的单元格（同时只能有一个编辑状态的值），注意取消前要保证数据是通过校验的，如果未通过该单元格无法激活编辑状态
                         var $editableCells = $el.closest("tbody").find("td.cell-editable.editing");
                         if ($editableCells.length) {
-                            self._cancelAllEditingCells();
+                            _._cancelAllEditingCells();
                         }
 
                         // 标记单元格为编辑
@@ -89,9 +89,9 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
 
                         var editorRender = tableEditorRenderMap["default"];
                         var field = $el.data("field");
-                        var colOp = self._getColumnOp($el.data("field"));
+                        var colOp = _._getColumnOp($el.data("field"));
                         var ctrlId = "editor_" + field;
-                        var $editContainer = self.$dom.find("#" + ctrlId);
+                        var $editContainer = _.$dom.find("#" + ctrlId);
                         var top = $el.position().top;
                         if ($editContainer.length) {
                             $editContainer.css({top: top, display: "block"});
@@ -111,7 +111,7 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
                                 });
                             });
 
-                            self.$dom.append($editContainer);
+                            _.$dom.append($editContainer);
                             $editContainer.find("input").click(function () {
                                 return false;
                             }).val("123");
@@ -122,6 +122,7 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
                                 if ($editContainer.length && $editContainer.is(":visible")) {
                                     var source = $el.html();
                                     var target = $editContainer.find("input").val();
+
                                     var isOldRow = !$el.closest("tr").is(".datatable-row-added");
                                     if (source != target) {
                                         $el.html(target);
@@ -137,7 +138,6 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
                                                 $el.closest("tr").removeClass("datatable-row-edited");
                                             }
                                         }
-
                                     }
                                     $editContainer.empty().remove();
                                     $el.removeClass("editing");
@@ -189,7 +189,7 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
             });
 
             // 绑定全选事件
-            if (this.op.selectMode == "mutli") {
+            if (_.op.selectMode == "mutli") {
                 $tableHead.find(".table-th-selection :input").on("click", function () {
                     if ($(this).is(":checked")) {
                         $tableBody.find(".row-selection :input").each(function (i, el) {
@@ -208,12 +208,12 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
             //$tableBody.find("tr>td>span",function(){
 
             //});
-            if (this.op.operation) {
-                var _oper = this.op.operation;
+            if (_.op.operation) {
+                var _oper = _.op.operation;
                 if (_oper.search && _oper.search.btn) {
                     util.el(_oper.search.btn).on("click", function () {
-                        self.op.pageOp && $.extend(self.op.pageOp, {curPage: 1});
-                        self.reload();
+                        _.op.pageOp && $.extend(_.op.pageOp, {curPage: 1});
+                        _.reload();
                     });
                 }
                 if (_oper.add && _oper.add.btn) {
@@ -223,7 +223,7 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
                 }
                 if (_oper.del && _oper.del.btn) {
                     util.el(_oper.del.btn).on("click", function (e) {
-                        var $selections = self.$dom.find(".row-selection :checked");
+                        var $selections = _.$dom.find(".row-selection :checked");
                         if (!$selections.length) {
                             msg.errTip("没有数据被选中！");
                             return;
@@ -245,14 +245,14 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
                     util.el(_oper.save.btn).click(function () {
                         // 推迟调用表格的保存,防止出现编辑控件未赋值给表格的情况
                         setTimeout(function () {
-                            self.saveData();
-                        },9);
+                            _.saveData();
+                        },1);
                     });
                 }
             }
 
             if (this.op.autoLoad !== false) {
-                self.reload();
+                _.reload();
             }
         },
         ready: function () {
@@ -387,9 +387,8 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
                                         var _rowData = tempData._data[i];
                                         $(this).attr("data-tree-parent", _rowData[_treeOp.pIdKey || 'parentId'])
                                             .attr("data-tree-level", +$row.data("treeLevel") + 1)
-                                            .attr("data-tree-expand", false)
-                                            .data("record", _rowData);
-                                        _self._bindCellData($(this), _rowData);
+                                            .attr("data-tree-expand", false);
+                                        _self.setRowData($(this), _rowData);
                                     });
                                     _self._renderTreeRows($tempRows);
                                     // 打开节点
@@ -416,8 +415,7 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
             var $row = $(rowHtml);
             $row.addClass("datatable-row-added");
             var rowData = this.op.operation.add.data || {};
-            $row.data("record", rowData);
-            this._bindCellData($row, rowData);
+            this.setRowData($row, rowData);
             // 加载数据
             var $tableDataRows = this.$dom.find(".datatable-rows:eq(0)");
             $tableDataRows.append($row);
@@ -435,20 +433,32 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
             // 获取Cell
             var $cell;
             if ($.isNumeric(cellOrCellIndexOrFieldName)) { // 列索引
-                $cell = _.$dom.find("[data-row-index=" + rowIndex + "]").find("[data-feild='" + _.op.columns[cellOrCellIndexOrFieldName].field + "']");
+                $cell = _.$dom.find("[data-row-index=" + rowIndex + "]").find("[data-field='" + _.op.columns[cellOrCellIndexOrFieldName].field + "']");
             } else if (typeof cellOrCellIndexOrFieldName == "string") { // fieldName
-                $cell = _.$dom.find("[data-row-index=" + rowIndex + "]").find("[data-feild='" + cellOrCellIndexOrFieldName + "']");
+                $cell = _.$dom.find("[data-row-index=" + rowIndex + "]").find("[data-field='" + cellOrCellIndexOrFieldName + "']");
             } else if (cellOrCellIndexOrFieldName.jquery) {
                 $cell = cellOrCellIndexOrFieldName;
             } else {
                 throw 'not support cellOrCellIndexOrFieldName argument with value ' + cellOrCellIndexOrFieldName;
             }
 
-            var colOp = _._getColumnOp($cell.data("field"));
+            var field = $cell.data("field");
+            var colOp = _._getColumnOp(field);
             var record = $cell.closest("tr").data("record") || {};
+
+            // 如果是对象值，则替换数据的多个属性
+            console.log("before set",record)
+            if($.isPlainObject(value)){
+                record = $.extend(record,value);
+            }else{
+                record[field] = value;
+            }
+            console.log("after set",record,$cell.closest("tr").data("record"))
+            //$cell.closest("tr").data("record",record);
+
             if (colOp.renderer) {
                 // 渲染数据
-                var renderValue = colOp.renderer(value, record, colOp, $cell);
+                var renderValue = colOp.renderer(record[field], record, colOp, $cell);
                 // 如果返回值不为 undefined 则进行渲染，控件设置方也可以使用$cell自己来社会资单元格内容,如果人为渲染了内容又返回了内容则会用返回的内容替换手动渲染的内容
                 $cell.html(typeof renderValue !== 'undefined' ? renderValue : "");
             } else {
@@ -488,15 +498,16 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
             return result;
         },
         // 绑定单元格数据
-        _bindCellData: function ($row, record) {
-            var _self = this;
+        setRowData: function ($row, record) {
+            var _ = this;
             // 渲染列值
+            $row.data("record",record);
             $row.find("[data-field]").each(function () {
                 var $cell = $(this);
                 var field = $cell.data("field");
                 // 字段属性为空值时不进行初始化
                 if (field === '') return;
-                _self.setCellValue(record[field], $cell);
+                _.setCellValue(record[field], $cell);
             });
         },
         reload: function () {
@@ -572,9 +583,7 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
 
                 // 在行上绑定数据
                 $rows.each(function (i, n) {
-                    var _rowData = _self.op._data[i];
-                    $(this).data("record", _rowData);
-                    _self._bindCellData($(this), _rowData);
+                    _self.setRowData($(this), _self.op._data[i]);
                     if (_treeOp) {
                         $(this).attr("data-tree-parent", "root");
                         $(this).attr("data-tree-level", 0);
@@ -610,7 +619,7 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
             }
         },
         "combobox": {
-            render: function ($td,editorOp) {
+            render: function ($cell,editorOp) {
                 //dataset:"services/xx",
                 // 						valueField:"id",
                 // 						textField:"name"
@@ -618,7 +627,7 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
                 require(["widget/form/combo"], function (combo) {
                     var $combo = $("<div></div>");
                     $combo.xWidget("form.combo", editorOp || {});
-                    $td.html($combo);
+                    $cell.html($combo);
                     dtd.resolve($combo);
                 });
                 return dtd;
@@ -626,8 +635,9 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
             setValue: function (v, record) {
 
             },
-            getValue: function () {
-
+            getValue: function ($cell) {
+                debugger
+                return null;
             }
         }
     }
