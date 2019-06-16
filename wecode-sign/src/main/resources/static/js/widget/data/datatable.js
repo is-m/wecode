@@ -447,13 +447,13 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
             var record = $cell.closest("tr").data("record") || {};
 
             // 如果是对象值，则替换数据的多个属性
-            console.log("before set",record)
+            // console.log("before set",record)
             if($.isPlainObject(value)){
                 record = $.extend(record,value);
             }else{
                 record[field] = value;
             }
-            console.log("after set",record,$cell.closest("tr").data("record"))
+            // console.log("after set",record,$cell.closest("tr").data("record"))
             //$cell.closest("tr").data("record",record);
 
             if (colOp.renderer) {

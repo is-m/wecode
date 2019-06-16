@@ -20,6 +20,16 @@
 <script>
     require(["jquery", "service/login"], function ($, loginService) {
         var $form = $("#formMiniLogin");
+
+        // 检查当前是否有用户数据，有的话将用户名自动带上，并将光标定位到密码处，否则光标定位到用户名上
+        var lastUsername = loginService.getLastUsername();
+        if(lastUsername){
+            $form.nameEl("username").val(lastUsername);
+            $form.nameEl("password").trigger("focus");
+        }else{
+            $form.nameEl("username").trigger("focus"); // 选中用户名输入框
+        }
+
         $form.on("keydown", "#minUsername,#minPassword,#rememberMe", function (e) {
             // 当用户按回车时，检查用户名或者密码是否已经填写，未填写的话定位光标
             if (e.keyCode === 13) {

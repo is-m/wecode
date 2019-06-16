@@ -113,7 +113,7 @@ pageContext.controller("admin.sitemap.edit",["rt/validation","rt/request"],funct
 	
 	page.exit = function(){
 		console.log("壮士，别杀我");
-	}
+	};
 
 	page.clearParentSiteMap= function () {
 		var $form = $("#formEditSitemap");

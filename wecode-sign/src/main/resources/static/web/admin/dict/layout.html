@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" v-ctrl >
     <div class="row">
         <div class="col-md-3 ">
             <div class="card">
@@ -56,7 +56,7 @@
                     <span>基本属性</span>
                     <hr/>
                     <!--<mform>-->
-                    <form>
+                    <form id="formProperties">
                         <!--<div data-x-widget="form/input" data-x-widget-option=""></div>-->
                         <div id="dictBaseProperties">
                             <div class="form-group row">
@@ -68,27 +68,34 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">节点值</label>
                                 <div class="col-sm-10">
-                                    <input type="password" class="form-control">
+                                    <input type="text" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">父节点</label>
                                 <div class="col-sm-10">
-                                    <input type="password" class="form-control">
+                                    <div class="input-group">
+                                        <input type="hidden" name="pid">
+                                        <input type="text" class="form-control" name="parentPath">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary" type="button" page-action="clearParent">&times;</button>
+                                            <button class="btn btn-outline-secondary" type="button" page-action="selectParent">
+                                                <i class="fa fa-ellipsis-h"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">是否生效</label>
                                 <div class="col-sm-10">
                                     <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" id="customRadioInline1" name="customRadioInline1"
-                                               class="custom-control-input">
-                                        <label class="custom-control-label" for="customRadioInline1">生效</label>
+                                        <input type="radio" id="rdoStatusValid" name="status" class="custom-control-input" value="1">
+                                        <label class="custom-control-label" for="rdoStatusValid">生效</label>
                                     </div>
                                     <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" id="customRadioInline2" name="customRadioInline1"
-                                               class="custom-control-input">
-                                        <label class="custom-control-label" for="customRadioInline2">失效</label>
+                                        <input type="radio" id="rdoStatusInvalid" name="status" class="custom-control-input" value="0">
+                                        <label class="custom-control-label" for="rdoStatusInvalid">失效</label>
                                     </div>
                                 </div>
                             </div>

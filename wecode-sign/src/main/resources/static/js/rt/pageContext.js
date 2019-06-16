@@ -83,11 +83,11 @@ define(["require", "jquery", "rt/logger", "rt/request"], function (require, $, l
         // FIXME:下面应该只注册一次，需要优化
         define(controllerName, components || [], defineFunction);
         define(components || [], defineFunction);
-    }
+    };
 
     var _get = function (id) {
         return pageContextMap[id];
-    }
+    };
 
     var _shutPage = function (el) {
         var $el = $(el);
@@ -121,6 +121,9 @@ define(["require", "jquery", "rt/logger", "rt/request"], function (require, $, l
     };
     var _loadPage = function (el, pageUrl, controller, callback) {
         var $el = el.jquery ? el : $(el);
+
+        shutdownOldPage($el);
+
         var url = formatUrl(pageUrl);
 
 
@@ -170,7 +173,7 @@ define(["require", "jquery", "rt/logger", "rt/request"], function (require, $, l
                     var ctrlName = ctrlValue.replace(/(^(\/|\\)|\.js$)/ig, '').replace(/(\/|\\)/g, ".");
                     require([ctrlValue], function (ctrlObj) {
                         $ctrlEl.attr("v-ctrl", ctrlName);
-                        var thisCtrl = $.extend(true, {$s: $ctrlEl, $page: thisCtrl}, ctrlObj);
+                        var thisCtrl = $.extend(true, {$s: $ctrlEl, $page: $ctrlEl}, ctrlObj);
                         $ctrlEl.data("controller", thisCtrl);
                         thisCtrl.ready && thisCtrl.ready();
                         callback && callback(true);
@@ -206,16 +209,35 @@ define(["require", "jquery", "rt/logger", "rt/request"], function (require, $, l
             console.log("page context load page error!", resp, status, xhr)
             callback && callback(false);
         });
-    }
+    };
 
-    var _shutdown = function () {
-        var page;
-        while (page = pageContextStack.pop()) {
-            console.log("shutdown js module of " + page._id);
-            page.exit && page.exit();
-            delete pageContextMap[page._id];
+    var shutdownOldPage = function ($el) {
+        if(!$el) throw '$el is not be null or empty';
+
+        // 检查是否当前元素已经加载过页面上下文或者子元素是否有页面上线文，如果加载过则先清理再
+        var oldPageController = [];
+        // main
+        if($el.is("[v-ctrl]")){
+            oldPageController.push({ $dom:$el , controller:$el.data("controller") });
         }
-        $("#__pageContext").data("context", null);
+        // children
+        var oldChildren = $el.find("[v-ctrl]");
+        if(oldChildren.length){
+            oldChildren.each(function () {
+                var _ = $(this);
+                oldPageController.push({ $dom: _ , controller: _.data("controller") } );
+            });
+        }
+
+        var len = oldPageController.length;
+        if(len){
+            log.info("shutdown page context of controller length "+ len);
+            while(--len > -1){
+                var shutdownObj = oldPageController[len];
+                shutdownObj.$dom.xWidget("destroy");
+                shutdownObj.controller.exit && shutdownObj.controller.exit();
+            }
+        }
     };
 
     var doAction = function (action,$trigger) {
@@ -226,7 +248,7 @@ define(["require", "jquery", "rt/logger", "rt/request"], function (require, $, l
 
         var pageAction = null;
 
-        var $currPage = $trigger.closest("[data-module]");
+        var $currPage = $trigger.closest("[v-ctrl]");
         if($currPage.length){
             var pageData = $currPage.data();
             if(pageData && pageData.controller && pageData.controller[action]){
@@ -279,7 +301,6 @@ define(["require", "jquery", "rt/logger", "rt/request"], function (require, $, l
 
     return {
         define: _define,
-        shutdown: _shutdown,
         shutPage: _shutPage,
         loadPage: _loadPage,
         get: _get,

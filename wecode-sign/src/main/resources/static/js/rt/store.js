@@ -52,7 +52,9 @@ define([], function() {
       return null;
     },
     remove:function(key){
+      var value = db[key];
       delete db[key];
+      return value;
     }
 
   }

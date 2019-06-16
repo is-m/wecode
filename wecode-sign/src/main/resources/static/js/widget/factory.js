@@ -156,6 +156,12 @@ define(function (require) {
     }
 
     $.fn.xWidget = function (name, op, data) {
+        if(name === "destroy"){
+            // TODO：待实现区域销毁组件，调用组件的destroy即可
+            console.log("xWidget destroy is not be implements.");
+            return ;
+        }
+
         // 定义一个异步对象
         if (!arguments.length) {
             var managers = [];

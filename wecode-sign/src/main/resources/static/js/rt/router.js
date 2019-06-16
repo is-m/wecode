@@ -36,11 +36,12 @@ define(["jquery","rt/pageContext"], function($,pc) {
 				$context.html("<div class='container'><h2>Welcome to My Home (No User Settings)</h2></div>")
 				return;
 			}
-			
-			// 触发卸载事件
-			pc.shutdown();
+
 			// 加载新页面
 			var url  = appConfig.contextPath + path;
+
+			// FIXME:目前bootstrap datetimepicker 控件会在 body下方加载弹出框，这个清理元素是临时方案
+			$(".datetimepicker.dropdown-menu").remove();
 			pc.loadPage($context,url);  
 		},this)(); 
 	};

@@ -77,6 +77,10 @@ define(["jquery", "rt/validation", "rt/store"], function ($, v, store) {
                 store.remove("$USER_TOKEN$");
             } finally {
             }
+        },
+        getLastUsername:function () {
+            var tokenObj = store.get("$USER_TOKEN$");
+            return tokenObj ? tokenObj.identifier : "";
         }
     }
 

@@ -37,8 +37,9 @@ define([ "widget/factory", "jquery", "jquery.datetimepicker" ], function(
 		ready : function() {
 
 		},
-		destory : function() {
-
+		destroy : function() {
+			var $dateEl = this.op.showIconButton ? this.$dom : this.$dom.find("input:eq(0)") ;
+			$dateEl.datetimepicker("destroy");
 		}
 	});
 
