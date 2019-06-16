@@ -35,7 +35,7 @@ define(["jquery"],function($){
 
 		op = $.extend({},ajaxDefaultOption,op);
 		
-		if(op.contentType == "application/json" && (op.method == "post" || op.method == "put") && $.isPlainObject(op.data) ){
+		if(op.contentType === "application/json" && (op.method === "post" || op.method === "put") && $.isPlainObject(op.data) ){
 			op.data = JSON.stringify(op.data);
 		}
 		

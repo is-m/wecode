@@ -1,9 +1,10 @@
-pageContext.define("admin.sitemap.edit",["rt/validation","rt/request"],function(page,validator,http){
-	var $form = $("#formEditSitemap");
+pageContext.controller("admin.sitemap.edit",["rt/validation","rt/request"],function(page,validator,http){
+
 	
 	var isCreate = true;
 	
-	page.ready = function(){   
+	page.ready = function(){
+		var $form = $("#formEditSitemap");
 		// 从后台获取校验内容并绑定到元素
 		//validator.bind($("#formEditSitemap"),"CatelogVO",["CreateGroup"]);
 		 
@@ -108,9 +109,15 @@ pageContext.define("admin.sitemap.edit",["rt/validation","rt/request"],function(
 		
 		$("#formEditSitemap").jsonData(record);
 		isCreate = false;
-	}
+	};
 	
 	page.exit = function(){
 		console.log("壮士，别杀我");
+	}
+
+	page.clearParentSiteMap= function () {
+		var $form = $("#formEditSitemap");
+		$form.nameEl("parentName").val("");
+		$form.nameEl("pid").val("");
 	}
 });

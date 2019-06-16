@@ -1,98 +1,104 @@
-<script type="text/javascript" src="@{/web/admin/sitemap/edit.js}"></script> 
-<!-- <h2>这个是编辑页面</h2> -->
-<div class="container">
-  <form class="mu-form" id="formEditSitemap" autocomplete="off"> 
-  	<input name="id" type="hidden" />
-  	<div class="mu-form-header">
-  		<h5><span>基本信息</span></h5>
-  	</div>
-  	<div class="form-group row">
-      <label class="col-sm-2 col-form-label require">菜单标题 <i class="fa fa-question-circle-o"></i></label>
-      <div class="col-sm-4">
-      	<div class="input-group">
-	      <div class="input-group-prepend">
-		    <button class="btn btn-outline-secondary" type="button" id="btnSelectIcon" title="显示图标">无</button>
-		  </div>
-	      <input name="name" type="text" class="form-control" data-rule="required maxLength:5">
-	      <input name="icon" type="hidden" />
-	    </div> 
-      </div>
-      
-      <label class="col-sm-2 col-form-label">父菜单</label>
-      <div class="col-sm-4">
-      	<div class="input-group">
-	      <input name="parentName" type="text" class="form-control" readonly="readonly">
-	      <input name="pid" type="hidden">
-	       <div class="input-group-append">
-		    <button class="btn btn-outline-secondary" type="button" id="btnSelectParent"><i class="fa fa-ellipsis-h"></i></button>
-		  </div> 
-	    </div> 
-      </div>
-    </div> 
-    
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">访问路径</label>
-      <div class="col-sm-4">
-        <input name="uri" type="text" class="form-control" >
-      </div>
-      
-      <label class="col-sm-2 col-form-label">访问方式</label>
-      <div class="col-sm-4">
-      	<select name="target" class="form-control">
-		  <option value="page" selected="selected">内部链接</option>
-		  <option value="iframe">嵌入页面</option>
-		  <option value="window">新窗口</option>
-		</select> 
-      </div>
-    </div>
+<div class="container-fluid">
+    <form class="mu-form" id="formEditSitemap" autocomplete="off">
+        <input name="id" type="hidden"/>
+        <div class="mu-form-header">
+            <h5><span>基本信息</span></h5>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label require">菜单标题 <i class="fa fa-question-circle-o"></i></label>
+            <div class="col-sm-4">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <button class="btn btn-outline-secondary" type="button" id="btnSelectIcon" title="显示图标">无
+                        </button>
+                    </div>
+                    <input name="name" type="text" class="form-control" data-rule="required">
+                    <input name="icon" type="hidden"/>
+                </div>
+            </div>
 
-	<div class="mu-form-header">
-  		<h5><span>显示信息</span></h5>
-  	</div>
-  	
-  	<div class="form-group row">
-  	 <label class="col-sm-2 col-form-label">是否启用</label>
-      <div class="col-sm-4">
-      	<div class="form-check form-check-inline">
-		  <input class="form-check-input" type="radio" id="status1" name="status" value="1" checked="checked">
-		  <label class="form-check-label" for="status1">生效</label>
-		</div>
-		<div class="form-check form-check-inline">
-		  <input class="form-check-input" type="radio" id="status2" name="status" value="0">
-		  <label class="form-check-label" for="status2">失效</label>
-		</div>  
-      </div>
-      
-      <label class="col-sm-2 col-form-label">显示顺序</label>
-      <div class="col-sm-4">
-        <input name="seq" class="form-control"  data-rule="required numeric">
-      </div> 
-    </div>
-    
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">显示模式</label>
-      <div class="col-sm-4">
-        <select class="form-control" name="allowType">
-		  <option value="all" selected="selected">全部可见</option>
-		  <option value="hasChildren">有子栏目时可见</option>
-		  <option value="hasPermission">有权限时可见</option>
-		</select> 
-      </div>
-    </div> 
-    
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">创建日期</label>
-      <div class="col-sm-4">
-      	<div data-x-widget='dateBox' 
-			 data-x-widget-option='showIconButton:true, format:"yyyy-mm-dd hh:ii", minView:"hour"' id="createDate"></div>
-      </div>
-    </div> 
-    
-    <div class="form-group row mu-form-btns">
-      <div class="col-sm-12 text-center">
-        <button id="btnSave" type="button" class="btn btn-sm btn-outline-primary"><i class="fa fa-check"></i> 保存</button> 
-        <button id="btnCancel" type="button" class="btn btn-sm btn-outline-primary"><i class="fa fa-close"></i> 取消</button>
-      </div>
-    </div>
-  </form>
+            <label class="col-sm-2 col-form-label">父菜单</label>
+            <div class="col-sm-4">
+                <div class="input-group">
+                    <input name="pid" type="hidden">
+                    <input name="parentName" type="text" class="form-control" readonly="readonly">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" page-action="clearParentSiteMap">&times;</button>
+                        <button class="btn btn-outline-secondary" type="button" id="btnSelectParent">
+                            <i class="fa fa-ellipsis-h"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">访问路径</label>
+            <div class="col-sm-4">
+                <input name="uri" type="text" class="form-control">
+            </div>
+
+            <label class="col-sm-2 col-form-label">访问方式</label>
+            <div class="col-sm-4">
+                <select name="target" class="form-control">
+                    <option value="page" selected="selected">内部链接</option>
+                    <option value="iframe">嵌入页面</option>
+                    <option value="window">新窗口</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="mu-form-header">
+            <h5><span>显示信息</span></h5>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">是否启用</label>
+            <div class="col-sm-4">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="status1" name="status" value="1" checked="checked">
+                    <label class="form-check-label" for="status1">生效</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="status2" name="status" value="0">
+                    <label class="form-check-label" for="status2">失效</label>
+                </div>
+            </div>
+
+            <label class="col-sm-2 col-form-label">显示顺序</label>
+            <div class="col-sm-4">
+                <input name="seq" class="form-control" data-rule="numeric">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">显示模式</label>
+            <div class="col-sm-4">
+                <select class="form-control" name="allowType">
+                    <option value="all" selected="selected">全部可见</option>
+                    <option value="hasChildren">有子栏目时可见</option>
+                    <option value="hasPermission">有权限时可见</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">创建日期</label>
+            <div class="col-sm-4">
+                <div data-x-widget='dateBox'
+                     data-x-widget-option='showIconButton:true, format:"yyyy-mm-dd hh:ii", minView:"hour"'
+                     id="createDate"></div>
+            </div>
+        </div>
+
+        <div class="form-group row mu-form-btns">
+            <div class="col-sm-12 text-center">
+                <button id="btnSave" type="button" class="btn btn-sm btn-outline-primary"><i class="fa fa-check"></i> 保存
+                </button>
+                <button id="btnCancel" type="button" class="btn btn-sm btn-outline-primary"><i class="fa fa-close"></i>
+                    取消
+                </button>
+            </div>
+        </div>
+    </form>
 </div> 

@@ -18,7 +18,6 @@ public class CatelogDto extends BaseDto {
    * 父节点ID
    */
   @ApiModelProperty(value = "父节点ID", example = "root")
-  @NotEmpty
   @Length(max = 36)
   private String pid;
 

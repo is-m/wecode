@@ -1,11 +1,7 @@
 // TODO: 1.pageContext 需要预加载 ，2.widget/data/datable 需要在使用时加载 
-pageContext.controller("admin.sitemap.list",["widget/data/datatable","widget/tab"],function(page,dt,tab){
+pageContext.controller("admin.sitemap.list",["widget/data/datatable","widget/tab"],function(page){
 	
 	page.ready = function(){
-		debugger
-		//debugger
-		//$("#createDate1").xWidget("form.DateBox",{ showIconButton:false ,format : 'yyyy-mm-dd hh:ii',minView : "hour"});
-		//$("#createDate2").xWidget("form.DateBox",{ showIconButton:false ,format : 'yyyy-mm-dd hh:ii',minView : "hour"});
 		
 		var gridOption = {
 			selectMode:'mutli', /* 多选：mutli,单选：single,默认：normal */

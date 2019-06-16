@@ -8,6 +8,9 @@ pageContext.controller("admin.dict.layout",["widget/tab"],function(page){
 				allowClose:true
 			}]
 		}); */
+	};
+
+	page.toggleAdvanceSetting = function(){
+
 	}
-	
 });

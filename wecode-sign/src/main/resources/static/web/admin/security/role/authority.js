@@ -1,6 +1,5 @@
 // TODO: 1.pageContext 需要预加载 ，2.widget/data/datable 需要在使用时加载
 pageContext.controller("admin.security.role.authority",["rt/request"],function(page,$S,http){
-	debugger
 	var role;
 	
 	page.ready = function(){

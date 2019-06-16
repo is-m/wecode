@@ -101,7 +101,8 @@ define(["rt/store"],function(store){
               });
             }else{
               // TODO:待修改需要根据校验或者什么问题来定位显示错误信息
-              //alert(jqXHR.responseJSON);
+              // alert(jqXHR.responseJSON);
+              // TODO：需要将当前请求方的处理逻辑中断，并能再登陆成功后自动重新发起请求，当然也可以是登陆成功后刷新页面，或者暂时先不实现自动，能手动也不错
               alert(jqXHR.responseText);
             } 
             break;

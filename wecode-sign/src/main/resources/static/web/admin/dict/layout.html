@@ -1,113 +1,184 @@
 <div class="container-fluid">
-	<div class="row">
-		<div class="col-md-3 ">
-			<div class="card">
-				<div class="card-body">
-					<div data-x-widget="data/tree" data-x-widget-option='{ "id":"treeProperty", "dataset":"/services/base/property/tree" ,"check": { "enable": false },"filterable":true,"view":{"filter":true,"expandLevel":1} }'></div>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-9 ">
-			<!--<m-span>
-				<m-text>
-					<m-a href="1"></m-a>
-				</m-text>
-			</m-span>-->
-			<!-- https://www.zhangxinxu.com/wordpress/2018/03/htmlunknownelement-html5-custom-elements/ -->
-			<!-- 语义化标签，WebComponent，组件名称和组件属性不区分大小写 -->
-			<!-- mcard 是一个卡片 -->
-			<!--<m-card title="基本属性">
-				&lt;!&ndash; mfrom 是一个表单，卡片里面有一个表单，在表单上有一个mex的属性表示扩展上个元素的子元素，参考xaml的设计 &ndash;&gt;
-				<mform action="api/xxx" method="post" mex="card.body">
-					<form.item label="节点名称" type="text" name="name" rule="length[1,30],user" />
-					<form.item label="节点值" type="text" name="value" rule="length[1,30],user" />
-					<form.item label="父节点" type="treeSelect" name="value" dataset="xx" rule="required">
-						<attr name="treeOption">
-							{
-							
-							}
-						</attr>
-					</form.item>
-					<form.item label="是否有效" type="radio" name="enabled" dataset='[{text:"生效",value:1,text:"失效",value:0}]' >
-						<attr name="onChange">
-							function(newValue,oldValue){
-								console.log("值发生改变啦",newValue,oldValue);
-							}
-						</attr>
-						&lt;!&ndash; 为了方便编辑器变色提示，支持脚本型属性 &ndash;&gt;
-						<script name="onChange">
-							function a(newValue,oldValue){
-								console.log("值发生改变啦",newValue,oldValue);
-							}
-						</script>
-					</form.item>
-					<form.item label="备注" type="textarea" name="remark" />
-					<div class="text-center">
-						<form.submit text="保存" />
-						<form.button value="新增" />
-						<form.button value="删除" />
-					</div>
-				</mform>
-			</m-card>
-			-->
-			<div class="card">
-			<div class="card-body">
-				<span>基本属性</span>
-				<hr />
-				<!--<mform>-->
-				<form> 
-				  <!--<div data-x-widget="form/input" data-x-widget-option=""></div>-->
-				  <div class="form-group row">
-				    <label class="col-sm-2 col-form-label">节点名称</label>
-				    <div class="col-sm-10">
-				      <input type="email" class="form-control" placeholder="Email">
-				    </div>
-				  </div>
-				  <div class="form-group row">
-				    <label class="col-sm-2 col-form-label">节点值</label>
-				    <div class="col-sm-10">
-				      <input type="password" class="form-control" placeholder="Password">
-				    </div>
-				  </div>
-				  <div class="form-group row">
-				    <label class="col-sm-2 col-form-label">父节点</label>
-				    <div class="col-sm-10">
-				      <input type="password" class="form-control" placeholder="Password">
-				    </div>
-				  </div>
-				  <div class="form-group row">
-				    <label for="inputPassword3" class="col-sm-2 col-form-label">是否生效</label>
-				    <div class="col-sm-10">
-				       <div class="custom-control custom-radio custom-control-inline">
-						  <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input">
-						  <label class="custom-control-label" for="customRadioInline1">生效</label>
-						</div>
-						<div class="custom-control custom-radio custom-control-inline">
-						  <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input">
-						  <label class="custom-control-label" for="customRadioInline2">失效</label>
-						</div>
-				    </div>
-				  </div>
-				   
-				   <div class="form-group row">
-				    <label for="inputPassword3" class="col-sm-2 col-form-label">备注</label>
-				    <div class="col-sm-10">
-				       <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-				    </div>
-				  </div>
-				  
-				 
-				  <div class="form-group row">
-				    <div class="col-sm-10">
-				      <button type="submit" class="btn btn-primary">保存</button>
-				      <button type="button" class="btn btn-danger">删除</button>
-				    </div>
-				  </div>
-				</form> 
-			</div>
-			</div>
-			 
-		</div>
-	</div>
+    <div class="row">
+        <div class="col-md-3 ">
+            <div class="card">
+                <div class="card-body">
+                    <div data-x-widget="data/tree"
+                         data-x-widget-option='{ "id":"treeProperty", "dataset":"/services/base/property/tree" ,"check": { "enable": false },"filterable":true,"view":{"filter":true,"expandLevel":1} }'></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9 ">
+            <!--<m-span>
+                <m-text>
+                    <m-a href="1"></m-a>
+                </m-text>
+            </m-span>-->
+            <!-- https://www.zhangxinxu.com/wordpress/2018/03/htmlunknownelement-html5-custom-elements/ -->
+            <!-- 语义化标签，WebComponent，组件名称和组件属性不区分大小写 -->
+            <!-- mcard 是一个卡片 -->
+            <!--<m-card title="基本属性">
+                &lt;!&ndash; mfrom 是一个表单，卡片里面有一个表单，在表单上有一个mex的属性表示扩展上个元素的子元素，参考xaml的设计 &ndash;&gt;
+                <mform action="api/xxx" method="post" mex="card.body">
+                    <form.item label="节点名称" type="text" name="name" rule="length[1,30],user" />
+                    <form.item label="节点值" type="text" name="value" rule="length[1,30],user" />
+                    <form.item label="父节点" type="treeSelect" name="value" dataset="xx" rule="required">
+                        <attr name="treeOption">
+                            {
+
+                            }
+                        </attr>
+                    </form.item>
+                    <form.item label="是否有效" type="radio" name="enabled" dataset='[{text:"生效",value:1,text:"失效",value:0}]' >
+                        <attr name="onChange">
+                            function(newValue,oldValue){
+                                console.log("值发生改变啦",newValue,oldValue);
+                            }
+                        </attr>
+                        &lt;!&ndash; 为了方便编辑器变色提示，支持脚本型属性 &ndash;&gt;
+                        <script name="onChange">
+                            function a(newValue,oldValue){
+                                console.log("值发生改变啦",newValue,oldValue);
+                            }
+                        </script>
+                    </form.item>
+                    <form.item label="备注" type="textarea" name="remark" />
+                    <div class="text-center">
+                        <form.submit text="保存" />
+                        <form.button value="新增" />
+                        <form.button value="删除" />
+                    </div>
+                </mform>
+            </m-card>
+            -->
+            <div class="card">
+                <div class="card-body">
+                    <span>基本属性</span>
+                    <hr/>
+                    <!--<mform>-->
+                    <form>
+                        <!--<div data-x-widget="form/input" data-x-widget-option=""></div>-->
+                        <div id="dictBaseProperties">
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">节点名称</label>
+                                <div class="col-sm-10">
+                                    <input type="email" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">节点值</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">父节点</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">是否生效</label>
+                                <div class="col-sm-10">
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" id="customRadioInline1" name="customRadioInline1"
+                                               class="custom-control-input">
+                                        <label class="custom-control-label" for="customRadioInline1">生效</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" id="customRadioInline2" name="customRadioInline1"
+                                               class="custom-control-input">
+                                        <label class="custom-control-label" for="customRadioInline2">失效</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">备注</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="dictAdvanceProperties">
+                            <h5 class="text-center">更多设置</h5>
+                            <div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">样式</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control">
+                                            <option value="default">文本值</option>
+                                            <option value="personTable">LOOKUP</option>
+                                            <option value="personTable">用户表格</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">校验规则</label>
+                                    <div class="col-sm-10">
+                                        如系统支持的相关校验，默认值，长度，表达式，当样式为文本值时可以配置
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">校验参数</label>
+                                    <div class="col-sm-10">
+                                        长度时，需要设置maxLength，表达式时，需要设置pattern
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">错误消息</label>
+                                    <div class="col-sm-10">
+                                        当校验失败时界面提示的用户消息，可以使用占位符来获取参数或者用户输入的值
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button type="button" class="btn">
+                                        <i class="fa fa-plus"></i> 添加校验
+                                    </button>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">事件类型</label>
+                                    <div class="col-sm-10">
+                                        可以是系统公开的接口，也可以是Rest Api，或者其他跨应用通信的相关定义
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">事件值</label>
+                                    <div class="col-sm-10">
+                                        按事件类型确定的接口调用信息，如：url，请求参数，等
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">说明</label>
+                                    <div class="col-sm-10">
+                                        添加监听后，当值发生变动时，会进行通知
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button type="button" class="btn">
+                                        <i class="fa fa-plus"></i> 添加监听
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <button type="submit" class="btn btn-primary">保存</button>
+                                <button type="button" class="btn btn-danger">删除</button>
+                                <button type="button" class="btn btn-link" page-action="toggleAdvanceSetting">
+                                    更多设置
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 </div>

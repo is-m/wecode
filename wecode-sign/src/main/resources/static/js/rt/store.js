@@ -23,7 +23,7 @@ define([], function() {
      *          过期时间 timestamp，也可以是 0 表示关闭后过期，不填或者-1表示永久
      */
     set: function(key, value, exp) {
-      alert((typeof db) + " " + (typeof JSON) + " " + typeof(JSON && JSON.stringify));
+      //alert((typeof db) + " " + (typeof JSON) + " " + typeof(JSON && JSON.stringify));
       /*try{*/
       db[key] = JSON.stringify({
         val: value,
@@ -32,7 +32,7 @@ define([], function() {
       /*}catch(e){
         alert("ERROR:"+e);
       }*/
-      alert("alert set storeed")
+      //alert("alert set storeed")
     },
     /**
      * 获取

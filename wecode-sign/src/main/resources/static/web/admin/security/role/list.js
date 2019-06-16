@@ -166,10 +166,8 @@ pageContext.controller("admin.security.role.list",["widget/data/datatable","widg
 			title: "角色授权",
 			url:"/web/admin/security/role/authority.html",
 			allowClose:true,
-			afterLoad:function(){
-				pageContext.module("admin.security.role.authority").done(function(m){
-					m.init(record);
-				});
+			afterLoad:function(page){
+				page.init(record);
 			}
 		});  
 	}

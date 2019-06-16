@@ -162,7 +162,7 @@ define(function (require) {
             this.each(function () {
                 managers.push($(this).data("__widget"));
             });
-            return managers.length == 1 ? managers[0] : managers;
+            return managers.length === 1 ? managers[0] : managers;
         }
 
         /*var w = require("widget/"+name);*/
@@ -177,7 +177,7 @@ define(function (require) {
 
             var widgetDefine = Widget.define;
 
-            var initCompoent = $.proxy(function () {
+            var initComponent = $.proxy(function () {
                 // 如果没有templateUri，该写法待和initWidget内的代码重构
                 if (!widgetDefine.templateUri) {
                     var widgetOp = $.extend({}, Widget.define.op, op || {});
@@ -226,13 +226,13 @@ define(function (require) {
                         res.loadCSS(resourceOp.css[0]);
                     }
                     if (resourceOp.js) {
-                        res.loadJS(resourceOp.js[0], initCompoent);
+                        res.loadJS(resourceOp.js[0], initComponent);
                     } else {
-                        initCompoent();
+                        initComponent();
                     }
                 }, {Widget: Widget, widgetDefine: widgetDefine, widgetBegin: $widgetBegin}));
             } else {
-                initCompoent();
+                initComponent();
             }
         }).xWidget();
     }
@@ -275,4 +275,4 @@ define(function (require) {
     };
 
     return WidgetFactory;
-})
+});

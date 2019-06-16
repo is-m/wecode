@@ -218,7 +218,7 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
                 }
                 if (_oper.add && _oper.add.btn) {
                     util.el(_oper.add.btn).on("click", function () {
-                        self._renderEditableRow();
+                        _._renderEditableRow();
                     });
                 }
                 if (_oper.del && _oper.del.btn) {

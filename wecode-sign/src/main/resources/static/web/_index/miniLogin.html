@@ -1,38 +1,61 @@
 <div class="container">
-	<form id="formMiniLogin" >
-		<div class="form-group">
-			<label for="minUsername" class="require">用户名/电话/邮箱</label> <input type="text"
-				class="form-control" id="minUsername" name="username" data-rule="required">
-		</div>
-		<div class="form-group">
-			<label for="minPassword" class="require">密码</label> <input type="password"
-				class="form-control" id="minPassword" name="password" data-rule="required">
-		</div>
-		<div class="form-group form-check">
-			<input type="checkbox" class="form-check-input" id="exampleCheck1">
-			<label class="form-check-label" for="exampleCheck1">记住我</label>
-		</div>
-		<button name="btnLogin" type="button" class="btn btn-primary">登录</button>
-		<button name="btnRegister" type="button" class="btn btn-default">注册</button>
-	</form>
+    <form id="formMiniLogin">
+        <div class="form-group">
+            <label for="minUsername" class="require">用户名/电话/邮箱</label>
+            <input type="text" class="form-control" id="minUsername" name="username" data-rule="required">
+        </div>
+        <div class="form-group">
+            <label for="minPassword" class="require">密码</label>
+            <input type="password" class="form-control" id="minPassword" name="password" data-rule="required">
+        </div>
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="rememberMe" name="rememberMe" value="1">
+            <label class="form-check-label" for="rememberMe">记住我</label>
+        </div>
+        <button name="btnLogin" type="button" class="btn btn-primary">登录</button>
+        <button name="btnRegister" type="button" class="btn btn-default">注册</button>
+    </form>
 </div>
 
 <script>
-  require(["jquery", "service/login"], function($, loginService) {
-    var $form = $("#formMiniLogin");
+    require(["jquery", "service/login"], function ($, loginService) {
+        var $form = $("#formMiniLogin");
+        $form.on("keydown", "#minUsername,#minPassword,#rememberMe", function (e) {
+            // 当用户按回车时，检查用户名或者密码是否已经填写，未填写的话定位光标
+            if (e.keyCode === 13) {
+                var loginInfo = $form.jsonData();
+                var username = loginInfo.username || '', password = loginInfo.password || '';
+                if (!username.trim().length) {
+                    $("#minUsername").trigger("focus");
+                } else if (!password.trim().length) {
+                    $("#minPassword").trigger("focus");
+                } else {
+                    $form.nameEl("btnLogin").trigger("click");
+                }
+            }
+        });
+        $form.nameEl("btnLogin").click(function () {
+            var _ = $(this);
+            if (!_.is("[disabled]")) {
+                _.attr("disabled", "true").text("正在登陆...");
 
-    $form.nameEl("btnLogin").click(function() {
-      loginService.login($("#formMiniLogin")).done(function(){
-        // TODO:重新加载用户信息，并会回填当前window上下文
-        // 关闭弹窗,miniLoginDialog 该函数在 app.js 文件中设置
-        window.miniLoginDialog.close();
-        delete window["miniLoginDialog"];
-      });
-      return false;
-    });
+                loginService.login($("#formMiniLogin"))
+                    .done(function () {
+                        // TODO:重新加载用户信息，并会回填当前window上下文
+                        // 关闭弹窗,miniLoginDialog 该函数在 app.js 文件中设置
+                        window.miniLoginDialog.close();
+                        _.text("登录").removeAttr("disabled");
+                        delete window["miniLoginDialog"];
+                    })
+                    .fail(function (e) {
+                        _.text("登录").removeAttr("disabled");
+                    });
+            }
+            return false;
+        });
 
-    $form.nameEl("btnRegister").click(function() {
-      alert("准备进入注册页面")
+        $form.nameEl("btnRegister").click(function () {
+            alert("准备进入注册页面")
+        });
     });
-  });
 </script>

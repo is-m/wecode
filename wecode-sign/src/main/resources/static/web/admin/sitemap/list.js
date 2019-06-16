@@ -1,9 +1,6 @@
 pageContext.controller("admin.sitemap.list",["widget/data/datatable","widget/tab"],function(page,dt,tab){
 		
-	page.ready = function(){    
-		//debugger
-		//$("#createDate1").xWidget("form.DateBox",{ showIconButton:false ,format : 'yyyy-mm-dd hh:ii',minView : "hour"});
-		//$("#createDate2").xWidget("form.DateBox",{ showIconButton:false ,format : 'yyyy-mm-dd hh:ii',minView : "hour"});
+	page.ready = function(){
 		
 		var gridOption = {
 			selectMode:'mutli', /* 多选：mutli,单选：single,默认：normal */
@@ -66,18 +63,22 @@ pageContext.controller("admin.sitemap.list",["widget/data/datatable","widget/tab
 					format:{
 						dict:"sitemap.showMode"
 					}
-				},{
+				},/*{
 					field:"pid",
 					header:"父节点",
 					width:100
-				},{
+				},*/{
 					field:"seq",
 					header:"顺序",
 					width:50
 				},{
 					field:"status",
-					header:"启用",
-					width:50
+					header:"状态",
+					width:80,
+					renderer:function (val,record) {
+						var isEnabled = val === 1;
+						return "<i class='status-dot " + ( isEnabled ? "success" : "" ) + "'></i> "+(isEnabled ? "有效" : "无效");
+					}
 				},{
 					field:"allowType",
 					header:"显示方式",
