@@ -27,13 +27,15 @@ define(["jquery"],function($){
 	};
 
 	var ajax = function(url,data,sCallback,fCallback,method){
+		var ajaxResultProxy = $.Deferred();
 		var op = $.isPlainObject(url) ? url: {
 			url: url,
 			data: data,
 			method: method || "get"
+
 		};
 
-		op = $.extend({},ajaxDefaultOption,op);
+		op = $.extend({},ajaxDefaultOption,op,{ajaxResultProxy:ajaxResultProxy /* 自定义透传参数，非标准属性，用于ajax调用时出现401未认证时的挂起后，重新登陆的通知 */});
 		
 		if(op.contentType === "application/json" && (op.method === "post" || op.method === "put") && $.isPlainObject(op.data) ){
 			op.data = JSON.stringify(op.data);
@@ -50,10 +52,22 @@ define(["jquery"],function($){
 			} 
 		});
 		
-		fCallback && _async.error(fCallback); 
-		
-		return _async;
-	}
+		fCallback && _async.error(fCallback);
+
+		// 当真正执行的AJAX是成功时，则通知ajax已经成功
+		_async.success(function (data,status,jqXHR) {
+			ajaxResultProxy.resolve(data,status,jqXHR);
+		});
+		// 当真正执行的AJAX是失败，且请求状态不为401时，则返回失败
+		_async.error(function (jqXHR,textStatus, errorThrown) {
+			if(jqXHR.status !== 401){
+				ajaxResultProxy.reject(jqXHR,textStatus, errorThrown);
+			}
+			// 否则进入等待处理的
+		});
+
+		return ajaxResultProxy;
+	};
 	
 	// 适用于查询
 	var get = function(url,data,sCallback,fCallback){

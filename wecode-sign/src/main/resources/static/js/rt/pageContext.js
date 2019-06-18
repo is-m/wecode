@@ -119,6 +119,8 @@ define(["require", "jquery", "rt/logger", "rt/request"], function (require, $, l
     var formatUrl = function(url){
         return typeof url != "string" || url.indexOf(appConfig.contextPath) == 0 ? url : appConfig.contextPath + url;
     };
+
+    var defaultSelfClosingTags = ["meta","base","br","hr","img","input","col","frame","link","area","param","object","embed","keygen","source"];
     var _loadPage = function (el, pageUrl, controller, callback) {
         var $el = el.jquery ? el : $(el);
 
@@ -127,9 +129,23 @@ define(["require", "jquery", "rt/logger", "rt/request"], function (require, $, l
         var url = formatUrl(pageUrl);
 
 
-        return http.doGet(url).success(function (resp) {
+        return http.doGet(url).done(function (resp) {
+            // 替换静态引用资源
             var html = resp.replace(/@\{\s*(\S+)\s*\}/g, function (m, i, o, n) {
                 return appConfig.contextPath + i;
+            });
+
+            // 替换自定义标签的自闭合，防止jquery解析dom出问题
+            html = html.replace(/<[^>]+\/>/g,function(matched,i){
+                var tagNameMatched = matched.match(/[^<][^\s]+/);
+                if(tagNameMatched.length){
+                    var tagName = tagNameMatched[0];
+                    // 如果标签名是系统的非标准闭合标签，则加上闭合内容
+                    if(tagName && defaultSelfClosingTags.indexOf(tagName.toLowerCase()) < 0){
+                        return matched.replace(/\/>/, '></'+tagName+'>');
+                    }
+                }
+                return matched;
             });
 
             if (enableCache) pageCache[url] = html;
@@ -154,7 +170,11 @@ define(["require", "jquery", "rt/logger", "rt/request"], function (require, $, l
                 var $ctrlEl = $(this);
                 var ctrlValue = $ctrlEl.attr("v-ctrl");
                 if (ctrlValue) {
-                    if (_controllerMap[ctrlValue]) {
+                    if(ctrlValue === "$" || ctrlValue === "page" || ctrlValue === "dynamic"){
+                        console.log('url '+url + ' content enabled dynamic controller');
+                        // TODO 待实现默认控制器
+                        $ctrlEl.data("controller", $.extend(true, {$s: $ctrlEl, $page: null , dynamic:true }, {}));
+                    }else if (_controllerMap[ctrlValue]) {
                         var clonedCtrl = $.extend(true, {$s: $ctrlEl, $page: null}, _controllerMap[ctrl]);
                         $ctrlEl.data("controller", clonedCtrl);
                         clonedCtrl.ready && clonedCtrl.ready();
@@ -191,6 +211,8 @@ define(["require", "jquery", "rt/logger", "rt/request"], function (require, $, l
                 require([controller],function (ctrl) {
                     console.log("load controller with "+controller,ctrl);
                     if(ctrl){
+                        $el.attr("v-ctrl",controller);
+                        $el.attr("v-ctrl-manual",true);
                         $el.data("controller",ctrl);
                         ctrl.ready && ctrl.ready();
                         callback && callback(true);
@@ -203,7 +225,7 @@ define(["require", "jquery", "rt/logger", "rt/request"], function (require, $, l
                 callback && callback(true);
             }
         })
-        .error(function (resp, status, xhr) {
+        .fail(function (resp, status, xhr) {
             $el.html("<div class='col-md-12'><h2 class='center'>Page NotFound 404</h2></div>");
             $el.attr("data-module", "error");
             console.log("page context load page error!", resp, status, xhr)

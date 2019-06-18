@@ -47,8 +47,14 @@ define(["rt/store"],function(store){
 	    // 
 	    //cache: true,
 	    // 发送前执行的函数
-      beforeSend: function (xhr,prm) {
-        $.xhrPool.push(xhr);
+      beforeSend: function (jqXHR,prm) {
+          console.log("begin ajax "+ (prm.type || prm.method || "get") + " :: " +prm.url);
+          if(prm["ajaxResultProxy"]){
+
+              console.log(' -------------------------------------------------before send ajaxOption ',prm);
+          }
+        jqXHR.ajaxOption = prm;
+        $.xhrPool.push(jqXHR);
         // 添加缓存参数
         var url=prm.url,method = (prm.method || "get").toLowerCase();
         if(method == "get"){
@@ -71,7 +77,7 @@ define(["rt/store"],function(store){
           arguments[1].data = data.substring(1, data.length);*/
         var tokenObj = store.get("$USER_TOKEN$");
         if(tokenObj){
-          xhr.setRequestHeader('X-Authentication', tokenObj.token);
+            jqXHR.setRequestHeader('X-Authentication', tokenObj.token);
         }
       },
       // 默认不序列化参数
@@ -95,7 +101,8 @@ define(["rt/store"],function(store){
             break;
           case (401):
             // 不存在登录页时才弹出登录页
-            if(!$("#formMiniLogin").length){
+            if(!window.miniLoginDialog){
+              window.miniLoginDialog = "loginFormLoading";
               require(["ui/ui-confirm"],function(c){
                 window.miniLoginDialog = c.dialog({ title:" ", url:"/web/_index/miniLogin.html", columnClass:"medium"  });
               });
@@ -105,28 +112,24 @@ define(["rt/store"],function(store){
               // TODO：需要将当前请求方的处理逻辑中断，并能再登陆成功后自动重新发起请求，当然也可以是登陆成功后刷新页面，或者暂时先不实现自动，能手动也不错
               alert(jqXHR.responseText);
             } 
-            break;
-          case (403):
-            alert("无权限执行此操作");
-            break;
-          case (404):
-            alert("未找到资源");
-            break;
-          case (408):
-            alert("请求超时");
-            break;
-          case (503):
-            alert("网关超时");
-            break;
-          default:
-            alert("未知错误");
+            return;
+          case (403): alert("无权限执行此操作"); break;
+          case (404): alert("未找到资源"); break;
+          case (408): alert("请求超时"); break;
+          case (503): alert("网关超时"); break;
+          default: alert("未知错误"); break;
         }
+        $.xhrPool.remove(jqXHR);
       },
       success: function(data) {
         //console.log(data);
+
       },
-      complete: function(jqXHR) {
-        $.xhrPool.remove(jqXHR); 
+      complete: function(jqXHR,status) {
+          console.log('ajax completed',status,jqXHR);
+          if(status === "success"){
+            $.xhrPool.remove(jqXHR);
+          }
       }
 
   });

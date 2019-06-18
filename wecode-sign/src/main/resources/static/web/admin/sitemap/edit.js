@@ -26,11 +26,6 @@ pageContext.controller("admin.sitemap.edit",["rt/validation","rt/request"],funct
 			alert("你点击了保存草稿");
 		});
 		
-		$("#btnCancel").on("click",function(){
-			console.log("click cancel");
-			$("#demoTab").xWidget().closeTab();
-		});
-		
 		$("#btnSelectIcon").on("click",function(){ 
 			require(["ui/ui-confirm"],function(msg){
 				msg.dialog({
@@ -119,5 +114,9 @@ pageContext.controller("admin.sitemap.edit",["rt/validation","rt/request"],funct
 		var $form = $("#formEditSitemap");
 		$form.nameEl("parentName").val("");
 		$form.nameEl("pid").val("");
+	}
+
+	page.cancelEdit =function () {
+		$("#demoTab").xWidget().closeTab();
 	}
 });

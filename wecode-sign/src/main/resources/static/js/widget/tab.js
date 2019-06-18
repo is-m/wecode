@@ -114,7 +114,7 @@ define(["widget/factory", "jquery", "rt/pageContext"], function (widget, $, page
             // TODO:这个要做成工具供模版调用
             var headHtml = [];
             headHtml.push("<li class='nav-item'>");
-            headHtml.push("  <a class='nav-link' data-toggle='{0}' data-url='{1}' v-ctrl='{2}'>".format(pageOp.id, pageOp.url,pageOp.controller || pageOp.url.replace(".html",".js")));
+            headHtml.push("  <a class='nav-link' data-toggle='{0}' data-url='{1}'>".format(pageOp.id, pageOp.url,pageOp.controller || pageOp.url.replace(".html",".js")));
             headHtml.push(pageOp.title);
             headHtml.push(pageOp.allowClose ? " <i class='iconfont icon-close'></i>" : '');
             headHtml.push("  </a>");
@@ -149,7 +149,15 @@ define(["widget/factory", "jquery", "rt/pageContext"], function (widget, $, page
                 tabId = $tabHeader.find(".nav-link.active").data("toggle");
             }
 
+
+
             var $tabHeader = this.$dom.find(".tab-header:eq(0)");
+
+            if($tabHeader.find("a").length === 1){
+                console.log("only one tab page cannot be close");
+                return ;
+            }
+
             var $tabBody = this.$dom.find(".tab-body:eq(0)");
             var $trigger = $tabHeader.find("[data-toggle={0}]".format(tabId));
             var $headerEl = $trigger.closest("li");

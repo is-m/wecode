@@ -15,21 +15,39 @@ define(["jquery", "rt/validation", "rt/store"], function ($, v, store) {
                 , verifyCode: null
             },
             dataType: "json"
-        }).success(function (tokenObject) {
+        }).success(function (tokenObject, status, jqXHR) {
             //alert("登录成功，设置用户token之前");
-
+            $.xhrPool.remove(jqXHR);
             var oldTokenObj = store.get("$USER_TOKEN$");
 
             store.set("$USER_TOKEN$", tokenObject, tokenObject.expire);
             // 如果当前是因为token过期导致的用户登陆失败，则检查当前登陆用户是否有有过更新，如果有则提示用于并刷新界面，防止发生信息安全问题
-            if(oldTokenObj && oldTokenObj.identifier != tokenObject.identifier){
-                require(["ui/ui-confirm"],function (m) {
-                    m.confirm("登陆用户已经改变，界面将会被刷新?","登陆提示",function (isOk) {
-                        if(isOk){
+            if (oldTokenObj && oldTokenObj.identifier != tokenObject.identifier) {
+                require(["ui/ui-confirm"], function (m) {
+                    m.confirm("登陆用户已经改变，界面将会被刷新?", "登陆提示", function (isOk) {
+                        if (isOk) {
                             location.reload();
                         }
                     });
                 })
+            } else {
+                // 当前用户是上一次登陆用户时，还原看看是否有被登陆失败拦截的请求，如果有的话，将请求重新发起，并通知请求源最终处理状态
+                var failXHRs = $.xhrPool || [];
+                for (var i = 0; i < failXHRs.length; i++) {
+                    var jqXHR = failXHRs[i];
+                    if (jqXHR.ajaxOption) {
+                        failXHRs.remove(jqXHR);
+                        $.ajax(jqXHR.ajaxOption)
+                            .success($.proxy(function (data, status, jqXHR) {
+                                var resultProxy = this.ajaxOption["ajaxResultProxy"];
+                                if (resultProxy) {
+                                    resultProxy.resolve(data, status, jqXHR);
+                                }
+                            }, {ajaxOption: jqXHR.ajaxOption}));
+                    } else {
+                        failXHRs.remove(jqXHR);
+                    }
+                }
             }
             //alert("登录成功 "+store.get("$USER_TOKEN$"));
         });
@@ -78,7 +96,7 @@ define(["jquery", "rt/validation", "rt/store"], function ($, v, store) {
             } finally {
             }
         },
-        getLastUsername:function () {
+        getLastUsername: function () {
             var tokenObj = store.get("$USER_TOKEN$");
             return tokenObj ? tokenObj.identifier : "";
         }

@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" v-ctrl>
     <form class="mu-form" id="formEditSitemap" autocomplete="off">
         <input name="id" type="hidden"/>
         <div class="mu-form-header">
@@ -95,8 +95,8 @@
             <div class="col-sm-12 text-center">
                 <button id="btnSave" type="button" class="btn btn-sm btn-outline-primary"><i class="fa fa-check"></i> 保存
                 </button>
-                <button id="btnCancel" type="button" class="btn btn-sm btn-outline-primary"><i class="fa fa-close"></i>
-                    取消
+                <button id="btnCancel" type="button" class="btn btn-sm btn-outline-primary" page-action="cancelEdit">
+                    <i class="fa fa-close"></i> 取消
                 </button>
             </div>
         </div>

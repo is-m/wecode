@@ -109,3 +109,53 @@ CREATE TABLE sys_user_permission
 
 
 
+
+
+
+-- 数据清理
+DELIMITER $$
+DROP PROCEDURE IF EXISTS `sys_data_remove`$$
+CREATE PROCEDURE `sys_data_remove`()
+BEGIN
+
+
+end $$
+DELIMITER ;
+
+
+
+# 这个是定义一个分隔符，因为一般是;结束，则会执行，而在存储过程中我们需要的是命令输入完毕执行
+DELIMITER $$
+DROP PROCEDURE IF EXISTS `sys_data_init`$$
+CREATE PROCEDURE `sys_data_init`()
+BEGIN
+    -- https://www.cnblogs.com/Brambling/p/9259375.html 变量定义
+    # 定义变量
+    DECLARE v_role_admin_id VARCHAR(36);
+
+    -- 如果出现异常，会自动处理并rollback
+    DECLARE EXIT HANDLER FOR  SQLEXCEPTION ROLLBACK ;
+    START TRANSACTION;
+    -- 数据检查，
+    -- 数据初始化
+
+    -- 基础角色初始化
+    set v_role_admin_id = uuid();
+    insert into sys_role(id, CODE, NAME, REMARK, URL, VERSION, STATUS)
+    values (v_role_admin_id,'Administrator','Administrator','超级管理员/系统内置',null,null,'1')
+          ,(uuid(),'Guest','Guest','访客/系统内置','/welcome',null,'1');
+
+    -- 基础用户初始化
+    -- 注意，admin用户登陆时如果使用系统提供的默认密码，则会一直提示修改密码
+    insert into s_user(id, name, password, remark, mail, mobile_phone, status, active_role_id)
+    values (uuid(),'admin','admin','系统内置',null,null,'1',v_role_admin_id);
+
+
+    -- 栏目初始化
+
+    COMMIT;
+END$$
+DELIMITER ;
+
+-- 执行初始化
+call sys_data_init();

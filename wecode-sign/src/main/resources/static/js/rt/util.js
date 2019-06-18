@@ -22,14 +22,14 @@ define([ "rt/core", "jquery", "rt/request" ], function(core, $, http) {
 			http.doGet(_d).done(function(ajaxResult) {
 				var data = _getAjaxData(ajaxResult);
 				dfd.resolve(data);
-			}).error(function(d){
+			}).fail(function(d){
 				dfd.reject(d);
 			});
 		}else if($.isPlainObject(_d)){
 			http.ajax(_d).done(function(ajaxResult) {
 				var data = _getAjaxData(ajaxResult);
 				dfd.resolve(data);
-			}).error(function(d){
+			}).fail(function(d){
 				dfd.reject(d);
 			});
 		}else{

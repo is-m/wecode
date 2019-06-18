@@ -1,5 +1,5 @@
-pageContext.define("admin.sitemap.layout",["widget/tab"],function(page){
-	
+pageContext.controller("admin.sitemap.layout",["widget/tab"],function(page){
+
 	page.ready = function(){
 		$("#demoTab").xWidget("tab",{
 			pages:[{
