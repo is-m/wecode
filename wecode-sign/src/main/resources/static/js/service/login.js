@@ -77,23 +77,31 @@ define(["jquery", "rt/validation", "rt/store"], function ($, v, store) {
                 var $form = submitData;
                 if ($form.valid()) {
                     postData = $form.jsonData();
+                }else{
+                    dtd.reject("校验失败")
                 }
             } else if ($.isPlainObject(submitData)) { // 直接是json数据
                 postData = submitData;
             } else { // 按参数位提交数据
-                if (arguments.length == 1) throw 'illegal arg length';
-                postData = {username: arguments[0], password: arguments[1]};
+                if (arguments.length < 2) {
+                    dtd.reject("不能识别的参数个数")
+                }else{
+                    postData = {username: arguments[0], password: arguments[1]};
+                }
             }
 
-            //alert("准备用帐号[{0}]密码[{1}]登录".format(postData.username,postData.password));
-            _login(postData).success(dtd.resolve).error(dtd.reject);
-            //alert("准备用帐号[{0}]密码[{1}]登录".format(username,password));
+            if (postData) {
+                //alert("准备用帐号[{0}]密码[{1}]登录".format(postData.username,postData.password));
+                _login(postData).success(dtd.resolve).error(dtd.reject);
+                //alert("准备用帐号[{0}]密码[{1}]登录".format(username,password));
+            }
             return dtd;
         },
-        logout: function () {
+        logout: function (loginUrl) {
             try {
                 store.remove("$USER_TOKEN$");
             } finally {
+                location.href = loginUrl || (appConfig.contextPath + "/web/page/login.html");
             }
         },
         getLastUsername: function () {

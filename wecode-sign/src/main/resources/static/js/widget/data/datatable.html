@@ -12,7 +12,7 @@
 						<th width="30" class="table-th-fixed table-th-selection"><span><input type="checkbox" /></span></th>
 					<%}%> 
 					
-					<% for(var i=0;i<$widget.columns.length;i++){ var colOp = $widget.columns[i]; %>
+					<% for(var i=0;i<$widget.columns.length;i++){ var colOp = $widget.columns[i];%>
 				    	<th width="<%= colOp.width || '150' %>" class="text-center <%= colOp.fixed ? 'table-th-fixed' : '' %>"> 
 				    		<span class="table-th-label"><%=colOp.header%></span>
 				    	</th>

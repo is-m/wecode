@@ -1,33 +1,28 @@
 <div class="container-fluid" v-ctrl="page">
-    <!--
-    <script>
+    <script type="page">
 
     </script>
-    <x-tab id="tabsUserPermission">
-        <m-tab id="tiRoles" title="{{角色}}"></m-tab>
-    </x-tab>-->
-<!--
     <m-tabs id="tabRichText">
-        <tab id="pageList">
+        <!-- -->
+        <tab id="pageList" title="富文本列表">
             <h3>条件区域</h3>
             <h3>表格区域</h3>
-            <x-grid id="gridList" dataset="/services/richtext/list" pageSize="15" editable="true" sortable="true" selectMode="single/multi">
-                <column type="operate" >
+            <m-grid id="gridList" dataset="/services/richtext/list" pageSize="15" editable="true" sortable="true" selectMode="single/multi">
+                <column type="operate" header="操作" >
                     <a class="btn btn-link" page-execute='tabRichText.addPage("/web/xxx/edit.html?id=${record.id}");'>查看</a>
                 </column>
-                <column field="id"   />
-                <column field="name"  />
-                <column field="age">
+                <column field="id"  header="ID" />
+                <column field="name"  header="名称" />
+                <column field="age" header="年龄">
                     <![CDATA[
                     if(${value} >  )
                     ]]>
                 </column>
-                <column field="service" url="/services/xx/findByCode" display="attr1" tip="true" />
-                <column field="lookup" dict="sys_status"  />
-                <column field="date" date="yyyy-MM-dd hh:mm" />
-            </x-grid>
+                <column field="service" header="服务" url="/services/xx/findByCode" display="attr1" tip="true" />
+                <column field="lookup" header="数据字典" dict="sys_status"  />
+                <column field="date" header="日期" date="yyyy-MM-dd hh:mm" />
+            </m-grid>
         </tab>
     </m-tabs>
--->
-    
+
 </div>

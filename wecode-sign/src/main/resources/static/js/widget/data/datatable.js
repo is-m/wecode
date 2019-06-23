@@ -32,7 +32,7 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
 
     var defaultTreeOp = {}
 
-    widget.define("datatable", {
+    var grid = widget.define("datatable", {
         template: "<h1>Hello this navbar Widget</h1>",
         templateUri: "js/widget/data/datatable.html",
         init: function () {
@@ -640,5 +640,7 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
                 return null;
             }
         }
-    }
+    };
+
+    return grid;
 });

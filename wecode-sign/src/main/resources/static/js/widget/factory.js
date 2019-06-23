@@ -1,7 +1,6 @@
 define(function (require) {
     "use strict";
     var $ = require("jquery");
-    var tmpl = require("template");
     var log = require("rt/logger");
     /*
      TODO:组件要考虑用户可修改，样式可定义

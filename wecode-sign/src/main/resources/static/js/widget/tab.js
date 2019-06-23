@@ -1,6 +1,6 @@
 define(["widget/factory", "jquery", "rt/pageContext"], function (widget, $, pageContext) {
 
-    widget.define("tab", {
+    var tab = widget.define("tab", {
         template: "<h1>Hello this navbar Widget</h1>",
         templateUri: "js/widget/tab.html",
         helpers: {
@@ -60,9 +60,20 @@ define(["widget/factory", "jquery", "rt/pageContext"], function (widget, $, page
                                 $curPage.data("init", true);
                             });
                         } else {
-                            self.trigger("afterLoad", $curPage);
-                            pageOp.afterLoad && pageOp.afterLoad($curPage.data("controller"),$tabBody);
-                            $curPage.data("init", true);
+                            var id = $curPage.attr("data-tab-id");
+                            var pageOptions = self.op.pages.filter(function (item) {
+                                return item.id === id;
+                            });
+                            if(pageOptions.length <1) throw 'not found page id '+id;
+                            if(pageOptions.length > 1)throw 'multi page id '+id+' be found ';
+                            pageContext.renderWidgetText(pageOptions[0].content).done(function ($content) {
+                                console.log("tab "+id + " render to value",$content);
+                                $curPage.empty().append($content);
+                                self.trigger("afterLoad", $curPage);
+                                pageOp.afterLoad && pageOp.afterLoad($curPage.data("controller"),$tabBody);
+                                $curPage.data("init", true);
+                            });
+                            $curPage.data("init", "loading");
                         }
                     }
                     return false;
@@ -91,7 +102,7 @@ define(["widget/factory", "jquery", "rt/pageContext"], function (widget, $, page
         ready: function () {
 
         },
-        destory: function () {
+        destroy: function () {
 
         },
         addPage: function (op) {
@@ -176,4 +187,5 @@ define(["widget/factory", "jquery", "rt/pageContext"], function (widget, $, page
 
     });
 
+    return tab;
 });
