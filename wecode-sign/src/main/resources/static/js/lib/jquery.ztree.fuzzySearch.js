@@ -77,7 +77,18 @@ define(["ztree","lib/jquery.ztree.exhide"],function(tree,exhide){
       var nodesShow = zTreeObj.getNodesByFilter(filterFunc); //get all nodes that would be shown
       processShowNodes(nodesShow, _keywords);//nodes should be reprocessed to show correctly
     }
-    
+
+    function processShowChildren(node){
+        // 向下显示所有子节点
+        var children = node.children || [];
+        for(var i=0;i<children.length;i++){
+            var child = children[i];
+            zTreeObj.showNode(child);
+            if(child.children){
+                processShowChildren(child);
+            }
+        }
+    }
     /**
      * reprocess of nodes before showing
      */
@@ -93,8 +104,9 @@ define(["ztree","lib/jquery.ztree.exhide"],function(tree,exhide){
                 zTreeObj.showNode(pathOfOne[i]); //show node 
                 zTreeObj.expandNode(pathOfOne[i],true); //expand node
               }
+              processShowChildren(obj);
             }
-          }); 
+          });
         }else{ //show all nodes when _keywords is blank and expand the root nodes
           var rootNodes = zTreeObj.getNodesByParam('level','0');//get all root nodes
           $.each(rootNodes,function(n,obj){
@@ -103,6 +115,8 @@ define(["ztree","lib/jquery.ztree.exhide"],function(tree,exhide){
         }
       }
     }
+
+
     
     //listen to change in input element
     $(searchField).bind('input propertychange', function() {
