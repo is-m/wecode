@@ -1,4 +1,4 @@
-pageContext.define("admin.i18n.layout",["widget/tab"],function(page){
+pageContext.controller("admin.i18n.layout",["widget/tab"],function(page){
     page.ready = function(){
         $("#demoTab").xWidget("tab",{
             pages:[{

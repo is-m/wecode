@@ -124,6 +124,9 @@ define(function (require) {
         //debugger
         // 如果存在模版串，后续可能会判断是否需要执行初始化方法
         if (templateHtml) {
+        	templateHtml = templateHtml.replace(/@\{\s*(\S+)\s*\}/g, function (m, i, o, n) {
+                return appConfig.contextPath + i;
+            });
             tmpl(templateId, templateHtml);
         }
 

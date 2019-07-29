@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.slf4j.Logger;
 import org.springframework.util.Assert;
 import org.springframework.util.Base64Utils;
@@ -63,6 +65,7 @@ public class JwtUtil {
       List<String> collect = claims.keySet().parallelStream().filter(innerKeys::contains).collect(Collectors.toList());
       Assert.isTrue(collect.size() == 0, "参数 claims 错误， 存在关键参数 " + collect);
     }
+
 
     // 为访客时延长过期时间
     Date expiration = new Date("$guest$".equals(uid) ? 9999999999999L : expiredTimes);

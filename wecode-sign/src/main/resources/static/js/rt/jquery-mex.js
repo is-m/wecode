@@ -127,9 +127,9 @@ define([ "jquery","rt/request","ui/ui-confirm","rt/logger"], function($, http,m,
 	$.fn.formFill = function(data){ 
 		var $dom = $(this);
 		if(typeof data == "string"){
-			http.doGet(data).success($.proxy(function(res){
+			http.doGet(data).done($.proxy(function(res){
 				_fillForm(this.$dom,res);
-			},{$dom : $dom})).error(function(){
+			},{$dom : $dom})).fail(function(){
 				alert("form fill error");
 			});
 		}else{
@@ -179,10 +179,10 @@ define([ "jquery","rt/request","ui/ui-confirm","rt/logger"], function($, http,m,
 	    return;
 	  }
 	  
-		http.doGet(window.$$path+"/services/validation/front/{0}?group={1}".format(target,group)).success(function(res){
+		http.doGet(window.$$path+"/services/validation/front/{0}?group={1}".format(target,group)).done(function(res){
 			validationCache[cacheName] = res;
 			hanldeValidation($form,res);
-		}).error(function(){
+		}).fail(function(){
 		  alert("form validation error");
 		});
 	};

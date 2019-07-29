@@ -15,7 +15,7 @@ define(["jquery"],function($){
 		callback && callback();
 	}
 /*	
-	var loadMutliCSS = function(array,callback){
+	var loadMultiCSS = function(array,callback){
 		var _arr = [];
 		if(array)
 		
@@ -37,7 +37,7 @@ define(["jquery"],function($){
 		});
 	} 
 	
-	var loadMutliJS = function(arr,callback){
+	var loadMultiJS = function(arr,callback){
 		// http://www.cnblogs.com/xishuai/p/jquery-load-css-and-js-file.html
 		var _arr = $.map(arr, function(src) {
 	        return $.getScript(src);
@@ -48,7 +48,7 @@ define(["jquery"],function($){
 	    }));
 
 	    $.when.apply($, _arr).done(callback); 
-	}
+	};
 	
 	var loadResource = function(src,callback){
 		if(src.endsWith(".css",true)){

@@ -7,7 +7,7 @@ pageContext.define("admin.excel.export.list",["widget/data/datatable","widget/ta
 		$("#createDate2").xWidget("form.DateBox",{ showIconButton:false ,format : 'yyyy-mm-dd hh:ii',minView : "hour"});
 		
 		var gridOption = {
-			selectMode:'mutli', /* 多选：mutli,单选：single,默认：normal */
+			selectMode:'multi', /* 多选：multi,单选：single,默认：normal */
 			height:425, 
 			pageOp:{
 				// el:"#pageDemo",

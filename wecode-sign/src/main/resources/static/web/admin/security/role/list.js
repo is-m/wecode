@@ -3,7 +3,7 @@ pageContext.controller("admin.security.role.list",["widget/data/datatable","widg
 	
 	page.ready = function(){
 		var gridOption = {
-			selectMode:'mutli', /* 多选：mutli,单选：single,默认：normal */
+			selectMode:'multi', /* 多选：multi,单选：single,默认：normal */
 			height:425, 
 			pageOp:{
 				// el:"#pageDemo",
@@ -150,12 +150,7 @@ pageContext.controller("admin.security.role.list",["widget/data/datatable","widg
 			url:"/web/admin/security/role/edit.html",
 			allowClose:true,
 			afterLoad:function(page){
-				console.log("open Tab page isCreate {0}".format(isCreate));
-				if(!isCreate){
-					pageContext.module("admin.security.role.edit").done(function(userEditPage){
-						userEditPage.init(record);
-					});
-				}
+				page.init(record);
 			}
 		});  
 	}

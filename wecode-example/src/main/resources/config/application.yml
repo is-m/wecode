@@ -1,0 +1,22 @@
+mail:
+  debug: true
+  account: 'liaoxianmu'
+  password: '888888'
+  pop3:
+    host: 'localhost'  
+    port: 110
+    account: 'liaoxianmu'
+    password: '888888'
+  smtp:
+    host: 'localhost'
+    port: 25
+    account: 'liaoxianmu'
+    password: '888888'
+    
+    
+#root日志以WARN级别输出
+logging:
+  #level:
+  #  root: debug
+  com:
+    chinasoft: debug

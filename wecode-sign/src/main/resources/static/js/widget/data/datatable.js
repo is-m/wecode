@@ -13,7 +13,7 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
         '<% if($widget.showSeq !== false){%>' +
         '	<th><span><%=(j+1)%></span></th>' +
         '<%}%>' +
-        '<% if($widget.selectMode == "mutli"){%>' +
+        '<% if($widget.selectMode == "multi"){%>' +
         '<td class="table-cell-checkbox row-selection"><span><input type="checkbox" /></span></td>' +
         '<%}%> ' +
 
@@ -74,7 +74,7 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
                     console.log(e);
                     if ($el.is("td") && $el.is(".cell-editable")) {
                         // 如果单元格属于编辑状态，则不进行处理
-                        if ($el.is("editing")) {
+                        if ($el.is(".editing")) {
                             return;
                         }
 
@@ -189,7 +189,7 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
             });
 
             // 绑定全选事件
-            if (_.op.selectMode == "mutli") {
+            if (_.op.selectMode === "multi") {
                 $tableHead.find(".table-th-selection :input").on("click", function () {
                     if ($(this).is(":checked")) {
                         $tableBody.find(".row-selection :input").each(function (i, el) {
@@ -211,7 +211,19 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
             if (_.op.operation) {
                 var _oper = _.op.operation;
                 if (_oper.search && _oper.search.btn) {
-                    util.el(_oper.search.btn).on("click", function () {
+                    var searchBtnId = (_oper.search.btn.indexOf("#") === 0 ? "" : "#") +  _oper.search.btn;
+                    var $searchBtn = util.el(searchBtnId);
+                    if(!$searchBtn.length){
+                        var $currentDom = this.$dom;
+                        do {
+                            $searchBtn = $currentDom.find(searchBtnId);
+                            if($searchBtn && $searchBtn.length){
+                                break;
+                            }
+                            $currentDom = $currentDom.parent();
+                        }while ($currentDom && $currentDom.parent());
+                    }
+                    $searchBtn.on("click", function () {
                         _.op.pageOp && $.extend(_.op.pageOp, {curPage: 1});
                         _.reload();
                     });

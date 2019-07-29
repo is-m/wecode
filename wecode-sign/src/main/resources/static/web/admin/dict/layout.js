@@ -1,4 +1,4 @@
-pageContext.controller("admin.dict.layout",["widget/tab"],function(page){
+pageContext.controller("admin.dict.layout",["widget/tab","rt/request"],function(page,$S,tab,http){
 	
 	page.ready = function(){
 		/*$("#demoTab").xWidget("tab",{
@@ -69,5 +69,13 @@ pageContext.controller("admin.dict.layout",["widget/tab"],function(page){
 		var $baseProps = $("#dictBaseProperties");
 		$baseProps.nameEl("pid").val("");
 		$baseProps.nameEl("parentPath").val("");
+	};
+
+	page.save = function(){
+		var jsonData = $("#dictBaseProperties").jsonData();
+		http.doPost("/services/base/property",jsonData).done(function(data){
+			$("#treeProperties").xWidget().reload();
+			$("#dictBaseProperties").reset();
+		});
 	};
 });

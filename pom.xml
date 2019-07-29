@@ -1,6 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.chinasoft.it.wecode</groupId>
 	<artifactId>wecode</artifactId>
@@ -47,6 +46,9 @@
 		<module>wecode-security-core</module>
 		<module>wecode-web-support</module>
 		<module>template-mybatis</module>
+		<module>wecode-example</module>
+    <module>wecode-base-config</module>
+    <module>wecode-workflow</module>
 	</modules>
 
 	<dependencyManagement>
@@ -80,11 +82,21 @@
 				</exclusions>
 			</dependency>
 
+			
+			<!-- swagger ui plus -->
+			<!-- https://gitee.com/xiaoym/swagger-bootstrap-ui-demo -->
 			<dependency>
+			  <groupId>com.github.xiaoymin</groupId>
+			  <artifactId>swagger-bootstrap-ui</artifactId>
+			  <version>1.9.4</version>
+			</dependency>
+
+
+			<!-- <dependency>
 				<groupId>io.springfox</groupId>
 				<artifactId>springfox-swagger-ui</artifactId>
 				<version>${swagger.version}</version>
-			</dependency>
+			</dependency> -->
 
 			<!-- @Import({ ... springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration.class, 
 				...}) -->
@@ -144,8 +156,9 @@
 			<dependency>
 				<groupId>commons-codec</groupId>
 				<artifactId>commons-codec</artifactId>
-				<version>1.11</version>
+				<version>1.12</version>
 			</dependency>
+
 
 			<!-- 号称最快的单机缓存  -->
 			<!-- https://mvnrepository.com/artifact/com.github.ben-manes.caffeine/caffeine -->
@@ -154,6 +167,16 @@
 			    <artifactId>caffeine</artifactId>
 			    <version>2.7.0</version>
 			</dependency>
+
+
+			<!-- https://mvnrepository.com/artifact/org.activiti/activiti-spring-boot-starter-basic -->
+			<dependency>
+				<groupId>org.activiti</groupId>
+				<artifactId>activiti-spring-boot-starter-basic</artifactId>
+				<version>6.0.0</version>
+			</dependency>
+
+
 
 		</dependencies>
 	</dependencyManagement>

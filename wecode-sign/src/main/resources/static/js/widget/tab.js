@@ -90,7 +90,7 @@ define(["widget/factory", "jquery", "rt/pageContext"], function (widget, $, page
             var selLength = $tabHeader.find("a.active").length;
             // 初始化选中项
             if (selLength > 1) {
-                console.log("WARN:tabs has mutli actived page, but reserve first active tab");
+                console.log("WARN:tabs has multi actived page, but reserve first active tab");
                 $tabHeader.find("a.active").not(":eq(1)").removeClass("active");
             } else if (!selLength) {
                 $tabHeader.find("a:eq(0)").addClass("active");

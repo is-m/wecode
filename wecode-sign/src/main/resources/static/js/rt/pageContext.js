@@ -176,8 +176,8 @@ define(["jquery", "rt/logger", "rt/request", "widget/mapper"], function ($, log,
                 return appConfig.contextPath + i;
             });
 
-            // 替换自定义标签的自闭合，防止jquery解析dom出问题
-            html = html.replace(/<[^>]+\/>/g, function (matched, i) {
+            // 清理注释，且替换自定义标签的自闭合，防止jquery解析dom出问题
+            html = html.replace(/<!--[\w\W\r\n]*?-->/gmi, '').replace(/<[^>]+\/>/g, function (matched, i) {
                 var tagNameMatched = matched.match(/[^<][^\s]+/);
                 if (tagNameMatched.length) {
                     var tagName = tagNameMatched[0];

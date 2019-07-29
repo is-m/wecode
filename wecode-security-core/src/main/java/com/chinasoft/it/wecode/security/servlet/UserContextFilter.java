@@ -55,6 +55,9 @@ public class UserContextFilter extends OncePerRequestFilter {
     }
 
     String token = req.getHeader(TokenConstants.HEAD_AUTHENTICATION);
+    if(StringUtils.isEmpty(token)){
+      token = req.getParameter(token);
+    }
     // jwt token 认证
     if (!StringUtils.isEmpty(token)) {
       doTokenFilter(req, resp, chain, token);

@@ -1,26 +1,78 @@
-<div class="container-fluid" v-ctrl="page">
-    <script type="page">
-
-    </script>
+<div class="container-fluid" v-ctrl>
     <m-tabs id="tabRichText">
         <!-- -->
         <tab id="pageList" title="富文本列表">
-            <h3>条件区域</h3>
-            <h3>表格区域</h3>
-            <m-grid id="gridList" dataset="/services/richtext/list" pageSize="15" editable="true" sortable="true" selectMode="single/multi">
-                <column type="operate" header="操作" >
-                    <a class="btn btn-link" page-execute='tabRichText.addPage("/web/xxx/edit.html?id=${record.id}");'>查看</a>
+
+            <div class="container-fluid">
+                <form class="mu-form" id="formSearch">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">名称</label>
+                        <div class="col-sm-4">
+                            <input name="name" class="form-control">
+                        </div>
+
+                        <label class="col-sm-2 col-form-label">类型</label>
+                        <div class="col-sm-4">
+                            <!-- <m-input type="dropdown" name="type"  /> -->
+                            <select class="form-control" name="type">
+                                <option value="mail">邮件模板</option>
+                                <option value="page">页面</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-center">
+                        <button type="button" class="btn btn-primary btn-sm f-search e-disable" id="btnSearch">
+                            <i class="iconfont icon-search"></i> 查询
+                        </button>
+                        <button type="button" class="btn btn-light btn-sm f-reset">
+                            <i class="iconfont icon-refresh"></i> 重置
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div id="grid-toolbar" style="margin: 5px 0;">
+                <button type="button" class="btn btn-outline-primary btn-sm nbd" page-action="edit">
+                    <i class="iconfont icon-add"></i> 添加
+                </button>
+                <button type="button" class="btn btn-outline-secondary btn-sm nbd" page-action="doDelete">
+                    <i class="iconfont icon-delete"></i> 删除
+                </button>
+                <div class="btn-group ">
+                    <!-- pa = page action ,有pa的地方通常要有pa-eventName的样式才能实现页面调用 -->
+                    <button type="button" class="btn btn-outline-secondary btn-sm nbd" page-action="doImport">
+                        <i class="fa fa-reply"></i> 导入
+                    </button>
+                    <button type="button"
+                            class="btn btn-outline-secondary btn-sm dropdown-toggle dropdown-toggle-split nbd"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" page-action="exportAll"><i class="fa fa-share"></i> 导出全部</a>
+                        <a class="dropdown-item" page-action="exportSelected"><i class="fa fa-level-down"></i> 导出选中项</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" page-action="downloadImportTemplate"><i class="fa fa-download"></i> 导入模版下载</a>
+                        <a class="dropdown-item" page-action="doImport"><i class="fa fa-level-up"></i> 数据导入</a>
+                    </div>
+                </div>
+            </div>
+            <m-grid id="gridList" class="mu-grid" dataset="/services/base/text" pageSize="15" editable="true" sortable="true"
+                    selectMode="multi" searchBtnId="#btnSearch" searchFormId="#formSearch">
+                <column type="operate" header="操作">
+                    <span>
+                        <a class="btn btn-link btn-sm" href="javascript:;" page-execute='tabRichText.addPage("/web/xxx/edit.html?id=${record.id}");'>查看</a>
+                    </span>
                 </column>
-                <column field="id"  header="ID" />
-                <column field="name"  header="名称" />
+                <column field="id" header="ID"/>
+                <column field="name" header="名称"/>
                 <column field="age" header="年龄">
                     <![CDATA[
-                    if(${value} >  )
+                    if(${value} > )
                     ]]>
                 </column>
-                <column field="service" header="服务" url="/services/xx/findByCode" display="attr1" tip="true" />
-                <column field="lookup" header="数据字典" dict="sys_status"  />
-                <column field="date" header="日期" date="yyyy-MM-dd hh:mm" />
+                <column field="service" header="服务" url="/services/xx/findByCode" display="attr1" tip="true"/>
+                <column field="lookup" header="数据字典" dict="sys_status"/>
+                <column field="date" header="日期" date="yyyy-MM-dd hh:mm"/>
             </m-grid>
         </tab>
     </m-tabs>

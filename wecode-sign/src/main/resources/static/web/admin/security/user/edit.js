@@ -16,7 +16,7 @@ pageContext.controller("admin.security.user.edit", ["rt/validation", "ui/ui-conf
         } else {
             record && $form.jsonData(record);
         }
-        $form.formValidation("userDto", isCreate ? "Create" : "Upadte");
+        $form.formValidation("userDto", isCreate ? "Create" : "Update");
     };
 
     page.closePage = function () {

@@ -33,7 +33,9 @@ public class ValidationService {
 
   private static final String GROUP_DEFAULT = "Default";
 
-  private static final Map<String, Object> TARGET_MAP = MapUtils.newMap("userDto", "com.chinasoft.it.wecode.security.dto.UserDto");
+  private static final Map<String, Object> TARGET_MAP = MapUtils.newMap(
+          "userDto", "com.chinasoft.it.wecode.security.dto.UserDto",
+          "richTextCreateDto","com.chinasoft.it.wecode.admin.dto.RichTextCreateDto");
 
   /**
    * 获取前台验证映射

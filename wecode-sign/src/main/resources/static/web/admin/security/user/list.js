@@ -4,7 +4,7 @@ pageContext.controller("admin.sitemap.list",["widget/data/datatable","widget/tab
 	page.ready = function(){
 		
 		var gridOption = {
-			selectMode:'mutli', /* 多选：mutli,单选：single,默认：normal */
+			selectMode:'multi', /* 多选：multi,单选：single,默认：normal */
 			height:455, 
 			pageOp:{
 				// el:"#pageDemo",

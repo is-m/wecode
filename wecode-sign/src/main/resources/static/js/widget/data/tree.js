@@ -1,12 +1,11 @@
 define(["widget/factory", "jquery", "rt/util", 'ztree', "lib/jquery.ztree.exhide"], function (widget, $, util, tree, exhide) {
 
-
     /**
      * 事件：
      * after.selected(val) 选中后
      */
     widget.define("data/tree", {
-        defultOption: {
+        defaultOption: {
             check: {
                 enable: true,
                 chkStyle: "radio",
@@ -35,7 +34,7 @@ define(["widget/factory", "jquery", "rt/util", 'ztree', "lib/jquery.ztree.exhide
         init: function () {
             var self = this;
             // event proxy
-            this.op = $.extend({}, this.defultOption, this.op, {
+            this.op = $.extend({}, this.defaultOption, this.op, {
                 callback: {
                     onClick: function () {
                         self.trigger("click", this);

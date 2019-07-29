@@ -41,6 +41,7 @@ define([ "rt/core", "jquery", "rt/request" ], function(core, $, http) {
 	};
 	
 	u.el = function(id){
+		if(id.jquery) return id;
 		if(typeof id != 'string') throw 'id is not string';
 		return $(id.indexOf("#") == 0 ? id : "#"+id); 
 	}

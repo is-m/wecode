@@ -108,6 +108,15 @@ CREATE TABLE sys_user_permission
 ) COMMENT '用户权限表';
 
 
+DROP TABLE IF EXISTS wc_rich_text;
+CREATE TABLE wc_rich_text (
+    `id` VARCHAR(36) PRIMARY KEY COMMENT 'id',
+    `type` VARCHAR(10) COMMENT '类型',
+    `name` VARCHAR(10) COMMENT '配置名称',
+    `title` VARCHAR(10) COMMENT '标题',
+    `content` TEXT COMMENT '内容'
+)
+
 
 
 

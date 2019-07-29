@@ -9,7 +9,9 @@ body {
 	overflow-x:hidden;
 }
 
-
+.table th, .table td {
+	border-top:none;
+}
 
 
 /*

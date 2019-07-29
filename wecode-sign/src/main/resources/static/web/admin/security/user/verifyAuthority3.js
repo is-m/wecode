@@ -10,7 +10,7 @@ pageContext.controller("admin.security.user.verifyAuthority3",[],function(page){
 		$("#formAuthority").jsonData(_record = record);
 
 		var gridOption = {
-			selectMode:'mutli', /* 多选：mutli,单选：single,默认：normal */
+			selectMode:'multi', /* 多选：multi,单选：single,默认：normal */
 			height:300,
 			editable:true,
 			/*pageOp:{

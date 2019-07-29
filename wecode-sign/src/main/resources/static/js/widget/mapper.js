@@ -49,16 +49,24 @@ define(["jquery"], function ($) {
             var $this = $(html);
             // id="gridList" dataset="/services/richtext/list" pageSize="15" editable="true" sortable="true" selectMode="single/multi"
             var id = $this.prop("id");           // 组件ID
-            var showSeq = $this.prop("showSeq"); // 是否显示序号 [true,false]
-            var selectMode = $this.prop("selectMode"); // 选择模式，[single,multi]
+            var showSeq = $this.attr("showSeq"); // 是否显示序号 [true,false]
+            var selectMode = $this.attr("selectMode"); // 选择模式，[single,multi]
             var $children = $this.children();
+            // attr 和 prop的区别在于
+            var dataset = $this.attr("dataset");
+
+            var searchBtn = $this.attr("searchBtnId");
+            var searchForm = $this.attr("searchFormId");
+
             var columns = [];
             for (var i = 0; i < $children.length; i++) {
                 var $col = $children.eq(i);
                 var tagName = $col.prop("tagName").toLowerCase();
                 if (tagName !== "column") {
-                    throw "m-grid children only include column elements"
+                    console.warn("m-grid children only include column elements ,skip column type is " + tagName);
+                    continue;
                 }
+
                 var colOp = {
                     field: $col.attr("field"),
                     type: $col.attr("type"),
@@ -67,22 +75,49 @@ define(["jquery"], function ($) {
                     rest: $col.attr("rest"),
                     // 字典格式化数据
                     dict: $col.attr("dict"),
-                    render: $col.text(),
                     sortable: $col.attr("sortable"),
                     editable: $col.attr("editable")
                 };
+                if ($col.text()) {
+                    colOp.renderer = $.proxy(function (value, record) {
+                        return this.value;
+                    }, {value: $col.prop("innerHTML")});
+                }
                 // field="id"  header="ID"
                 columns.push(colOp);
             }
 
-
-            return {
+            var gridOp = {
                 id: id,
                 showSeq: showSeq,
                 selectMode: selectMode,
                 columns: columns,
-                dataset:[{ id:"test"}]
+                dataset: dataset,
+                operation: {}
+            };
+
+            if (searchBtn) {
+                gridOp.operation.search = {
+                    btn: searchBtn,
+                    panel: searchForm
+                };
             }
+
+            var pageOp = $this.attr("pageable") !== "false" ? {} : false;
+            if (pageOp) {
+                pageOp.pageSize = parseInt($this.attr("pageSize"));
+                if (!pageOp.pageSize || pageOp.pageSize < 10) {
+                    pageOp.pageSize = 10;
+                }
+                pageOp.curPage = parseInt($this.attr("curPage"));
+                if (!pageOp.curPage || pageOp.curPage < 0) {
+                    pageOp.curPage = 0;
+                }
+                pageOp.pageSizeRange = [10, 20, 50, 100, 200, 500];
+            }
+            gridOp.pageOp = pageOp;
+
+            return gridOp;
         }
     };
 
