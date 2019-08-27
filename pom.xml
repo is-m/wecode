@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.chinasoft.it.wecode</groupId>
 	<artifactId>wecode</artifactId>
@@ -42,13 +44,13 @@
 		<module>wecode-trace-api</module>
 		<module>wecode-trace-agent-example</module>
 		<module>wecode-security-authorization</module>
-		<module>wecode-security-authentication</module>
 		<module>wecode-security-core</module>
 		<module>wecode-web-support</module>
 		<module>template-mybatis</module>
 		<module>wecode-example</module>
-    <module>wecode-base-config</module>
-    <module>wecode-workflow</module>
+		<module>wecode-base-config</module>
+		<module>wecode-workflow</module>
+		<module>wecode-generator</module>
 	</modules>
 
 	<dependencyManagement>
@@ -82,21 +84,18 @@
 				</exclusions>
 			</dependency>
 
-			
+
 			<!-- swagger ui plus -->
 			<!-- https://gitee.com/xiaoym/swagger-bootstrap-ui-demo -->
 			<dependency>
-			  <groupId>com.github.xiaoymin</groupId>
-			  <artifactId>swagger-bootstrap-ui</artifactId>
-			  <version>1.9.4</version>
+				<groupId>com.github.xiaoymin</groupId>
+				<artifactId>swagger-bootstrap-ui</artifactId>
+				<version>1.9.4</version>
 			</dependency>
 
 
-			<!-- <dependency>
-				<groupId>io.springfox</groupId>
-				<artifactId>springfox-swagger-ui</artifactId>
-				<version>${swagger.version}</version>
-			</dependency> -->
+			<!-- <dependency> <groupId>io.springfox</groupId> <artifactId>springfox-swagger-ui</artifactId> 
+				<version>${swagger.version}</version> </dependency> -->
 
 			<!-- @Import({ ... springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration.class, 
 				...}) -->
@@ -160,12 +159,12 @@
 			</dependency>
 
 
-			<!-- 号称最快的单机缓存  -->
+			<!-- 号称最快的单机缓存 -->
 			<!-- https://mvnrepository.com/artifact/com.github.ben-manes.caffeine/caffeine -->
 			<dependency>
-			    <groupId>com.github.ben-manes.caffeine</groupId>
-			    <artifactId>caffeine</artifactId>
-			    <version>2.7.0</version>
+				<groupId>com.github.ben-manes.caffeine</groupId>
+				<artifactId>caffeine</artifactId>
+				<version>2.7.0</version>
 			</dependency>
 
 
@@ -176,7 +175,27 @@
 				<version>6.0.0</version>
 			</dependency>
 
+			<!-- https://mvnrepository.com/artifact/org.activiti/activiti-spring-boot-starter -->
+			<dependency>
+				<groupId>org.activiti</groupId>
+				<artifactId>activiti-spring-boot-starter</artifactId>
+				<version>7.1.0.M2</version>
+			</dependency>
 
+			<!-- https://mvnrepository.com/artifact/org.freemarker/freemarker -->
+			<dependency>
+				<groupId>org.freemarker</groupId>
+				<artifactId>freemarker</artifactId>
+				<version>2.3.28</version>
+			</dependency>
+
+			<!-- 阿里GTS 分布式事务（开源版本)  Seata: Simple Extensible Autonomous Transaction Architecture -->
+			<!-- https://github.com/seata/seata  组合服务接口上添加注解-》@GlobalTransactional -->
+			<dependency>
+				<groupId>io.seata</groupId>
+				<artifactId>seata-all</artifactId>
+				<version>0.7.1</version>
+			</dependency>
 
 		</dependencies>
 	</dependencyManagement>

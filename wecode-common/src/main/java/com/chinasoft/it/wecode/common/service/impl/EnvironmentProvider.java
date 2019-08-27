@@ -1,5 +1,7 @@
 package com.chinasoft.it.wecode.common.service.impl;
 
+import com.chinasoft.it.wecode.security.UserPrincipal;
+
 import java.io.Serializable;
 
 /**
@@ -8,15 +10,17 @@ import java.io.Serializable;
 public interface EnvironmentProvider {
 
     /**
-     * 环境Key
+     * 环境 Key
+     *
      * @return
      */
     String key();
 
     /**
      * 环境值
-     * @param uid
+     *
+     * @param user
      * @return
      */
-    Serializable value(String uid);
+    Object value(UserPrincipal user);
 }

@@ -29,7 +29,7 @@ a.logo {
 }
  
 </style>
-<div class="left-side-menu"> 
+<div class="left-side-menu">
 	<div class="scroll-menu">
 	<a href="#/" class="text-center logo">
 		<span>We Project</span>
@@ -43,7 +43,38 @@ a.logo {
 	
 				<!-- BEGIN: side-nav-content -->
 				<ul class="metismenu" id="metismenu">
-	
+					<!-- 菜单渲染子模板，用于递归渲染菜单 -->
+					<script type="text/html" id="childMenuTmpl">
+						{{ each children }}
+							{{ set hasChildren = $value.children && $value.children.length}}
+							<li>
+								{{if (hasChildren) }}
+								<a href="#{{$value.href}}"  aria-expanded="false">
+									{{if ($value.icon)}}
+										<span class="has-icon"><i class="fa fa-line-chart"></i></span>
+										<span class="nav-title">{{ $value.title }}</span>
+									{{else}}
+										{{ $value.title }}
+									{{/if}}
+								</a>
+								<ul>
+									{{include 'childMenuTmpl' $value }}
+								</ul>
+								{{else}}
+									<a href="#{{$value.href}}">
+										{{if ($value.icon)}}
+										<span class="has-icon"><i class="fa fa-line-chart"></i></span>
+										<span class="nav-title">{{ $value.title }}</span>
+										{{else}}
+										{{ $value.title }}
+										{{/if}}
+									</a>
+								{{/if}}
+							</li>
+						{{/each}}
+					</script>
+					{{ set tempMenu = {children:$widget._data} }}
+					{{ include 'childMenuTmpl' tempMenu }}
 					<li>
 						<a class="" href="#/web/admin/dashboard/admin.html"  aria-expanded="false">
 							<span class="has-icon"> 
@@ -172,7 +203,14 @@ a.logo {
 						<ul aria-expanded="false" class="collapse" style="height: 0px;"> 
 							<li><a href="@{/doc.html}" target="_blank">API</a></li>
 							<li><a href="#/web/develop/generator/layout.html">Web IDE</a></li>
-							<li><a href="#/web/develop/generator/layout.html">代码生成</a></li>
+							<li>
+								<!-- href="#/web/develop/generator/layout.html" -->
+								<a href="#" class="has-arrow" aria-expanded="false">代码生成</a>
+								<ul aria-expanded="false" class="collapse">
+									<li><a href="#/web/admin/security/user/layout.html">数据源</a></li>
+									<li><a href="#/web/admin/security/userGroup/layout.html">元数据</a></li>
+								</ul>
+							</li>
 						</ul>
 					</li> 
 					<li class="">

@@ -4,5 +4,5 @@ import com.chinasoft.it.wecode.security.UserPrincipal;
 
 public interface UserProvider {
 
-	public UserPrincipal get(String uid);
+	UserPrincipal get(String uid);
 }

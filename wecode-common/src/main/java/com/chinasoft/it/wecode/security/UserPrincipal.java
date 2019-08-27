@@ -14,14 +14,14 @@ public interface UserPrincipal {
   Serializable getUid();
 
   /**
-   * 当前活动的角色
+   * 当前活动的角色，不会返回空，只要是登陆用户，哪怕没有角色时也会返回访客角色
    * 
    * @return
    */
-  Role getActivedRole();
+  Role getCurrentRole();
 
   /**
-   * 当前用户角色列表
+   * 当前用户角色列表，不会返回空，只要是登陆用户，哪怕没有角色时也会返回访客角色
    * 
    * @return
    */

@@ -4,20 +4,24 @@ import java.util.Set;
 
 /**
  * 角色
- * @author Administrator
  *
+ * @author Administrator
  */
 public interface Role {
 
-  /**
-   * 获取角色代码
-   * @return
-   */
-  String getCode();
+    String getId();
 
-  /**
-   * 获取角色权限列表
-   * @return
-   */
-  Set<String> getPermissionCodeSet();
+    /**
+     * 获取角色代码
+     *
+     * @return
+     */
+    String getCode();
+
+    /**
+     * 获取角色权限列表
+     *
+     * @return
+     */
+    Set<String> getPermissionCodeSet();
 }

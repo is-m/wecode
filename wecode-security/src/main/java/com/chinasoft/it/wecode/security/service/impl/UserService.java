@@ -1,19 +1,15 @@
 package com.chinasoft.it.wecode.security.service.impl;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-
-import com.chinasoft.it.wecode.exception.PasswordInvalidException;
+import com.chinasoft.it.wecode.annotations.security.Module;
+import com.chinasoft.it.wecode.annotations.security.Operate;
+import com.chinasoft.it.wecode.base.BaseService;
+import com.chinasoft.it.wecode.common.mapper.BaseMapper;
+import com.chinasoft.it.wecode.excel.service.IExcelService;
+import com.chinasoft.it.wecode.security.domain.User;
 import com.chinasoft.it.wecode.security.dto.*;
+import com.chinasoft.it.wecode.security.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.IncorrectResultSizeDataAccessException;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -21,24 +17,22 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.annotation.Validated;
 
-import com.chinasoft.it.wecode.annotations.security.Module;
-import com.chinasoft.it.wecode.annotations.security.Operate;
-import com.chinasoft.it.wecode.base.BaseService;
-import com.chinasoft.it.wecode.common.mapper.BaseMapper;
-import com.chinasoft.it.wecode.common.util.StringUtil;
-import com.chinasoft.it.wecode.excel.service.IExcelService;
-import com.chinasoft.it.wecode.exception.AuthenticationException;
-import com.chinasoft.it.wecode.security.Role;
-import com.chinasoft.it.wecode.security.UserPrincipal;
-import com.chinasoft.it.wecode.security.domain.User;
-import com.chinasoft.it.wecode.security.repository.UserRepository;
-import com.chinasoft.it.wecode.security.spi.UserDetailService;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import javax.validation.constraints.NotEmpty;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 // https://spring.io/blog/2011/04/26/advanced-spring-data-jpa-specifications-and-querydsl
 @Service
 @Module(code = "user", desc = "user")
-public class UserService extends BaseService<User, UserDto, UserResultDto> implements UserDetailService {
+public class UserService extends BaseService<User, UserDto, UserResultDto> {
 
     private UserRepository userRepository;
 
@@ -103,61 +97,19 @@ public class UserService extends BaseService<User, UserDto, UserResultDto> imple
         excelService.imports("security.user", datafile);
     }
 
-    /**
-     * TODO:考虑是否需要根据邮箱/电话来登录
-     */
-    @Override
-    public UserPrincipal userDetails(String identifier, String password) throws AuthenticationException {
-        User user;
-        try {
-            user = userRepository.findOneByNameOrMailOrMobilePhone(identifier);
-        } catch (IncorrectResultSizeDataAccessException e) {
-            throw new AuthenticationException("用户身份[" + identifier + "]存在冲突，请联系管理员");
-        }
-
-        if (user == null) {
-            throw new AuthenticationException("不存在的用户");
-        }
-
-        if (!StringUtil.isEmpty(password)) {
-            if (!password.equals(user.getPassword())) {
-                throw new PasswordInvalidException();
-            }
-        }
-
-        if (user.getStatus() != null && user.getStatus() != 1) {
-            throw new AuthenticationException("禁止使用的用户，状态码：" + user.getStatus());
-        }
-
-        String userId = user.getId();
-
-        return new UserPrincipal() {
-
-            private String uid = userId;
-
-            @Override
-            public String getUid() {
-                return uid;
-            }
-
-            @Override
-            public List<Role> getRoles() {
-                return null;
-            }
-
-            @Override
-            public Role getActivedRole() {
-                return null;
-            }
-
-            @Override
-            public String getLanguage() {
-                return "zh_CN";
-            }
-        };
-    }
-
-    public WorkspaceUserDto findWorkspaceUser(String uid) {
+    public UserVO findWorkspaceUser(String uid) {
         return null;
     }
+
+    @Validated
+    public User findOneByNameOrMailOrMobilePhone(@NotEmpty String identifier) {
+        return userRepository.findOneByNameOrMailOrMobilePhone(identifier);
+    }
+
+
+
+   /* @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }*/
 }

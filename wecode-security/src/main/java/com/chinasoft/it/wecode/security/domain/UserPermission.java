@@ -31,7 +31,7 @@ public class UserPermission extends BaseEntity {
     private String status;
 
     /**
-     * 有效期(保留字段)
+     * 截止有效期(保留字段)
      */
     private Date expireDate;
 
@@ -87,11 +87,11 @@ public class UserPermission extends BaseEntity {
         return result;
     }
 
-    public static UserPermission of(String userId,String roleId,String dataRangeId){
-        return of(null,userId,roleId,dataRangeId);
+    public static UserPermission of(String userId, String roleId, String dataRangeId) {
+        return of(null, userId, roleId, dataRangeId);
     }
 
-    public static UserPermission of(String id,String userId,String roleId,String dataRangeId){
+    public static UserPermission of(String id, String userId, String roleId, String dataRangeId) {
         UserPermission result = of(id);
         result.setUserId(userId);
         result.setRoleId(roleId);

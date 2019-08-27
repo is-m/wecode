@@ -25,54 +25,53 @@ import com.chinasoft.it.wecode.security.service.impl.UserContextManager;
 
 /**
  * 鉴权切面
- * 
- * @author Administrator
  *
+ * @author Administrator
  */
 @Component
 @Aspect
 @Conditional(AuthorizationAspectCondition.class)
 public class AuthorizationAspect {
 
-  private static final Logger log = LogUtils.getLogger();
+    private static final Logger log = LogUtils.getLogger();
 
-  // @Around("with(com.chinasoft.it.wecode.annotations.security.Module) && @annotation(operate)")
-  @Around("@annotation(operate)")
-  public Object around(ProceedingJoinPoint joinPoint, Operate operate) throws Throwable {
-    Method method = AopUtil.getActualMethod(joinPoint);
-    Class<?> classTarget = joinPoint.getTarget().getClass();
-    Module annModule = classTarget.getAnnotation(Module.class);
+    // @Around("with(com.chinasoft.it.wecode.annotations.security.Module) && @annotation(operate)")
+    @Around("@annotation(operate)")
+    public Object around(ProceedingJoinPoint joinPoint, Operate operate) throws Throwable {
+        Method method = AopUtil.getActualMethod(joinPoint);
+        Class<?> classTarget = joinPoint.getTarget().getClass();
+        Module annModule = classTarget.getAnnotation(Module.class);
 
-    String cname = classTarget.getName();
-    String mname = method.getName();
-    Policy policy = operate.policy();
-    if (UserContextManager.isSuperAdmin()) {
-      log.debug("security method be skiped for Super Administrator");
-    } else if (policy != Policy.All) {
-      if (annModule == null) {
-        // 不检查权限
-        log.warn("a security method is not badge @Module at {}.{}", cname, mname);
-      } else {
-        Check componet = null;
-        // 检查权限
-        switch (policy) {
-          case Required:
-            componet = new RealCheck(componet);
-          case Default:
-            componet = new ContextCheck(componet);
-          case Sys:
-            componet = new RoleCheck(componet);
-          case Login:
-            componet = new LoginCheck(componet);
-            break;
-          default:
-            throw new UnSupportException();
+        String cname = classTarget.getName();
+        String mname = method.getName();
+        Policy policy = operate.policy();
+        if (UserContextManager.isSuperAdmin()) {
+            log.debug("security method be skiped for Super Administrator");
+        } else if (policy != Policy.All) {
+            if (annModule == null) {
+                // 不检查权限
+                log.info("a security method is not badge @Module at {}.{}", cname, mname);
+            } else {
+                Check component = null;
+                // 检查权限
+                switch (policy) {
+                    case Required:
+                        component = new RealCheck(component);
+                    case Default:
+                        component = new ContextCheck(component);
+                    case Sys:
+                        component = new RoleCheck(component);
+                    case Login:
+                        component = new LoginCheck(component);
+                        break;
+                    default:
+                        throw new UnSupportException();
+                }
+                component.check(AuthorizationUtil.getPermissionCode(annModule, cname, operate, mname));
+            }
         }
-        componet.check(AuthorizationUtil.getPermissionCode(annModule, cname, operate, mname));
-      }
-    }
 
-    return joinPoint.proceed();
-  }
+        return joinPoint.proceed();
+    }
 
 }

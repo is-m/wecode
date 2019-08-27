@@ -2,6 +2,7 @@ define(function (require) {
     "use strict";
     var $ = require("jquery");
     var log = require("rt/logger");
+    var util = require("rt/util");
     /*
      TODO:组件要考虑用户可修改，样式可定义
      */
@@ -127,34 +128,45 @@ define(function (require) {
         	templateHtml = templateHtml.replace(/@\{\s*(\S+)\s*\}/g, function (m, i, o, n) {
                 return appConfig.contextPath + i;
             });
+
+        	// 注册artTemplate模板
             tmpl(templateId, templateHtml);
+            // 找到子模板注册
+            var $tmpl = $(templateHtml);
+            $tmpl.find("script[type='text/html']").each(function(i,e){
+                var $this = $(this);
+                console.log('register child template by id '+$this.attr("id"))
+                tmpl($this.attr("id"),$this.html());
+            }).remove();
         }
 
-        var $data = {$win: window, $widget: widgetManager.op, value: 'aui'};
+        util.caughtPromise(widgetManager.loadData(),function (data) {
+            var $data = { $win: window, $widget: $.extend(widgetManager.op,{_data:data})};
+            var tmplHtml = tmpl(templateId, $data);
+            // widgetDefine.template = tmplHtml;
 
-        var templatedHtml = tmpl(templateId, $data);
+            var $dom = $(tmplHtml);
 
-        // widgetDefine.template = templatedHtml;
+            widgetManager.$dom = $dom;
+            var doTemplateHtml = widgetManager.beforeRender ? widgetManager.beforeRender($dom) : $dom;
 
-        var $dom = $(templatedHtml);
+            $control.html($dom);
+            $control.data("__widget", widgetManager);
 
-        widgetManager.$dom = $dom;
-        var doTemplateHtml = widgetManager.beforeRender ? widgetManager.beforeRender($dom) : $dom;
+            // TODO:可以接收一个promise 对象，防止afterRender里存在异步方法
+            // TODO:后续，需要整理出一个JS执行流程的内容，存在Promise则等Promise返回后执行各个回调函数
 
-        $control.html($dom);
-        $control.data("__widget", widgetManager);
+            var promise = widgetManager.afterRender && widgetManager.afterRender();
+            if (promise && promise["done"] && promise["fail"] && promise["then"]) {
+                promise.done($.proxy(widgetManager.ready, widgetManager));
+            } else {
+                widgetManager.ready && widgetManager.ready();
+            }
 
-        // TODO:可以接收一个promise 对象，防止afterRender里存在异步方法
-        // TODO:后续，需要整理出一个JS执行流程的内容，存在Promise则等Promise返回后执行各个回调函数
+            componentMap[buildComponentId(Widget.name)] = widgetManager;
+        });
 
-        var promise = widgetManager.afterRender && widgetManager.afterRender();
-        if (promise && promise["done"] && promise["fail"] && promise["then"]) {
-            promise.done($.proxy(widgetManager.ready, widgetManager));
-        } else {
-            widgetManager.ready && widgetManager.ready();
-        }
 
-        componentMap[buildComponentId(Widget.name)] = widgetManager;
     }
 
     $.fn.xWidget = function (name, op, data) {

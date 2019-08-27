@@ -320,14 +320,18 @@ define(["rt/store","jquery"], function (store,$) {
                     console.log("load js widget -- " + widgetName);
                     var componentMapper = mapper[widgetName];
                     var wPath = componentMapper ? componentMapper.comp : ("widget/" + widgetName);
+                    var wOption  = {};
+                    if(componentMapper){
+                        wOption = componentMapper.parser(el);
+                    }
 
                     require([wPath], $.proxy(function (widget) {
                         if (widget.render) {
-                            widget.render(el); // 加载完组件则初始化组件的基本内容
+                            widget.render(this.el,this.op); // 加载完组件则初始化组件的基本内容
                         } else {
                             alert("user component " + widget + " not found renderer");
                         }
-                    }, {el: el}));
+                    }, {el: el,op:wOption}));
                 }
             });
         }

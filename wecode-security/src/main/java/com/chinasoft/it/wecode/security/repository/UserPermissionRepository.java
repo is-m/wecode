@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserPermissionRepository extends JpaRepository<UserPermission,String> {
@@ -14,4 +15,11 @@ public interface UserPermissionRepository extends JpaRepository<UserPermission,S
      * @param dels
      */
     int deleteByIdIn(List<String> dels);
+
+    /**
+     * 查询第一个用户权限对象
+     * @param id
+     * @return
+     */
+    Optional<UserPermission> findFirstByUserId(String id);
 }

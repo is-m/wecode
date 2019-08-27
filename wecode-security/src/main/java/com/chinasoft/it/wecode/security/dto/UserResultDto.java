@@ -9,103 +9,116 @@ import io.swagger.annotations.ApiModelProperty;
 @ExcelSheet
 public class UserResultDto extends BaseDto {
 
-	private static final long serialVersionUID = 8070004604327615492L;
+    private static final long serialVersionUID = 8070004604327615492L;
 
-	/**
-	 * id
-	 */
-	@ExcelFiled(title="ID")
-	private String id;
+    /**
+     * id
+     */
+    @ExcelFiled(title = "ID")
+    private String id;
 
-	/**
-	 * 姓名
-	 */
-	@ExcelFiled(title="姓名")
-	private String name;
+    /**
+     * 姓名
+     */
+    @ExcelFiled(title = "姓名")
+    private String name;
 
-	/**
-	 * 备注
-	 */
-	@ExcelFiled(title="备注")
-	private String remark;
+    /**
+     * 备注
+     */
+    @ExcelFiled(title = "备注")
+    private String remark;
 
-	/**
-	 * 电子邮箱
-	 */
-	@ExcelFiled(title="电子邮件")
-	private String mail;
+    /**
+     * 电子邮箱
+     */
+    @ExcelFiled(title = "电子邮件")
+    private String mail;
 
-	/**
-	 * 移动号码 MP MobilePhone
-	 */
-	@ExcelFiled(title="手机号码")
-	private String mobilePhone;
+    /**
+     * 移动号码 MP MobilePhone
+     */
+    @ExcelFiled(title = "手机号码")
+    private String mobilePhone;
 
-	/**
-	 * 状态，0：失效，1：生效
-	 */
-	@ExcelFiled(title="状态",dictType="COMMON_STATUS")
-	@ApiModelProperty(name = "status", notes = "状态，0：失效，1生效", example = "1")
-	private Integer status;
+    /**
+     * 状态，0：失效，1：生效
+     */
+    @ExcelFiled(title = "状态", dictType = "COMMON_STATUS")
+    @ApiModelProperty(name = "status", notes = "状态，0：失效，1生效", example = "1")
+    private Integer status;
 
-	public String getId() {
-		return id;
-	}
+    /**
+     * 当前角色ID
+     */
+    private String activeRoleId;
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getRemark() {
-		return remark;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
+    public String getRemark() {
+        return remark;
+    }
 
-	public String getMail() {
-		return mail;
-	}
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
-	public void setMail(String mail) {
-		this.mail = mail;
-	}
+    public String getMail() {
+        return mail;
+    }
 
-	public String getMobilePhone() {
-		return mobilePhone;
-	}
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
 
-	public void setMobilePhone(String mobilePhone) {
-		this.mobilePhone = mobilePhone;
-	}
+    public String getMobilePhone() {
+        return mobilePhone;
+    }
 
-	public Integer getStatus() {
-		return status;
-	}
+    public void setMobilePhone(String mobilePhone) {
+        this.mobilePhone = mobilePhone;
+    }
 
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
+    public Integer getStatus() {
+        return status;
+    }
 
-	public UserResultDto() {
-	}
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
-	public UserResultDto(String id, String name, String remark, String mail, String mobilePhone, Integer status) {
-		this.id = id;
-		this.name = name;
-		this.remark = remark;
-		this.mail = mail;
-		this.mobilePhone = mobilePhone;
-		this.status = status;
-	}
+    public String getActiveRoleId() {
+        return activeRoleId;
+    }
+
+    public void setActiveRoleId(String activeRoleId) {
+        this.activeRoleId = activeRoleId;
+    }
+
+    public UserResultDto() {
+    }
+
+    public UserResultDto(String id, String name, String remark, String mail, String mobilePhone, Integer status) {
+        this.id = id;
+        this.name = name;
+        this.remark = remark;
+        this.mail = mail;
+        this.mobilePhone = mobilePhone;
+        this.status = status;
+    }
 
 }

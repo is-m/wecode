@@ -320,7 +320,7 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
                 }
                 ajaxOption.data = modifiedData;
             }
-            util.doAjax(ajaxOption).success(function (resp) {
+            util.doAjax(ajaxOption).done(function (resp) {
                 msg.okTip("保存成功！");
             });
         },

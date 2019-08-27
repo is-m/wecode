@@ -1,19 +1,5 @@
 package com.chinasoft.it.wecode.security.service.impl;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
-
 import com.chinasoft.it.wecode.annotations.security.Module;
 import com.chinasoft.it.wecode.annotations.security.Operate;
 import com.chinasoft.it.wecode.base.BaseService;
@@ -21,9 +7,19 @@ import com.chinasoft.it.wecode.common.mapper.BaseMapper;
 import com.chinasoft.it.wecode.common.util.CollectionUtils;
 import com.chinasoft.it.wecode.security.domain.Permission;
 import com.chinasoft.it.wecode.security.domain.Role;
+import com.chinasoft.it.wecode.security.dto.PermissionResultDto;
 import com.chinasoft.it.wecode.security.dto.RoleDto;
 import com.chinasoft.it.wecode.security.dto.RoleResultDto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.util.*;
+import java.util.stream.Collectors;
 
 // TODO: @Cacheable 用于标记该类启动通用缓存处理
 @Module(code = "role", desc = "role")
@@ -72,5 +68,23 @@ public class RoleService extends BaseService<Role, RoleDto, RoleResultDto> {
     @Validated
     public Map<String, String> getRoleNameMap(@NotNull Collection<String> idList) {
         return repo.findAllById(idList).parallelStream().collect(Collectors.toMap(entity -> entity.getId(), entity -> entity.getName()));
+    }
+
+    /**
+     * 获取访客角色
+     *
+     * @return
+     */
+    public RoleResultDto getGuestRole() {
+        return new RoleResultDto() {
+            {
+                setCode("GUEST");
+                setName("访客");
+                setId("GUEST");
+                setPermissions(new HashSet<PermissionResultDto>());
+                setRemark("访客");
+                setUrl("");
+            }
+        };
     }
 }

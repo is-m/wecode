@@ -57,8 +57,7 @@ public class CatelogService extends BaseService<Catelog, CatelogDto, CatelogResu
 
   /**
    * 获取菜单列表
-   * 
-   * @param permissionReturn 是否仅返回需要控制权限的树节点，为true时，返回包含权限控制的节点及父节点，为false时返回所有
+   *
    * @return
    */
   @Operate

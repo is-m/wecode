@@ -10,9 +10,12 @@
 	<artifactId>wecode-workflow</artifactId>
 
 	<dependencies>
+
+		<!-- https://mvnrepository.com/artifact/org.activiti/activiti-spring-boot-starter -->
 		<dependency>
 			<groupId>org.activiti</groupId>
-			<artifactId>activiti-spring-boot-starter-basic</artifactId>
+			<artifactId>activiti-spring-boot-starter</artifactId>
 		</dependency>
+ 
 	</dependencies>
 </project>

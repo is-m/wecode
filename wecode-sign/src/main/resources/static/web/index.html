@@ -138,7 +138,7 @@
 
 <body>
 	<div class="wrapper">
-		<m-menu dataset="workspaceObj.menus"></m-menu>
+		<m-menu dataset="workspaceVO.menus"></m-menu>
 		<div class="content">
 			<div class="topbar">
 				<a class="topbar-swich topbar-item" id="menuSwitch">
@@ -182,14 +182,16 @@
 			</div> 
 		</div> 
 	</div>
-	<div class="fixed-bottom" style="left:auto; right:20px; border:1px solid #000;">这个是额外的工具</div>
-
 	<!-- <script src="../js/lib/popper.js"></script> -->
 	<script src="../js/lib/require.js"></script>
 	<script type="text/javascript">
 		
 	
-		window.workspaceVO={user:{"id":"1","username":"admin"}};
+		window.workspaceVO={user:{"id":"1","username":"admin"},menus:[{
+				title : "首页",
+				href :"/web/admin/index.html",
+				icon:"fa fa-line-chart"
+			}]};
 		// 后台：默认角色，访客
 		var roleGuest = {
 			roleName : "sys.common.guest",
@@ -213,7 +215,7 @@
 			clientIp:'127.0.0.1',
 			serverIp:'192.168.0.1',
 			// 导航
-			siteMap : [ {
+			menus : [ {
 				title : "首页",
 				href :"http://localhost:8880/wecode/asset/web/index.html"
 			} ,{
@@ -292,7 +294,10 @@
 				'fileinputTheme':'../css/lib/fileinput/themes/explorer/theme',
 				'holder':'lib/holder',
 				'pako':'lib/pako',
-				'popper':'lib/popper'
+				'popper':'lib/popper',
+				// datarangepicker
+				"moment": "lib/daterangepicker/moment.min",
+				"daterangepicker": "lib/daterangepicker/daterangepicker"
 			}
 			,shim: {
 				'template': {

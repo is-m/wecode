@@ -12,6 +12,11 @@ public class CatelogMenuDto extends BaseDto {
   private static final long serialVersionUID = 349857223109032278L;
 
   /**
+   * 栏目ID
+   */
+  private String id;
+
+  /**
    * 栏目名称
    */
   private String name;
@@ -20,7 +25,6 @@ public class CatelogMenuDto extends BaseDto {
    * uri
    */
   private String uri;
-
 
   /**
    * 图标
@@ -74,5 +78,13 @@ public class CatelogMenuDto extends BaseDto {
 
   public CatelogMenuDto(CatelogResultDto dto) {
     this(dto.getName(), dto.getUri(), dto.getIcon());
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
   }
 }

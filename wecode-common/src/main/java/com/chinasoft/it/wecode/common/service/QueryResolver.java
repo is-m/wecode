@@ -60,7 +60,7 @@ public class QueryResolver {
 					field.setAccessible(true);
 					value = field.get(obj);
 				} catch (IllegalArgumentException | IllegalAccessException e) {
-					log.error("get field value fiald", e);
+					log.error("get field value fail", e);
 
 				}
 

@@ -1,12 +1,29 @@
 // 组件映射与组件参数解析
-define(["jquery"], function ($) {
+define(["jquery","rt/util"], function ($,util) {
     // 每个组件通常有两个属性，一个是组件提供程序，一个是组件属性解析
     // comp:组件路径，起始位置为 widget，最终会使用该组件对象进行元素的渲染
     // parser：组件属性解析，解析规则：组件身上本身的属性会全部解析到
     var menu = {
         comp: "widget/menu",
-        parser: function () {
+        parser: function (html) {
+            var $this = $(html);
+            var dataset = $this.attr("dataset");
+            var displayField = $this.attr("displayField") || "name";
+            var urlField = $this.attr("urlField") || "url";
+            var iconField = $this.attr("iconField") || "icon";
+            var childrenField = $this.attr("childrenField") || "children";
+            var openType = $this.attr("openType") || "target";
 
+            var menuOp = {
+                dataset : dataset,
+                displayField:displayField,
+                urlField:urlField,
+                iconField:iconField,
+                openType:openType,
+                childrenField:childrenField
+            };
+
+            return menuOp;
         }
     };
 
