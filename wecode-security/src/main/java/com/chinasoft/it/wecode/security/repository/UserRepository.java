@@ -13,9 +13,9 @@ import com.chinasoft.it.wecode.security.domain.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, String>, JpaSpecificationExecutor<User> {
 
-  int findCountByNameLikeAndStatusIn(String name, Integer status);
+  int findCountByNameLikeAndStatus(String name, Integer status);
 
-  List<User> findByNameLikeAndStatusIn(String name, Integer status, PageRequest pageRequest);
+  List<User> findByNameLikeAndStatus(String name, Integer status, PageRequest pageRequest);
 
   @Query("select new User(u.id,u.password,u.status) from User u where u.name=?1 or u.mail=?1 or u.mobilePhone=?1")
   User findOneByNameOrMailOrMobilePhone(String identifier);

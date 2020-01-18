@@ -1,4 +1,4 @@
-define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/adapter", "ui/ui-confirm"], function (widget, $, $ui, tmpl, util, adpt, msg) {
+define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/adapter", "ui/ui-confirm","jquery.slimscroll"], function (widget, $, $ui, tmpl, util, adpt, msg,scroll) {
     // 预处理数据行渲染模版
     /*
          '<%if(colOp.renderer){ %>' +
@@ -38,20 +38,22 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
         init: function () {
             // 初始化表格，列部分参数
             // 计算表格总宽度
+            var availableWidth = this.$dom.width() - 25;
             var _op = this.op;
-            console.log("init datatable", _op);
-
-            var tableWidth = 0;
             for (var i = 0; i < _op.columns.length; i++) {
                 var colOp = _op.columns[i];
-                tableWidth += colOp.width || 150;
+                var itemWith = colOp.width || 150;
+
+                if(typeof itemWith === "string" && itemWith.endsWith("px")){
+                    availableWidth -= -itemWith.replace("px");
+                }
+
                 // TODO:如果是操作类型，暂且设置下字段，防止渲染单元格出问题，后续可能会进行优化, setRowData
-                if (colOp.type == 'operate') {
+                if (colOp.type === 'operate') {
                     colOp.field = "__operate" + i;
                 }
             }
 
-            _op["_tableWidth"] = tableWidth;
             // 初始化树选项
             if (this.op.treeOp) {
                 this.op._treeColumn = $.extend(this._getColumnOp(this.op.treeOp.field), {treeField: true});
@@ -67,7 +69,6 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
             var _ = this;
             var $tableHead = _.$dom.find(".table-scroll-header:eq(0)");
             var $tableBody = _.$dom.find(".table-scroll-body:eq(0)");
-
             if (_.op.editable === true) {
                 $tableBody.on("click", function (e) {
                     var $el = $(e.target);
@@ -383,7 +384,7 @@ define(["widget/factory", "jquery", "jqueryui", "template", "rt/util", "data/ada
                                 //debugger
                                 var record = el.closest("tr").data("record");
                                 // 当前是打开文件命令
-                                if ("fa-folder-open" == curr) {
+                                if ("fa-folder-open" === curr) {
                                     $row.attr("data-tree-expand", true);
                                     // 如果当前行是已经初始化过的，则直接展示或隐藏子项
                                     if ($row.is("[data-tree-init=true]")) {

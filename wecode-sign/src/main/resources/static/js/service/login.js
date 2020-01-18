@@ -21,8 +21,8 @@ define(["jquery", "rt/validation", "rt/store"], function ($, v, store) {
             var oldTokenObj = store.get("$USER_TOKEN$");
 
             store.set("$USER_TOKEN$", tokenObject, tokenObject.expire);
-            // 如果当前是因为token过期导致的用户登陆失败，则检查当前登陆用户是否有有过更新，如果有则提示用于并刷新界面，防止发生信息安全问题
-            if (oldTokenObj && oldTokenObj.identifier != tokenObject.identifier) {
+            // 如果当前是因为token过期导致的用户登陆失败，则检查当前登陆用户是否为新用户，如果有则提示用于并刷新界面，防止旧权限和新权限不匹配
+            if (oldTokenObj && oldTokenObj.identifier !== tokenObject.identifier) {
                 require(["ui/ui-confirm"], function (m) {
                     m.confirm("登陆用户已经改变，界面将会被刷新?", "登陆提示", function (isOk) {
                         if (isOk) {

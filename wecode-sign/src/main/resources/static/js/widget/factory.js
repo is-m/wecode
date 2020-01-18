@@ -44,7 +44,7 @@ define(function (require) {
                 /**
                  * 绑定事件
                  * @param event  事件名
-                 * @paran func   事件触发时回调函数
+                 * @param func   事件触发时回调函数
                  * @param isOnly 是否唯一，为true时，新设置的事件会覆盖老的事件，为其他时累加事件
                  * @author Administrator
                  */
@@ -96,11 +96,8 @@ define(function (require) {
             }, defineContext);
 
             return (this.constructMap[name] = Widget);
-        },
-        defineAPI: function (name, apiConstuct) {
-
         }
-    }
+    };
 
     var idMap = {"__id": 0};
     var componentMap = {};
@@ -108,16 +105,11 @@ define(function (require) {
         var key = prix || "__id";
         var cidx = (idMap[key] = idMap[key] ? idMap[key]++ : 1);
         return key + cidx;
-    }
-
-    var COMPONENT_DEF_OP = {
-        id: null,
-        ajax: {},
-    }
+    };
 
     var renderWidget = function ($control, Widget, widgetOption, data, templateId, templateHtml) {
         var widgetOp = $.extend({}, Widget.define.op, widgetOption || {});
-        var widgetManager = new Widget(name, widgetOp, data);
+        var widgetManager = new Widget(name, widgetOp, data, $control);
 
         widgetManager.init && widgetManager.init();
 
@@ -166,8 +158,7 @@ define(function (require) {
             componentMap[buildComponentId(Widget.name)] = widgetManager;
         });
 
-
-    }
+    };
 
     $.fn.xWidget = function (name, op, data) {
         if(name === "destroy"){
@@ -187,12 +178,9 @@ define(function (require) {
 
         /*var w = require("widget/"+name);*/
         return this.each(function () {
-            var self = $(this);
-            var _id = buildComponentId(name);
-            var $widgetBegin = self;
+            var $el = $(this);
 
-            // 获取组件内容
-            var Widget = WidgetFactory.constructMap[name];
+            var Widget = WidgetFactory.constructMap[name]; // 获取组件内容
             if (!Widget) throw "no defined xWidget of name " + name;
 
             var widgetDefine = Widget.define;
@@ -202,8 +190,8 @@ define(function (require) {
                 if (!widgetDefine.templateUri) {
                     var widgetOp = $.extend({}, Widget.define.op, op || {});
                     var widgetManager = new Widget(name, widgetOp, data);
-                    widgetManager.$dom = this.widgetBegin;
-                    this.widgetBegin.data("__widget", widgetManager);
+                    widgetManager.$dom = $el;
+                    $el.data("__widget", widgetManager);
 
                     widgetManager.init && widgetManager.init();
                     var promise = widgetManager.afterRender && widgetManager.afterRender();
@@ -221,41 +209,31 @@ define(function (require) {
                     var templateUri = appConfig.contextPath + "/" + widgetDefine.templateUri;
                     $.ajax({url: templateUri, async: false}).success(function (html) {
                         widgetDefine.__template = html;
-                        renderWidget($widgetBegin, Widget, op, data, templateUri, html);
+                        renderWidget($el, Widget, op, data, templateUri, html);
                     }).error(function (err) {
                         console.log(err);
                         if (err.status == 404) {
                             widgetDefine.template = "no found component for uri ";
-                            $widgetBegin.after(widgetDefine.template);
-                            var widgetManager = new Widget(name, op, data, null);
-                            //componentMap[_id] = widgetManager;
+                            $el.after(widgetDefine.template);
+                            new Widget(name, op, data, null);
                         }
                     });
                 } else {
-                    renderWidget($widgetBegin, Widget, op, data, widgetDefine.templateUri, widgetDefine.__template);
+                    renderWidget($el, Widget, op, data, widgetDefine.templateUri, widgetDefine.__template);
                 }
-            }, {Widget: Widget, widgetDefine: widgetDefine, widgetBegin: $widgetBegin, op: op});
+            }, {Widget: Widget, widgetDefine: widgetDefine , op: op});
 
             var resourceOp = widgetDefine.resources;
             if (resourceOp) {
                 require(["rt/resource"], $.proxy(function (res) {
-                    //resourceOp.css = resourceOp.css || [];
-                    //resourceOp.js = resourceOp.js || [];
-
-                    if (resourceOp.css) {
-                        res.loadCSS(resourceOp.css[0]);
-                    }
-                    if (resourceOp.js) {
-                        res.loadJS(resourceOp.js[0], initComponent);
-                    } else {
-                        initComponent();
-                    }
-                }, {Widget: Widget, widgetDefine: widgetDefine, widgetBegin: $widgetBegin}));
+                    resourceOp.css &&  res.loadCSS(resourceOp.css[0]);
+                    resourceOp.js ? res.loadJS(resourceOp.js[0], initComponent) : initComponent();
+                }, {Widget: Widget, widgetDefine: widgetDefine}));
             } else {
                 initComponent();
             }
         }).xWidget();
-    }
+    };
 
     /**
      * 组件

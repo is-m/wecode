@@ -5,15 +5,14 @@ pageContext.controller("admin.sitemap.list",["widget/data/datatable","widget/tab
 		
 		var gridOption = {
 			selectMode:'multi', /* 多选：multi,单选：single,默认：normal */
-			//height:455,
+			height:255,
 			pageOp:{
 				// el:"#pageDemo",
 				pageSize:10,
 				curPage:1,
 				pageSizeRange:[10,20,50,100,200,500]
 			},
-			columns:[
-				{
+			columns:[{
 					header:"操作",
 					width:120,
 					type:"operate",

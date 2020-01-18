@@ -13,9 +13,9 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
  * @param <T>
  * @param <ID>
  */
-public class UserRepositryImpl<T, ID> extends SimpleJpaRepository<T, ID> implements UserRepository<T, ID> {
+public class BaseRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> implements BaseRepository<T, ID> {
 
-  public UserRepositryImpl(Class<T> domainClass, EntityManager em) {
+  public BaseRepositoryImpl(Class<T> domainClass, EntityManager em) {
     super(domainClass, em);
   }
 

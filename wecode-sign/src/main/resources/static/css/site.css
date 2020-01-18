@@ -396,7 +396,7 @@ h1 {
 
 .table-srcoll-wrapper .table {
 	table-layout:fixed;
-	width: auto;
+/*	width: auto;*/
 	max-width:inherit;
 	border: none;
 	margin:0;

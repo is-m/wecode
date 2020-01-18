@@ -111,7 +111,7 @@ define(["rt/store","jquery"], function (store,$) {
                                     title: " ",
                                     url: "/web/_index/miniLogin.html",
                                     columnClass: "medium",
-                                    closeIcon:false
+                                    closeIcon:true
                                 });
                             });
                         } else {

@@ -12,7 +12,7 @@ import org.springframework.util.Assert;
 
 import com.chinasoft.it.wecode.common.util.ServletContextHolder;
 import com.chinasoft.it.wecode.common.util.ServletContextHolder.ISession;
-import com.chinasoft.it.wecode.fw.spring.data.UserRepositryImpl;
+import com.chinasoft.it.wecode.fw.spring.data.BaseRepositoryImpl;
 import com.chinasoft.it.wecode.security.AuthenticationConstant;
 import com.chinasoft.it.wecode.security.UserPrincipal;
 
@@ -26,7 +26,7 @@ import com.chinasoft.it.wecode.security.UserPrincipal;
  *
  */
 @Configuration
-@EnableJpaRepositories(basePackages= {"com.chinasoft.it.wecode"},repositoryBaseClass=UserRepositryImpl.class)
+@EnableJpaRepositories(basePackages= {"com.chinasoft.it.wecode"}/*,repositoryBaseClass= BaseRepositoryImpl.class*/)
 @EnableJpaAuditing
 public class JPAConfig {
 

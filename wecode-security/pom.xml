@@ -64,12 +64,6 @@
 			<artifactId>wecode-excel</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		
-		<dependency>
-			<groupId>com.chinasoft.it.wecode</groupId>
-			<artifactId>wecode-security-authentication</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
 
 		<dependency>
 			<groupId>com.chinasoft.it.wecode</groupId>

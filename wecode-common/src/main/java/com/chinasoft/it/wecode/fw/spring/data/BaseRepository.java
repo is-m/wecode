@@ -13,7 +13,7 @@ import org.springframework.data.repository.NoRepositoryBean;
  */
 // @NoRepositoryBean 一般用作父类的repository，有这个注解，spring不会去实例化该repository
 @NoRepositoryBean
-public interface UserRepository<T, ID> extends JpaRepository<T, ID>, JpaSpecificationExecutor<T> {
+public interface BaseRepository<T, ID> extends JpaRepository<T, ID>, JpaSpecificationExecutor<T> {
 
   // global
 

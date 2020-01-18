@@ -1,7 +1,7 @@
 <!-- 自定义列头， 分组表格，树表格，自定义展开模版表格 -->
 <div class="table-srcoll-wrapper" style="position: relative;">
 	<div class="table-scroll-header" style=" overflow:hidden;"> 
-		<table class="table table-striped" style=" width:<%= $widget._tableWidth  %>px; ">
+		<table class="table table-striped">
 			<thead>
 				<tr>
 					<% if($widget.showSeq !== false){%>
@@ -25,7 +25,7 @@
 	</div>
 	<!-- overflow-y:auto; -> overflow: auto -->
 	<div class="table-scroll-body"  style="overflow: auto; padding-right:16px; <%= $widget.height ? ("height:" + $widget.height + "px; ") : "" %> ; " >
-		<table class="table table-striped" style="width:<%= $widget._tableWidth  %>px;">
+		<table class="table table-striped" >
 			<colgroup>
 				<% if($widget.showSeq !== false){%>
 					<col style="width:30px; min-width:30px;">
