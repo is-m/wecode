@@ -52,7 +52,9 @@
 		<module>wecode-workflow</module>
 		<module>wecode-generator</module>
         <module>wecode-profiler</module>
-    </modules>
+        <module>wecode-project</module>
+		<module>wecode-cloud</module>
+	</modules>
 
 	<dependencyManagement>
 		<dependencies>
@@ -61,9 +63,10 @@
 			<dependency>
 				<groupId>org.projectlombok</groupId>
 				<artifactId>lombok</artifactId>
-				<version>1.16.20</version>
+				<version>1.18.20</version>
 				<scope>provided</scope>
 			</dependency>
+
 
 			<dependency>
 				<groupId>com.google.guava</groupId>
