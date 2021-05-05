@@ -29,9 +29,14 @@
     </properties>
 
     <modules>
-        <module>fundation/wecode-core</module>
-        <module>fundation/wecode-logging-support</module>
-        <module>fundation/wecode-web-support</module>
+        <!-- 基础框架 -->
+        <module>we-fundation/wecode-core</module>
+        <module>we-fundation/wecode-logging-support</module>
+        <module>we-fundation/wecode-web-support</module>
+
+        <!-- 微服务组件 -->
+        <module>we-cloud/wecode-gateway</module>
+        <module>we-cloud/wecode-configurer</module>
 
         <module>wecode-common</module>
         <module>wecode-sign</module>
@@ -56,8 +61,7 @@
         <module>wecode-workflow</module>
         <module>wecode-generator</module>
         <module>wecode-profiler</module>
-        <module>wecode-project</module>
-        <module>wecode-cloud</module>
+
     </modules>
 
     <dependencyManagement>
