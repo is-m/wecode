@@ -1,238 +1,242 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.chinasoft.it.wecode</groupId>
-	<artifactId>wecode</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.chinasoft.it.wecode</groupId>
+    <artifactId>wecode</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
-	<!-- 2.0 https://blog.csdn.net/qq_38431305/article/details/80917047 <parent> 
-		<groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-parent</artifactId> 
-		<version>1.5.10.RELEASE</version> <relativePath /> </parent> -->
-	<!-- Inherit defaults from Spring Boot -->
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.2.1.RELEASE</version>
-	</parent>
+    <!-- 2.0 https://blog.csdn.net/qq_38431305/article/details/80917047 <parent>
+        <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.10.RELEASE</version> <relativePath /> </parent> -->
+    <!-- Inherit defaults from Spring Boot -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.2.1.RELEASE</version>
+    </parent>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
-		<swagger.version>2.9.2</swagger.version>
-		<mapstruct.version>1.2.0.CR1</mapstruct.version>
-		<project.groupId>com.chinasoft.it.wecode</project.groupId>
-		<project.version>0.0.1-SNAPSHOT</project.version>
-	</properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <swagger.version>2.9.2</swagger.version>
+        <mapstruct.version>1.2.0.CR1</mapstruct.version>
+        <project.groupId>com.chinasoft.it.wecode</project.groupId>
+        <project.version>0.0.1-SNAPSHOT</project.version>
+    </properties>
 
-	<modules>
-		<module>wecode-common</module>
-		<module>wecode-sign</module>
-		<module>wecode-resource</module>
-		<module>wecode-asset</module>
-		<module>wecode-admin</module>
-		<module>wecode-operation</module>
-		<module>wecode-security</module>
-		<module>wecode-excel</module>
-		<module>wecode-distributed</module>
-		<!-- <module>wecode-data-multiTenancy</module> <module>wecode-data-tenant</module> -->
-		<module>wecode-excel-engine</module>
-		<module>wecode-agent-trace</module>
-		<module>wecode-trace-api</module>
-		<module>wecode-trace-agent-example</module>
-		<module>wecode-security-authorization</module>
-		<module>wecode-security-core</module>
-		<module>wecode-web-support</module>
-		<module>template-mybatis</module>
-		<module>wecode-example</module>
-		<module>wecode-base-config</module>
-		<module>wecode-workflow</module>
-		<module>wecode-generator</module>
+    <modules>
+        <module>fundation/wecode-core</module>
+        <module>fundation/wecode-logging-support</module>
+        <module>fundation/wecode-web-support</module>
+
+        <module>wecode-common</module>
+        <module>wecode-sign</module>
+        <module>wecode-resource</module>
+        <module>wecode-asset</module>
+        <module>wecode-admin</module>
+        <module>wecode-operation</module>
+        <module>wecode-security</module>
+        <module>wecode-excel</module>
+        <module>wecode-distributed</module>
+        <!-- <module>wecode-data-multiTenancy</module> <module>wecode-data-tenant</module> -->
+        <module>wecode-excel-engine</module>
+        <module>wecode-agent-trace</module>
+        <module>wecode-trace-api</module>
+        <module>wecode-trace-agent-example</module>
+        <module>wecode-security-authorization</module>
+        <module>wecode-security-core</module>
+
+        <module>template-mybatis</module>
+        <module>wecode-example</module>
+        <module>wecode-base-config</module>
+        <module>wecode-workflow</module>
+        <module>wecode-generator</module>
         <module>wecode-profiler</module>
         <module>wecode-project</module>
-		<module>wecode-cloud</module>
-	</modules>
+        <module>wecode-cloud</module>
+    </modules>
 
-	<dependencyManagement>
-		<dependencies>
-			<!-- Lombok 是一种 Java™ 实用工具,可用来帮助开发人员消除 Java 的冗长,尤其是对于简单的 Java 对象(POJO)。它通过注解实现这一目的。 -->
-			<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
-			<dependency>
-				<groupId>org.projectlombok</groupId>
-				<artifactId>lombok</artifactId>
-				<version>1.18.20</version>
-				<scope>provided</scope>
-			</dependency>
-
-
-			<dependency>
-				<groupId>com.google.guava</groupId>
-				<artifactId>guava</artifactId>
-				<version>20.0</version>
-			</dependency>
-
-			<dependency>
-				<groupId>io.springfox</groupId>
-				<artifactId>springfox-swagger2</artifactId>
-				<version>${swagger.version}</version>
-				<scope>compile</scope>
-				<!-- FIXBUG:Couldn't retrieve @Mapper annotation -->
-				<exclusions>
-					<exclusion>
-						<artifactId>org.mapstruct</artifactId>
-						<groupId>mapstruct</groupId>
-					</exclusion>
-				</exclusions>
-			</dependency>
+    <dependencyManagement>
+        <dependencies>
+            <!-- Lombok 是一种 Java™ 实用工具,可用来帮助开发人员消除 Java 的冗长,尤其是对于简单的 Java 对象(POJO)。它通过注解实现这一目的。 -->
+            <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.20</version>
+                <scope>provided</scope>
+            </dependency>
 
 
-			<!-- swagger ui plus -->
-			<!-- https://gitee.com/xiaoym/swagger-bootstrap-ui-demo -->
-			<dependency>
-				<groupId>com.github.xiaoymin</groupId>
-				<artifactId>swagger-bootstrap-ui</artifactId>
-				<version>1.9.4</version>
-			</dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>20.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${swagger.version}</version>
+                <scope>compile</scope>
+                <!-- FIXBUG:Couldn't retrieve @Mapper annotation -->
+                <exclusions>
+                    <exclusion>
+                        <artifactId>org.mapstruct</artifactId>
+                        <groupId>mapstruct</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
 
 
-			<!-- <dependency> <groupId>io.springfox</groupId> <artifactId>springfox-swagger-ui</artifactId> 
-				<version>${swagger.version}</version> </dependency> -->
-
-			<!-- @Import({ ... springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration.class, 
-				...}) -->
-			<dependency>
-				<groupId>io.springfox</groupId>
-				<artifactId>springfox-data-rest</artifactId>
-				<version>${swagger.version}</version>
-			</dependency>
-
-			<!-- @Import({ ... springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration.class, 
-				...}) -->
-			<dependency>
-				<groupId>io.springfox</groupId>
-				<artifactId>springfox-bean-validators</artifactId>
-				<version>${swagger.version}</version>
-			</dependency>
-
-			<!--mapStruct依赖 -->
-			<dependency>
-				<groupId>org.mapstruct</groupId>
-				<artifactId>mapstruct-jdk8</artifactId>
-				<version>${mapstruct.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.mapstruct</groupId>
-				<artifactId>mapstruct-processor</artifactId>
-				<version>${mapstruct.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>javax.inject</groupId>
-				<artifactId>javax.inject</artifactId>
-				<version>1</version>
-			</dependency>
-			<dependency>
-				<groupId>com.alibaba</groupId>
-				<artifactId>druid</artifactId>
-				<version>1.1.11</version>
-			</dependency>
-			<dependency>
-				<groupId>javax.servlet</groupId>
-				<artifactId>javax.servlet-api</artifactId>
-				<version>3.1.0</version>
-			</dependency>
-
-			<!-- https://blog.csdn.net/q_linchao/article/details/80693214 -->
-			<!-- https://github.com/alibaba/druid/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98 -->
-			<!-- https://mvnrepository.com/artifact/com.alibaba/druid-spring-boot-starter -->
-			<dependency>
-				<groupId>com.alibaba</groupId>
-				<artifactId>druid-spring-boot-starter</artifactId>
-				<version>1.1.10</version>
-			</dependency>
-
-			<!-- hex encrpt -->
-			<!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
-			<dependency>
-				<groupId>commons-codec</groupId>
-				<artifactId>commons-codec</artifactId>
-				<version>1.12</version>
-			</dependency>
+            <!-- swagger ui plus -->
+            <!-- https://gitee.com/xiaoym/swagger-bootstrap-ui-demo -->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>swagger-bootstrap-ui</artifactId>
+                <version>1.9.4</version>
+            </dependency>
 
 
-			<!-- 号称最快的单机缓存 -->
-			<!-- https://mvnrepository.com/artifact/com.github.ben-manes.caffeine/caffeine -->
-			<dependency>
-				<groupId>com.github.ben-manes.caffeine</groupId>
-				<artifactId>caffeine</artifactId>
-				<version>2.7.0</version>
-			</dependency>
+            <!-- <dependency> <groupId>io.springfox</groupId> <artifactId>springfox-swagger-ui</artifactId>
+                <version>${swagger.version}</version> </dependency> -->
+
+            <!-- @Import({ ... springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration.class,
+                ...}) -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-data-rest</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+
+            <!-- @Import({ ... springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration.class,
+                ...}) -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-bean-validators</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+
+            <!--mapStruct依赖 -->
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-jdk8</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${mapstruct.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.inject</groupId>
+                <artifactId>javax.inject</artifactId>
+                <version>1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>1.1.11</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>3.1.0</version>
+            </dependency>
+
+            <!-- https://blog.csdn.net/q_linchao/article/details/80693214 -->
+            <!-- https://github.com/alibaba/druid/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98 -->
+            <!-- https://mvnrepository.com/artifact/com.alibaba/druid-spring-boot-starter -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>1.1.10</version>
+            </dependency>
+
+            <!-- hex encrpt -->
+            <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>1.12</version>
+            </dependency>
 
 
-			<!-- https://mvnrepository.com/artifact/org.activiti/activiti-spring-boot-starter-basic -->
-			<dependency>
-				<groupId>org.activiti</groupId>
-				<artifactId>activiti-spring-boot-starter-basic</artifactId>
-				<version>6.0.0</version>
-			</dependency>
+            <!-- 号称最快的单机缓存 -->
+            <!-- https://mvnrepository.com/artifact/com.github.ben-manes.caffeine/caffeine -->
+            <dependency>
+                <groupId>com.github.ben-manes.caffeine</groupId>
+                <artifactId>caffeine</artifactId>
+                <version>2.7.0</version>
+            </dependency>
 
-			<!-- https://mvnrepository.com/artifact/org.activiti/activiti-spring-boot-starter -->
-			<dependency>
-				<groupId>org.activiti</groupId>
-				<artifactId>activiti-spring-boot-starter</artifactId>
-				<version>7.1.0.M2</version>
-			</dependency>
 
-			<!-- https://mvnrepository.com/artifact/org.freemarker/freemarker -->
-			<dependency>
-				<groupId>org.freemarker</groupId>
-				<artifactId>freemarker</artifactId>
-				<version>2.3.28</version>
-			</dependency>
+            <!-- https://mvnrepository.com/artifact/org.activiti/activiti-spring-boot-starter-basic -->
+            <dependency>
+                <groupId>org.activiti</groupId>
+                <artifactId>activiti-spring-boot-starter-basic</artifactId>
+                <version>6.0.0</version>
+            </dependency>
 
-			<!-- 阿里GTS 分布式事务（开源版本)  Seata: Simple Extensible Autonomous Transaction Architecture -->
-			<!-- https://github.com/seata/seata  组合服务接口上添加注解-》@GlobalTransactional -->
-			<dependency>
-				<groupId>io.seata</groupId>
-				<artifactId>seata-all</artifactId>
-				<version>0.7.1</version>
-			</dependency>
+            <!-- https://mvnrepository.com/artifact/org.activiti/activiti-spring-boot-starter -->
+            <dependency>
+                <groupId>org.activiti</groupId>
+                <artifactId>activiti-spring-boot-starter</artifactId>
+                <version>7.1.0.M2</version>
+            </dependency>
 
-		</dependencies>
-	</dependencyManagement>
+            <!-- https://mvnrepository.com/artifact/org.freemarker/freemarker -->
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>2.3.28</version>
+            </dependency>
 
-	<dependencies>
-		<!-- <dependency> <groupId>org.projectlombok</groupId> <artifactId>lombok</artifactId> 
-			<scope>provided</scope> </dependency> -->
-	</dependencies>
+            <!-- 阿里GTS 分布式事务（开源版本)  Seata: Simple Extensible Autonomous Transaction Architecture -->
+            <!-- https://github.com/seata/seata  组合服务接口上添加注解-》@GlobalTransactional -->
+            <dependency>
+                <groupId>io.seata</groupId>
+                <artifactId>seata-all</artifactId>
+                <version>0.7.1</version>
+            </dependency>
 
-	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.5.1</version>
-					<configuration>
-						<source>1.8</source>
-						<target>1.8</target>
-						<annotationProcessorPaths>
-							<path>
-								<groupId>org.mapstruct</groupId>
-								<artifactId>mapstruct-processor</artifactId>
-								<version>${mapstruct.version}</version>
-							</path>
-						</annotationProcessorPaths>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-maven-plugin</artifactId>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!-- <dependency> <groupId>org.projectlombok</groupId> <artifactId>lombok</artifactId>
+            <scope>provided</scope> </dependency> -->
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.5.1</version>
+                    <configuration>
+                        <source>1.8</source>
+                        <target>1.8</target>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.mapstruct</groupId>
+                                <artifactId>mapstruct-processor</artifactId>
+                                <version>${mapstruct.version}</version>
+                            </path>
+                        </annotationProcessorPaths>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 </project>

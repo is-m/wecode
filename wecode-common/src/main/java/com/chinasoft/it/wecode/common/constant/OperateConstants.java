@@ -95,4 +95,15 @@ public class OperateConstants {
      */
     public static final String DOWNLOAD_DESC = "download";
 
+    /**
+     * 操作CODE：执行
+     */
+    public static final String EXEC = "execute";
+
+    /**
+     * 操作DESC：执行
+     */
+    public static final String EXEC_DESC = "execute";
+
+
 }

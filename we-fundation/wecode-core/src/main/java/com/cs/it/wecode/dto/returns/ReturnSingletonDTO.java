@@ -10,7 +10,7 @@ import lombok.Data;
  * @param <T>
  */
 @Data
-public class ReturnSingleDTO<T> extends BaseDTO {
+public class ReturnSingletonDTO<T> extends BaseDTO {
 
     private T data;
 

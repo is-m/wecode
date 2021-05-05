@@ -18,6 +18,9 @@ public class ReturnPagedCollectionDTO<T> extends BaseDTO {
      */
     private List<T> data;
 
-    private PagedMetaDTO meta;
+    /**
+     * 元数据
+     */
+    private PagedMetaDTO meta = PagedMetaDTO.empty();
 
 }
