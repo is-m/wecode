@@ -1,7 +1,6 @@
 package com.cs.it.wecode.web.advice;
 
-import com.cs.it.wecode.dto.error.ErrorDTO;
-import com.cs.it.wecode.dto.error.ReturnErrorsDTO;
+import com.cs.it.wecode.base.dto.error.ReturnErrorsDTO;
 import com.cs.it.wecode.exception.WeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;

@@ -1,6 +1,6 @@
-package com.cs.it.wecode.dto.returns;
+package com.cs.it.wecode.base.dto.returns;
 
-import com.cs.it.wecode.dto.BaseDTO;
+import com.cs.it.wecode.base.dto.BaseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

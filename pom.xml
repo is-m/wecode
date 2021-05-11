@@ -38,6 +38,9 @@
         <module>we-cloud/wecode-gateway</module>
         <module>we-cloud/wecode-configurer</module>
 
+        <!-- 工具 -->
+        <module>we-tool/wecode-generator</module>
+
         <module>wecode-common</module>
         <module>wecode-sign</module>
         <module>wecode-resource</module>
@@ -59,7 +62,7 @@
         <module>wecode-example</module>
         <module>wecode-base-config</module>
         <module>wecode-workflow</module>
-        <module>wecode-generator</module>
+
         <module>wecode-profiler</module>
 
     </modules>

@@ -1,4 +1,4 @@
-package com.cs.it.wecode.dto.error;
+package com.cs.it.wecode.base.dto.error;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.cs.it.wecode.dto;
+package com.cs.it.wecode.base.dto;
 
 import lombok.Data;
 

@@ -1,6 +1,6 @@
-package com.cs.it.wecode.dto.returns;
+package com.cs.it.wecode.base.dto.returns;
 
-import com.cs.it.wecode.dto.MetaDTO;
+import com.cs.it.wecode.base.dto.MetaDTO;
 
 public class PagedMetaDTO extends MetaDTO {
 

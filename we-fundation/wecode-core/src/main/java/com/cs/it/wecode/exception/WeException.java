@@ -1,6 +1,6 @@
 package com.cs.it.wecode.exception;
 
-import com.cs.it.wecode.dto.error.ReturnErrorsDTO;
+import com.cs.it.wecode.base.dto.error.ReturnErrorsDTO;
 
 /**
  * 异常
