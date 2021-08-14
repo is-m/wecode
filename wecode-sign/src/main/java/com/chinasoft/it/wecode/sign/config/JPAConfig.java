@@ -12,7 +12,6 @@ import org.springframework.util.Assert;
 
 import com.chinasoft.it.wecode.common.util.ServletContextHolder;
 import com.chinasoft.it.wecode.common.util.ServletContextHolder.ISession;
-import com.chinasoft.it.wecode.fw.spring.data.BaseRepositoryImpl;
 import com.chinasoft.it.wecode.security.AuthenticationConstant;
 import com.chinasoft.it.wecode.security.UserPrincipal;
 

@@ -1,0 +1,21 @@
+[
+  {
+    "url": "/**/api/**",
+    "defaultWindowCron": "* * 8-23,0-5 * * ?",
+    "windows": [
+      {
+        "cron": "* * 8-23,0-5 * * ?",
+        "users": ["xxx"]
+      }
+    ],
+    "defaultLimitCount":60,
+    "defaultLimitInterval": 60,
+    "limits": [
+      {
+        "count": 120,
+        "interval": 60,
+        "users": ["xxx"]
+      }
+    ]
+  }
+]

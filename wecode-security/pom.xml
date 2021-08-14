@@ -71,7 +71,6 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
-
 		<!-- <dependency> <groupId>org.mapstruct</groupId> <artifactId>mapstruct-jdk8</artifactId> 
 			</dependency> -->
 		<!-- maven compile -->

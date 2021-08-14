@@ -52,7 +52,9 @@
 		<module>wecode-workflow</module>
 		<module>wecode-generator</module>
         <module>wecode-profiler</module>
-    </modules>
+        <module>wecode-ratelimit</module>
+		<module>wecode-channeler</module>
+	</modules>
 
 	<dependencyManagement>
 		<dependencies>

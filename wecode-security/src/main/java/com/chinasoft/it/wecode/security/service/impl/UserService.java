@@ -106,10 +106,8 @@ public class UserService extends BaseService<User, UserDto, UserResultDto> {
         return userRepository.findOneByNameOrMailOrMobilePhone(identifier);
     }
 
-
-
-   /* @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }*/
+    /*
+     * @Bean public PasswordEncoder passwordEncoder() { return new
+     * BCryptPasswordEncoder(); }
+     */
 }

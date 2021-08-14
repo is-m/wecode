@@ -124,7 +124,6 @@ public class AuthenticationApi {
                                      @RequestParam(value = "secretType", required = false, defaultValue = "pwd") String secretType,
                                      @RequestParam(value = "verifyCode", required = false) String verifyCode,
                                      @RequestParam(value = "expiryTimes", required = false, defaultValue = "1") Short expiryTimes) {
-
         String sessionVerifyCode = (String) session.getAttribute(K_VERIFYCODE);
         if (!StringUtil.isEmpty(sessionVerifyCode)) {
             if (StringUtil.isEmpty(verifyCode)) {
