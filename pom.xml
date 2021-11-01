@@ -64,8 +64,9 @@
 		<module>wecode-workflow</module>
 
 		<module>wecode-profiler</module>
+        <module>wecode-todo</module>
 
-	</modules>
+    </modules>
 
 	<dependencyManagement>
 		<dependencies>
