@@ -20,7 +20,7 @@ public @interface Audit {
     String domain() default "";
 
     /**
-     * 审计对象ID，
+     * 审计对象ID
      *
      * @return objectId
      * @deprecated 该属性已经不建议使用，建议使用@ObjectId来获取相应的对象ID，未废弃时可能需要3个注解属性才能描述，比如

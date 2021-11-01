@@ -24,17 +24,20 @@ import java.util.stream.Collectors;
 @ResponseBody
 public class RestExceptionAdvice {
 
-    /**
-     * 通用异常处理
-     *
-     * @param ex
-     * @return
-     */
+    //  其他类型异常
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ReturnErrorsDTO> handleException(Exception ex) {
         log.error(ex.getMessage(), ex);
         ReturnErrorsDTO singleton = ReturnErrorsDTO.singleton(ex.getMessage());
         return new ResponseEntity<>(singleton, HttpStatus.resolve(singleton.getHttpStatus()));
+    }
+
+    // 自定义异常处理
+    @ExceptionHandler(WeException.class)
+    public ResponseEntity<ReturnErrorsDTO> handleWeException(WeException ex) {
+        log.error(ex.getMessage(), ex);
+        ReturnErrorsDTO errors = ex.getErrors();
+        return new ResponseEntity<>(errors, HttpStatus.resolve(errors.getHttpStatus()));
     }
 
     // 处理Get请求中 使用@Valid 验证路径中请求实体校验失败后抛出的异常，详情继续往下看代码
@@ -64,10 +67,5 @@ public class RestExceptionAdvice {
         return new ResponseEntity<>(singleton, HttpStatus.resolve(singleton.getHttpStatus()));
     }
 
-    @ExceptionHandler(WeException.class)
-    public ResponseEntity<ReturnErrorsDTO> handleWeException(WeException ex) {
-        log.error(ex.getMessage(), ex);
-        ReturnErrorsDTO errors = ex.getErrors();
-        return new ResponseEntity<>(errors, HttpStatus.resolve(errors.getHttpStatus()));
-    }
+
 }

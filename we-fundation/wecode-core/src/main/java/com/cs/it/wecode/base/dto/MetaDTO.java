@@ -11,6 +11,11 @@ import java.util.HashMap;
 public class MetaDTO extends HashMap<String, Object> {
 
     /**
+     * 成功
+     */
+    public static final String SUCCESS = "1";
+
+    /**
      * 状态，通常1表示成功，0或者其他值表示失败
      */
     public void setStatus(String status) {
@@ -20,5 +25,6 @@ public class MetaDTO extends HashMap<String, Object> {
     public String getStatus() {
         return (String) this.get("status");
     }
+
 
 }

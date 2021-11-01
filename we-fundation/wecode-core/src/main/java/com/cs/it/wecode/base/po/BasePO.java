@@ -16,6 +16,11 @@ public class BasePO {
     private String id;
 
     /**
+     * 版本号
+     */
+    private int version;
+
+    /**
      * 创建人
      */
     private String createBy;
@@ -28,15 +33,11 @@ public class BasePO {
     /**
      * 最后修改人
      */
-    private String lastUpdateBy;
+    private String updateBy;
 
     /**
      * 最后修改时间
      */
-    private Date lastUpdatedDate;
+    private Date updatedDate;
 
-    /**
-     * 版本号
-     */
-    private int version;
 }
